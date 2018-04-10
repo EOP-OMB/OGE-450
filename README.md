@@ -21,30 +21,30 @@ Process Overview
 
 1.	Traffic goes to the website
 
-  a.	If internal it goes straight to the website
-  b.	If external it goes through the WAP then to the Website.
+	a. If internal it goes straight to the website
+	b. If external it goes through the WAP then to the Website.
   
 2.	The website redirects to ADFS to get the bearer token (Auth Token)
 
 3.	ADFS responds to the website with the token if authentication successful
 
-  a.	It uses the Application Group GUID to check the Application Group RPT
-  b.	It then authenticates the user, if successful it responds with the token.
+  	a. It uses the Application Group GUID to check the Application Group RPT
+  	b. It then authenticates the user, if successful it responds with the token.
   
 4.	The website then makes a REST call to the API including the bearer token
 5.	The API then validates the token against ADFS 
 6.	The API will then CSOM/CAML queries to SharePoint
 
-  a.	CSOM/CAML are sent to SharePoint using the AppPool Service Account
+  	a. CSOM/CAML are sent to SharePoint using the AppPool Service Account
   
 7.	SharePoint receives the query and responds
 
-  a.	SharePoint Talks to SQL and gets information
-  b.	SharePoint responds with information gathered
+  	a. SharePoint Talks to SQL and gets information
+  	b. SharePoint responds with information gathered
   
 8.	API receives the response from SharePoint
 
-  a.	Responses are either filtered in the CAML query or filtered in the API directly
+  	a. Responses are either filtered in the CAML query or filtered in the API directly
   
 9.	API responds to the REST call from the website
 10.	Website displays the data
