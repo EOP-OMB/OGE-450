@@ -22,6 +22,7 @@ Process Overview
 1.	Traffic goes to the website
 
 	a. If internal it goes straight to the website
+	
 	b. If external it goes through the WAP then to the Website.
   
 2.	The website redirects to ADFS to get the bearer token (Auth Token)
@@ -29,6 +30,7 @@ Process Overview
 3.	ADFS responds to the website with the token if authentication successful
 
   	a. It uses the Application Group GUID to check the Application Group RPT
+	
   	b. It then authenticates the user, if successful it responds with the token.
   
 4.	The website then makes a REST call to the API including the bearer token
@@ -40,6 +42,7 @@ Process Overview
 7.	SharePoint receives the query and responds
 
   	a. SharePoint Talks to SQL and gets information
+	
   	b. SharePoint responds with information gathered
   
 8.	API receives the response from SharePoint
