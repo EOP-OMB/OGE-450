@@ -1,0 +1,1122 @@
+﻿<div (window:beforeunload)="confirmClose()"></div>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div id="navbar" class="navbar-centered" style="padding: 5px;">
+            <ul class="nav navbar-nav">
+                <li *ngIf="canSave()"><button id="btnSave" class="btn btn-primary nav-icon invert pull-left" data-toggle="tooltip" title="Save Draft" (click)="save()" [disabled]="!isDirty()"><span class="glyphicon glyphicon-floppy-disk"></span></button></li>
+                <li><button class="btn btn-default nav-icon pull-left" data-toggle="tooltip" title="Print Form" (click)="print()"><span class="glyphicon glyphicon-print"></span></button></li>
+                <li><a id="lnkTop" href="#ogeForm450" class="btn btn-default nav-icon" data-toggle="tooltip" title="Scroll to Top"><span class="glyphicon glyphicon-chevron-up"></span></a></li>
+                <li><a id="lnkI" href="#I" class="btn btn-default nav-icon" data-toggle="tooltip" title="Scroll to Part I"><span class="glyphicon numeral">I</span></a></li>
+                <li><a id="lnkII" href="#II" class="btn btn-default nav-icon numeral" data-toggle="tooltip" title="Scroll to Part II"><span class="glyphicon numeral">II</span></a></li>
+                <li><a id="lnkIII" href="#III" class="btn btn-default nav-icon numeral" data-toggle="tooltip" title="Scroll to Part III"><span class="glyphicon numeral">III</span></a></li>
+                <li><a id="lnkIV" href="#IV" class="btn btn-default nav-icon" data-toggle="tooltip" title="Scroll to Part IV"><span class="glyphicon numeral">IV</span></a></li>
+                <li><a id="lnkV" href="#V" class="btn btn-default nav-icon numeral" data-toggle="tooltip" title="Scroll to Part V"><span class="glyphicon numeral">V</span></a></li>
+                <li><a id="lnkBottom" href="#sectionS" class="btn btn-default nav-icon numeral" data-toggle="tooltip" title="Scroll to Bottom"><span class="glyphicon glyphicon-chevron-down"></span></a></li>
+                <li><button class="btn btn-danger nav-icon invert pull-right" data-toggle="tooltip" title="Close Form" (click)="goBack()"><span class="glyphicon glyphicon-remove"></span></button></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="ogeForm450" class="container section form-start">
+    <div class="alert alert-success alert-fixed" id="success-alert" style="display: none; margin-top: 145px;">
+        <div type="button" class="close" data-dismiss="alert">x</div>
+        <strong>Success! </strong>
+        Form saved successfully.
+    </div>
+    <div class="alert alert-danger alert-fixed" id="invalid-alert" style="display: none; margin-top: 145px;">
+        <div type="button" class="close" data-dismiss="alert">x</div>
+        <strong>Invalid! </strong>
+        Form fields marked with an * are required.  Please be sure to fill out all required fields prior to submission.
+    </div>
+    <div class="alert alert-info alert-fixed" id="section-off-alert" style="display: none; margin-top: 145px;">
+        <strong><i style="font-size: 1.2em;" class="fa fa-info-circle"></i></strong>
+        <span *ngIf="canSubmit()">The section you are trying to navigate to is not enabled.  If you need to enter information for that section, select the 'Yes' option to enable it.</span>
+        <span *ngIf="!canSubmit()">The section you are trying to navigate to was not filled out.  Try navigating to sections marked 'Yes'.</span>
+    </div>
+    <div id="oge-form">
+        <div id="pageHeader">
+            <div class="row">
+                <div class="col-xs-8">
+                    OGE Form 450, 5 CFR Part 2634, Subpart I<br />
+                    U.S. Office of Government Ethics ({{ settings.formVersion }})<br />
+                    (Replaces {{ settings.replacesVersion }} edition)
+                </div>
+                <div class="col-xs-4" style="text-align: right;">
+                    <br />
+                    Form Approved<br />
+                    OMB No. 3209-0006
+                </div>
+            </div>
+        </div>
+
+        <div id="printIntro" class="section" hidden>
+            <oge-form-450-intro></oge-form-450-intro>
+        </div>
+
+        <div>
+            <div class="row showprint" hidden style="padding-top: 5px;">
+                <div class="col-xs-3 form-box solo-form-box">
+                    <div class="control-label">Date Received by Agency</div>
+                    <input name="DateReceived" type="text" class="form-control" [ngModel]="form.dateReceivedByAgency | date:'MM/dd/yyyy'" disabled />
+                </div>
+                <div class="col-xs-3 form-box solo-form-box col-xs-offset-6">
+                    <div class="control-label">Page Number</div>
+                    <input type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="row text-center">
+                <h3>CONFIDENTIAL FINANCIAL DISCLOSURE REPORT</h3>
+                <h4>
+                    Executive Branch
+                    <a id="lnkIntro" class="btn" data-toggle="modal" data-target="#intro-popup">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                </h4>
+            </div>
+
+            <!--Introduction Page-->
+            <div class="modal fade" id="intro-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-admin">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <oge-form-450-intro></oge-form-450-intro>
+                        </div>
+                        <div class="modal-footer text-center">
+                            <a class="btn btn-success btn-ok" data-dismiss="modal">OK</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Employee Info-->
+            <div class="outer-form-box">
+                <div class="row">
+                    <div class="col-xs-7 form-box">
+                        <div class="control-label required">Employee's Name (Print last, first, middle initial)</div>
+                        <input name="EmployeeName" type="text" class="form-control" [(ngModel)]="form.employeesName" />
+                    </div>
+                    <div class="col-xs-5 form-box">
+                        <div class="control-label required">E-mail Address</div>
+                        <input name="EmployeeEmail" type="text" class="form-control" [(ngModel)]="form.emailAddress" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-9 form-box">
+                        <div class="control-label required">Position/Title</div>
+                        <input name="PositionTitle" type="text" class="form-control" [(ngModel)]="form.positionTitle" />
+                    </div>
+                    <div class="col-xs-3 form-box">
+                        <div class="control-label required">Grade</div>
+                        <input name="Grade" type="text" class="form-control" [(ngModel)]="form.grade" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 form-box">
+                        <div class="control-label required">Agency</div>
+                        <textarea rows="2" name="Agency" type="text" class="form-control" [(ngModel)]="form.agency"></textarea>
+                    </div>
+                    <div class="col-xs-7 form-box">
+                        <div class="control-label required">Branch/Unit and Address</div>
+                        <textarea rows="2" name="Branch" type="text" class="form-control" [(ngModel)]="form.branchUnitAndAddress"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 form-box">
+                        <div class="control-label required">Work Phone</div>
+                        <input name="WorkPhone" type="tel" class="form-control" [(ngModel)]="form.workPhone" />
+                    </div>
+                    <div id="ReportingStatus" class="col-xs-3 form-box">
+                        <div class="control-label required">Reporting Status</div>
+                        <div class="radio-inline">
+                            <label><input name="ReportingStatus" type="radio" value="New Entrant" [(ngModel)]="form.reportingStatus" disabled />New Entrant</label>
+                        </div>
+                        <div class="radio-inline">
+                            <label><input name="ReportingStatus" type="radio" value="Annual" [(ngModel)]="form.reportingStatus" disabled />Annual</label>
+                        </div>
+                    </div>
+                    <div class="col-xs-5 form-box">
+                        <div class="control-label">
+                            If new Entrant, Date of Appointment to Position (mm/dd/yyyy)
+                            <input id="dtDateOfAppointment" name="DateOfAppointment" type="date" class="form-control" style="width: 65%; display: inline;" [ngModel]="form.dateOfAppointment | date:'yyyy-MM-dd'" (ngModelChange)="form.dateOfAppointment = $event"  />
+                            <input id="dtNoDate" name="DateOfAppointment" type="text" class="form-control" style="width: 65%; display: inline;" hidden disabled />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3 form-box">
+                        <div class="control-label">
+                            Check box if Special Government Employee (SGE)
+                            <input name="IsSGE" type="checkbox" style="margin-left: 15px;" [(ngModel)]="form.isSpecialGovernmentEmployee" />
+                        </div>
+                    </div>
+                    <div class="col-xs-9 form-box">
+                        An SGE is an executive branch officer or employee who is retained, designated, appointed, or
+                        employed to perform temporary duties either on a full-time or intermittent basis, with or without
+                        compensation, for a period not to exceed 130 days during any consecutive 365-day period.
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 form-box">
+                        <div class="control-label">If an SGE, Mailing Address (Number, Street, City, State, ZIP Code)</div>
+                        <input name="SGEAddress" type="text" class="form-control" [(ngModel)]="form.mailingAddress" />
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!form.submittedPaperCopy" id="steps" style="margin-top: 15px;">
+                <div class="row">
+                    Step 1:  Read the instructions for Parts I through V using the <span class="glyphicon glyphicon-question-sign"></span> next to each section below.
+                </div>
+                <div class="row">
+                    Step 2:  For <u>each</u> statement below, check Yes or No to describe your situation.
+                </div>
+                <div id="yesNoBox" class="outer-form-box">
+                    <div class="row">
+                        <div class="col-xs-10 form-box">
+                            <div class="control-label required">
+                                I. I have reportable assets or sources of income for myself, my spouse, or my dependent children.
+                                <a id="lnkPartI" href="#I" class="btn" rel="popover" data-placement="top" data-original-title="<h4>Part I: Assets and Income</h4>" data-trigger="hover">
+                                    <span class="glyphicon glyphicon-question-sign"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 form-box">
+                            <div class="radio text-center">
+                                <label><input type="radio" name="rbI" [value]="true" [(ngModel)]="form.hasAssetsOrIncome" /><span class="control-label">Yes</span></label>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 form-box">
+                            <div class="radio text-center">
+                                <label><input type="radio" name="rbI" [value]="false" [(ngModel)]="form.hasAssetsOrIncome" /><span class="control-label">No</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-10 form-box">
+                            <div class="control-label required">
+                                II. I have reportable liabilities (debts) for myself, my spouse, or my dependent children.
+                                <a id="lnkPartII" href="#II" class="btn" rel="popover" data-placement="top" data-original-title="<h4>Part II: Liabilities</h4>" data-trigger="hover">
+                                    <span class="glyphicon glyphicon-question-sign"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 form-box">
+                            <div class="radio text-center">
+                                <label><input type="radio" name="rbII" [value]="true" [(ngModel)]="form.hasLiabilities" /><span class="control-label">Yes</span></label>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 form-box">
+                            <div class="radio text-center">
+                                <label><input type="radio" name="rbII" [value]="false" [(ngModel)]="form.hasLiabilities" /><span class="control-label">No</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-10 form-box">
+                            <div class="control-label required">
+                                III. I have reportable outside positions for myself.
+                                <a id="lnkPartIII" href="#III" class="btn" rel="popover" data-placement="top" data-original-title="<h4>Part III: Outside Positions</h4>" data-trigger="hover">
+                                    <span class="glyphicon glyphicon-question-sign"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 form-box">
+                            <div class="radio text-center">
+                                <label><input type="radio" name="rbIII" [value]="true" [(ngModel)]="form.hasOutsidePositions" /><span class="control-label">Yes</span></label>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 form-box">
+                            <div class="radio text-center">
+                                <label><input type="radio" name="rbIII" [value]="false" [(ngModel)]="form.hasOutsidePositions" /><span class="control-label">No</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-10 form-box">
+                            <div class="control-label required">
+                                IV. I have reportable agreements or arrangements for myself.
+                                <a id="lnkPartIV" href="#IV" class="btn" rel="popover" data-placement="top" data-original-title="<h4>Part IV: Agreements or Arrangements</h4>" data-trigger="hover">
+                                    <span class="glyphicon glyphicon-question-sign"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 form-box">
+                            <div class="radio text-center">
+                                <label><input type="radio" name="rbIV" [value]="true" [(ngModel)]="form.hasAgreementsOrArrangements" /><span class="control-label">Yes</span></label>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 form-box">
+                            <div class="radio text-center">
+                                <label><input type="radio" name="rbIV" [value]="false" [(ngModel)]="form.hasAgreementsOrArrangements" /><span class="control-label">No</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-10 form-box">
+                            <div class="control-label">
+                                <span style="color: red;">NOTE: Statement V is for <u>annual</u> filers only. It does not apply to new entrants and SGEs.</span><br />
+                                V. I have reportable gifts or travel reimbursements for myself, my spouse, or my dependent children.
+                                <a id="lnkPartV" href="#V" class="btn" rel="popover" data-placement="top" data-original-title="<h4>Part V: Gifts and Travel Reimbursements</h4>" data-trigger="hover">
+                                    <span class="glyphicon glyphicon-question-sign"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 form-box">
+                            <div class="radio text-center">
+                                <label><input type="radio" name="rbV" [value]="true" [(ngModel)]="form.hasGiftsOrTravelReimbursements" /><span class="control-label">Yes</span></label>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 form-box">
+                            <div class="radio text-center">
+                                <label><input type="radio" name="rbV" [value]="false" [(ngModel)]="form.hasGiftsOrTravelReimbursements" /><span class="control-label">No</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    Step 3:  If you selected Yes for <u>any</u> statement, you must describe the reportable interests that you have in the corresponding
+                    Part (I, II, III, IV, or V) of the form.
+                </div>
+                <div class="row">
+                    Step 4:  Sign and date the form.
+                </div>
+                <div class="row">
+                    Step 5:  Submit the completed form to your ethics office.
+                </div>
+            </div>
+
+            <!--Signature for Printing-->
+            <div class="section showprint" hidden>
+                <!--Signature-->
+                <div class="section">
+                    <div class="row">
+                        <div class="control-label">
+                            I certify that the statements I have made on this form and all attached statements are true, complete, and correct to the
+                            best of my knowledge.
+                        </div>
+                    </div>
+                    <div class="outer-form-box">
+                        <div class="row">
+                            <div class="col-xs-9 form-box">
+                                <div class="control-label">
+                                    Signature of Employee
+                                </div>
+                                <input type="text" class="form-control" style="font-weight: bold;" [(ngModel)]="form.employeeSignature" disabled />
+                            </div>
+                            <div class="col-xs-3 form-box">
+                                <div class="control-label">
+                                    Date (mm/dd/yyyy)
+                                </div>
+                                <input type="text" class="form-control" disabled [ngModel]="form.dateOfEmployeeSignature | date:'MM/dd/yyyy'" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Reviewer-->
+                <div class="section">
+                    <h4>FOR REVIEWERS' USE ONLY:</h4>
+                    <div class="outer-form-box">
+                        <div class="row">
+                            <div class="col-xs-12 form-box">
+                                <div class="control-label">
+                                    On the basis of information contained in this report, I conclude that the filer is in compliance with applicable laws and regulations, except as noted in the "comments" box below.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-9 form-box">
+                                <div class="control-label">
+                                    Signature and Title of Agency's Final Reviewing Official
+                                </div>
+                                <input type="text" class="form-control" style="font-weight: bold;" [(ngModel)]="form.reviewingOfficialSignature" disabled />
+                            </div>
+                            <div class="col-xs-3 form-box">
+                                <div class="control-label">
+                                    Date (mm/dd/yy)
+                                </div>
+                                <input id="dtSignedDate" type="text" class="form-control" disabled [ngModel]="form.dateOfReviewerSignature | date:'MM/dd/yyyy'" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 form-box">
+                                <div class="control-label">
+                                    Comments of Reviewing Officials
+                                </div>
+                                <textarea type='text' class="form-control" rows="6" [(ngModel)]="form.commentsOfReviewingOfficial"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Part I-->
+        <div id="sectionI" class="section break showprint" [hidden]="!form.hasAssetsOrIncome && !printView">
+            <print-page-header [employeesName]="form.employeesName" [settings]="settings" class="showprint" hidden></print-page-header>
+            <div class="row">
+                <h3 id="I">
+                    Part I: Assets and Income
+                    <a class="btn pull-right hideprint" data-toggle="collapse" data-target="#partI_Instructions">Instructions</a>
+                </h3>
+            </div>
+            <div id="partI_Instructions" class="collapse showprint">
+                <div class="outer-form-box">
+                    <div class="row">
+                        <div class="col-xs-7 form-box-sm">
+                            <div class="control-label">Report for Yourself, Spouse, and Dependent Child:</div>
+                        </div>
+                        <div class="col-xs-5 form-box-sm">
+                            <div class="control-label">Do Not Report:</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-7 form-box-sm">
+                            <ul>
+                                <li>
+                                    Assets held for investment with a value greater than $1,000 at
+                                    the end of the reporting period OR assets held for investment
+                                    which produced more than $200 in income during the
+                                    reporting period, including but not limited to:
+                                </li>
+                                <ul>
+                                    <li>
+                                        Assets such as stocks, bonds, annuities, trust holdings,
+                                        partnership interests, life insurance, investment real
+                                        estate, or a privately-held trade or business
+                                    </li>
+                                    <li>
+                                        Sector mutual funds: those funds invested in a particular
+                                        industry, business, or location such as ABC Electronics
+                                        Fund or XYZ Canada Fund (report the full name of the
+                                        fund, not just the general family fund name)
+                                    </li>
+                                    <li>
+                                        Holdings of retirement plans, such as 401(k)s or IRAs
+                                        (list each holding except diversified mutual funds)
+                                    </li>
+                                    <li>
+                                        Holdings of investment life insurance
+                                    </li>
+                                    <li>
+                                        Holdings of variable annuities
+                                    </li>
+                                    <li>
+                                        Defined benefit pension plans provided by a former
+                                        employer (include the name of the employer)
+                                    </li>
+                                </ul>
+                            </ul>
+                        </div>
+                        <div class="col-xs-5 form-box-sm">
+                            <ul>
+                                <li>
+                                    Federal Government retirement benefits
+                                </li>
+                                <li>
+                                    Thrift Savings Plan
+                                </li>
+                                <li>
+                                    Certificates of deposit, savings or checking
+                                    accounts
+                                </li>
+                                <li>
+                                    Term life insurance
+                                </li>
+                                <li>
+                                    Money market mutual funds and money market
+                                    accounts
+                                </li>
+                                <li>
+                                    Your personal residence, unless you rent it out
+                                </li>
+                                <li>
+                                    Diversified mutual funds, such as ABC Equity
+                                    Value Fund or XYZ Large Capital Fund
+                                </li>
+                                <li>
+                                    U.S. Government Treasury bonds, bills, notes, and
+                                    savings bonds
+                                </li>
+                                <li>
+                                    Money owed to you, your spouse, or dependent
+                                    child by a spouse, parent, sibling, or child
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 form-box-sm">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-7 form-box-sm">
+                            <div class="control-label">Also Report:</div>
+                        </div>
+                        <div class="col-xs-5 form-box-sm">
+                            <div class="control-label">Do Not Report:</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-7 form-box-sm">
+                            <ul>
+                                <li>
+                                    <u>For yourself</u>: (1) all sources of salary, fees, commissions, and
+                                    other earned income greater than $200, (2) honoraria greater
+                                    than $200, and (3) other non-investment income such as
+                                    scholarships, prizes, and gambling income greater than $200
+                                </li>
+                                <li>
+                                    <u>For your spouse</u>: (1) all sources of salary, fees, commissions,
+                                    and other earned income greater than $1,000, and (2)
+                                    honoraria greater than $200
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-5 form-box-sm">
+                            <ul>
+                                <li>
+                                    Dependent child’s earned income
+                                </li>
+                                <li>
+                                    Veterans’ benefits
+                                </li>
+                                <li>
+                                    Federal Government salary
+                                </li>
+                                <li>
+                                    Social Security benefits
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <b>Important Definitions</b>
+            </div>
+            <div class="outer-form-box">
+                <div class="row">
+                    <div class="col-xs-12 form-box">
+                        <b>Diversified Mutual Fund</b> – A mutual fund that does not have a stated policy of concentrating its investments in one industry,
+                        business, or single country other than the United States.
+                    </div>
+                    <div class="col-xs-12 form-box">
+                        <b>Sector Mutual Fund</b> – A mutual fund that concentrates its investments in an industry, business, single country other than
+                        the United States, or bonds of a single state within the United States.
+                    </div>
+                    <div class="col-xs-12 form-box">
+                        <b>Dependent Child</b> – A son, daughter, stepson or stepdaughter who is either unmarried and under age 21 and living in the
+                        filer’s house, or considered dependent under the U.S. tax code.
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <b>Reportable Information</b>
+                <a id="lnkPartIExample" class="btn" data-placement="bottom" data-original-title="<h4>Examples: Part I</h4>" data-trigger="hover">
+                    <span class="glyphicon glyphicon-question-sign"></span>
+                </a>
+                <a class="btn pull-right hideprint" data-toggle="collapse" data-target="#partI_Examples">Examples</a>
+            </div>
+            <div id="partI_Examples" class="collapse hideprint">
+
+            </div>
+            <div class="outer-form-box">
+                <div class="row">
+                    <div class="col-xs-11 form-box">
+                        <b>Specific stock, bond, sector mutual fund, type/location of real estate, etc.</b> (Indicate the full name of each
+                        specific asset or investment. You may add the ticker symbol to the full name.)
+                        <br />
+                        <b>Name of Employer or Business; Source of Fees, Commissions, or Honoraria</b> (Include brief description.)
+                        You may distinguish any entry for a family member by preceding it with S for spouse, DC for dependent child,
+                        or J for jointly held.
+                    </div>
+                    <div class="col-xs-1 form-box">
+                        <b>No longer held</b>
+                    </div>
+                </div>
+                <div id="partIHtml" *ngFor="let row of assetsAndIncome; let i = index;">
+                    <div class='row'>
+                        <div class='col-xs-11 form-box-sm'>
+                            <span style='font-size: .8em; width: 2%; vertical-align: top;'>{{i+1}}.</span>
+                            <textarea type='text' class='form-control' style='width: 98%; display: inline;' rows='2' [(ngModel)]="row.name"></textarea>
+                        </div>
+                        <div class='col-xs-1 form-box text-center'>
+                            <input type='checkbox' style='margin-top: 15px;' [(ngModel)]="row.noLongerHeld" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="add-row row hideprint">
+                <div class="btn" (click)="addRow('AssetsAndIncome')"><span class="glyphicon glyphicon-plus" style="color: green; padding-right: 10px;"></span>Add Row</div>
+            </div>
+        </div>
+
+        <!--Part II-->
+        <div id="sectionII" [hidden]="!form.hasLiabilities && !printView" class="section break showprint">
+            <print-page-header [employeesName]="form.employeesName" [settings]="settings" class="showprint" hidden></print-page-header>
+            <div class="row">
+                <h3 id="II">Part II: Liabilities<a class="btn pull-right hideprint" data-toggle="collapse" data-target="#partII_Instructions">Instructions</a></h3>
+            </div>
+            <div id="partII_Instructions" class="collapse showprint">
+                <div class="outer-form-box">
+                    <div class="row">
+                        <div class="col-xs-5 form-box-sm">
+                            <div class="control-label">Report for Yourself, Spouse, and Dependent Child:</div>
+                        </div>
+                        <div class="col-xs-7 form-box-sm">
+                            <div class="control-label">Do Not Report:</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 form-box-sm">
+                            <ul>
+                                <li>
+                                    A liability over $10,000 owed at any time
+                                    during the reporting period, other than a
+                                    loan from a financial institution or business
+                                    entity granted on terms made available to
+                                    the general public
+                                </li>
+                                <li>
+                                    A loan over $10,000 from an individual,
+                                    such as a friend or a business associate
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-7 form-box-sm">
+                            <ul>
+                                <li>
+                                    Any liability, such as a mortgage, a student loan, or a credit card
+                                    account, from a financial institution or business entity granted on
+                                    terms made available to the general public
+                                </li>
+                                <li>
+                                    Loans secured by automobiles, household furniture, or appliances,
+                                    unless the loan exceeds the purchase price of the item it secures
+                                </li>
+                                <li>
+                                    Liabilities that you owe to your spouse or to the parent, sibling, or
+                                    child of you, your spouse, or your dependent child
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <b>Reportable Information</b>
+                <a id="lnkPartIIExample" class="btn" data-placement="bottom" data-original-title="<h4>Examples: Part II</h4>" data-trigger="hover">
+                    <span class="glyphicon glyphicon-question-sign"></span>
+                </a>
+                <a class="btn pull-right hideprint" data-toggle="collapse" data-target="#partII_Examples">Examples</a>
+            </div>
+            <div id="partII_Examples" class="collapse hideprint">
+
+            </div>
+            <div class="outer-form-box">
+                <div class="row">
+                    <div class="col-xs-4 form-box">
+                        <b>Name of creditor</b> (include city and state where creditor is located)
+                    </div>
+                    <div class="col-xs-8 form-box">
+                        <b>Type of liability</b> (personal loan, margin account, etc.)
+                    </div>
+                </div>
+                <div id="partIIHtml" *ngFor="let row of liabilities; let i = index;">
+                    <div class='row'>
+                        <div class='col-xs-4 form-box-sm'>
+                            <span style='font-size: .8em; width: 5%; vertical-align: top;'>{{i+1}}.</span>
+                            <textarea type='text' class='form-control' style='width: 95%; display: inline;' rows='2' [(ngModel)]="row.name"></textarea>
+                        </div>
+                        <div class='col-xs-8 form-box'>
+                            <textarea type='text' class='form-control' rows='2' [(ngModel)]="row.description"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="add-row row hideprint">
+                <div (click)="addRow('Liabilities')" class="btn"><span class="glyphicon glyphicon-plus" style="color: green; padding-right: 10px;"></span>Add Row</div>
+            </div>
+        </div>
+
+        <!--Part III-->
+        <div id="sectionIII" [hidden]="!form.hasOutsidePositions && !printView" class="section break showprint">
+            <print-page-header [employeesName]="form.employeesName" [settings]="settings" class="showprint" hidden></print-page-header>
+            <div class="row">
+                <h3 id="III">Part III: Outside Positions<a class="btn pull-right hideprint" data-toggle="collapse" data-target="#partIII_Instructions">Instructions</a></h3>
+            </div>
+            <div id="partIII_Instructions" class="collapse showprint">
+                <div class="outer-form-box">
+                    <div class="row">
+                        <div class="col-xs-7 form-box-sm">
+                            <div class="control-label">Report for Yourself:</div>
+                        </div>
+                        <div class="col-xs-5 form-box-sm">
+                            <div class="control-label">Do Not Report:</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-7 form-box-sm">
+                            <ul>
+                                <li>
+                                    All positions outside the U.S. Government held at any time during the
+                                    reporting period, whether or not you were compensated and whether or not
+                                    you currently hold that position. Positions include an officer, director,
+                                    employee, trustee, general partner, proprietor, representative, executor, or
+                                    consultant of any of the following:
+                                    <ul>
+                                        <li>Corporation, partnership, trust, or other business entity</li>
+                                        <li>Non-profit or volunteer organization</li>
+                                        <li>Educational institution
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-5 form-box-sm">
+                            <ul>
+                                <li>
+                                    Any position with a
+                                </li>
+                                <ul>
+                                    <li>Religious entity</li>
+                                    <li>Social entity</li>
+                                    <li>Fraternal entity</li>
+                                    <li>Political entity</li>
+                                </ul>
+                                <li>Any position held by your spouse or dependent child</li>
+                                <li>Any position that you hold as part of your official duties</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <b>Reportable Information</b>
+                <a id="lnkPartIIIExample" class="btn" data-placement="bottom" data-original-title="<h4>Examples: Part III</h4>" data-trigger="hover">
+                    <span class="glyphicon glyphicon-question-sign"></span>
+                </a>
+                <a class="btn pull-right hideprint" data-toggle="collapse" data-target="#partIII_Examples">Examples</a>
+            </div>
+            <div id="partIII_Examples" class="collapse hideprint">
+
+            </div>
+            <div class="outer-form-box">
+                <div class="row">
+                    <div class="col-xs-5 form-box">
+                        <b>Organization</b> (include city and state where organization is located)
+                    </div>
+                    <div class="col-xs-3 form-box">
+                        <b>Type of organization</b>
+                    </div>
+                    <div class="col-xs-3 form-box">
+                        <b>Position</b>
+                    </div>
+                    <div class="col-xs-1 form-box">
+                        <b>No longer held</b>
+                    </div>
+                </div>
+                <div id="partIIIHtml" *ngFor="let row of outsidePositions; let i = index;">
+                    <div class='row'>
+                        <div class='col-xs-5 form-box-sm'>
+                            <span style='font-size: .8em; width: 4%; vertical-align: top;'>{{i+1}}.</span>
+                            <textarea type='text' class='form-control' style='width: 96%; display: inline;' rows='2' [(ngModel)]="row.name"></textarea>
+                        </div>
+                        <div class='col-xs-3 form-box'>
+                            <textarea type='text' class='form-control' rows='2' [(ngModel)]="row.description"></textarea>
+                        </div>
+                        <div class='col-xs-3 form-box'>
+                            <textarea type='text' class='form-control' rows='2' [(ngModel)]="row.additionalInfo"></textarea>
+                        </div>
+                        <div class='col-xs-1 form-box text-center'>
+                            <input type='checkbox' style='margin-top: 15px;' [(ngModel)]="row.noLongerHeld" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="add-row row hideprint">
+                <div (click)="addRow('OutsidePositions')" class="btn"><span class="glyphicon glyphicon-plus" style="color: green; padding-right: 10px;"></span>Add Row</div>
+            </div>
+        </div>
+
+        <!--Part IV-->
+        <div id="sectionIV" [hidden]="!form.hasAgreementsOrArrangements && !printView" class="section break showprint">
+            <print-page-header [employeesName]="form.employeesName" [settings]="settings" class="showprint" hidden></print-page-header>
+            <div class="row">
+                <h3 id="IV">Part IV: Agreements or Arrangements<a class="btn pull-right hideprint" data-toggle="collapse" data-target="#partIV_Instructions">Instructions</a></h3>
+            </div>
+            <div id="partIV_Instructions" class="collapse showprint">
+                <div class="outer-form-box">
+                    <div class="row">
+                        <div class="col-xs-8 form-box-sm">
+                            <div class="control-label">Report Your Agreements or Arrangements for:</div>
+                        </div>
+                        <div class="col-xs-4 form-box-sm">
+                            <div class="control-label">Do Not Report:</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-8 form-box-sm">
+                            <ul>
+                                <li>Continuing participation in an employee pension or benefit plan maintained by a former employer</li>
+                                <li>A leave of absence</li>
+                                <li>Future employment, including date you accepted employment offer</li>
+                                <li>Continuation of payment by a former employer (including severance payments)</li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-4 form-box-sm">
+                            <ul>
+                                <li>Any agreement or arrangement related to your employment by the Federal Government</li>
+                                <li>Spouse’s and dependent child’s agreements or arrangements</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <b>Reportable Information</b>
+                <a id="lnkPartIVExample" class="btn" rel="popover" data-placement="bottom" data-original-title="<h4>Examples: Part IV</h4>" data-trigger="hover">
+                    <span class="glyphicon glyphicon-question-sign"></span>
+                </a>
+                <a class="btn pull-right hideprint" data-toggle="collapse" data-target="#partIV_Examples">Examples</a>
+            </div>
+            <div id="partIV_Examples" class="collapse hideprint">
+
+            </div>
+            <div class="outer-form-box">
+                <div class="row">
+                    <div class="col-xs-5 form-box">
+                        <b>Entity with which you have an agreement or arrangement</b> (include city and state where entity is located)
+                    </div>
+                    <div class="col-xs-7 form-box">
+                        <b>Terms of Agreement or Arrangement</b>
+                    </div>
+
+                </div>
+                <div id="partIVHtml" *ngFor="let row of agreementsOrArrangements; let i = index;">
+                    <div class='row'>
+                        <div class='col-xs-5 form-box-sm'>
+                            <span style='font-size: .8em; width: 4%; vertical-align: top;'>{{i+1}}.</span>
+                            <textarea type='text' class='form-control' style='width: 96%; display: inline;' rows='2' [(ngModel)]="row.name"></textarea>
+                        </div>
+                        <div class='col-xs-7 form-box'>
+                            <textarea type='text' class='form-control' rows='2' [(ngModel)]="row.additionalInfo"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="add-row row hideprint">
+                <div (click)="addRow('AgreementsOrArrangements')" class="btn"><span class="glyphicon glyphicon-plus" style="color: green; padding-right: 10px;"></span>Add Row</div>
+            </div>
+        </div>
+
+        <!--Part V-->
+        <div id="sectionV" [hidden]="!form.hasGiftsOrTravelReimbursements && !printView" class="section break showprint">
+            <print-page-header [employeesName]="form.employeesName" [settings]="settings" class="showprint" hidden></print-page-header>
+            <div class="row">
+                <h3 id="V">Part V: Gifts and Travel Reimbursements<a class="btn pull-right hideprint" data-toggle="collapse" data-target="#partV_Instructions">Instructions</a></h3>
+                Fill out this part only if you are filing an Annual Report.  If you are a new entrant or an SGE, skip this part.
+            </div>
+            <div id="partV_Instructions" class="collapse showprint">
+                <div class="outer-form-box">
+                    <div class="row">
+                        <div class="col-xs-7 form-box-sm">
+                            <div class="control-label">Report for Yourself, Spouse, and Dependent Child:</div>
+                        </div>
+                        <div class="col-xs-5 form-box-sm">
+                            <div class="control-label">Do Not Report:</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-7 form-box-sm">
+                            <ul>
+                                <li>
+                                    Travel-related reimbursements (items such as lodging,
+                                    transportation, and food) totaling more than ${{ settings.totalGiftValue }}
+                                    from any one source during the reporting period; include
+                                    where you traveled, the purpose, and date(s) of the trip
+                                </li>
+                                <li>
+                                    Any other gifts totaling more than ${{ settings.totalGiftValue }}* from any one
+                                    source during the reporting period
+                                </li>
+                            </ul>
+                            <br />
+                            * If you received more than one gift from one source:
+                            <ol>
+                                <li>
+                                    Determine the value of each item you received from that source
+                                </li>
+                                <li>
+                                    Ignore each item valued at ${{ settings.minimumGiftValue }} or less
+                                </li>
+                                <li>
+                                    Add the value of those items valued at more than ${{ settings.minimumGiftValue }}; if the total is
+                                    more than ${{ settings.totalGiftValue }}, then you must list those items on this form
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="col-xs-5 form-box-sm">
+                            <ul>
+                                <li>Anything received from relatives, the U.S. Government, D.C., state, or local governments</li>
+                                <li>Bequests and other forms of inheritance</li>
+                                <li>Gifts and travel reimbursements given to your agency in connection with your official travel</li>
+                                <li>Gifts of hospitality (food, lodging, entertainment) at the donor’s residence or personal premises</li>
+                                <li>Anything received by your spouse or dependent child totally independent of their relationship to you</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <b>Reportable Information</b>
+                <a id="lnkPartVExample" class="btn" rel="popover" data-placement="bottom" data-original-title="<h4>Examples: Part V</h4>" data-trigger="hover">
+                    <span class="glyphicon glyphicon-question-sign"></span>
+                </a>
+                <a class="btn pull-right hideprint" data-toggle="collapse" data-target="#partV_Examples">Examples</a>
+            </div>
+            <div id="partV_Examples" class="collapse hideprint">
+
+            </div>
+            <div class="outer-form-box">
+                <div class="row">
+                    <div class="col-xs-4 form-box">
+                        <b>Source</b>
+                    </div>
+                    <div class="col-xs-8 form-box">
+                        <b>Description</b>
+                    </div>
+
+                </div>
+                <div id="partVHtml" *ngFor="let row of giftsOrTravelReimbursements; let i = index;">
+                    <div class='row'>
+                        <div class='col-xs-4 form-box-sm'>
+                            <span style='font-size: .8em; width: 4%; vertical-align: top;'>{{i+1}}.</span>
+                            <textarea type="text" class='form-control' style='width: 96%; display: inline;' rows='2' [(ngModel)]="row.name"></textarea>
+                        </div>
+                        <div class='col-xs-8 form-box'>
+                            <textarea type="text" class='form-control' rows='2' [(ngModel)]="row.additionalInfo"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div id="partVRows"></div>
+            </div>
+            <div class="add-row row hideprint">
+                <div (click)="addRow('GiftsOrTravelReimbursements')" class="btn"><span class="glyphicon glyphicon-plus" style="color: green; padding-right: 10px;"></span>Add Row</div>
+            </div>
+        </div>
+
+        <div id="sigSections" class="hideprint">
+            <!--Signature-->
+            <div id="sectionS" class="section">
+                <div class="row">
+                    <div class="control-label">
+                        I certify that the statements I have made on this form and all attached statements are true, complete, and correct to the
+                        best of my knowledge.
+                    </div>
+                </div>
+                <div class="outer-form-box">
+                    <div class="row">
+                        <div class="col-xs-9 form-box">
+                            <div class="control-label">
+                                Signature of Employee
+                            </div>
+                            <div *ngIf="canSubmit()" class="btn btn-text btn-success hideprint" style="margin-left: 20%;" (click)="signClicked()">
+                                <span class="glyphicon glyphicon-ok pull-left" style="padding-top: 1px;"></span>
+                                Sign & Submit Form
+                            </div>
+                            <input *ngIf="!canSubmit()" type="text" class="form-control" style="font-weight: bold;" [(ngModel)]="form.employeeSignature" disabled />
+                        </div>
+                        <div class="col-xs-3 form-box">
+                            <div class="control-label">
+                                Date (mm/dd/yyyy)
+                            </div>
+                            <input id="dtSignedDate" type="text" class="form-control" disabled [ngModel]="form.dateOfEmployeeSignature | date:'MM/dd/yyyy'" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Reviewer-->
+            <div id="sectionR" class="section">
+                <h4>FOR REVIEWERS' USE ONLY:</h4>
+                <div class="outer-form-box">
+                    <div class="row">
+                        <div class="col-xs-12 form-box">
+                            <div class="control-label">
+                                On the basis of information contained in this report, I conclude that the filer is in compliance with applicable laws and regulations, except as noted in the "comments" box below.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-9 form-box">
+                            <div class="control-label">
+                                Signature and Title of Agency's Final Reviewing Official
+                            </div>
+                            <div *ngIf="canCertify()" class="btn btn-text btn-success hideprint" style="margin-left: 20%;" data-toggle="modal" data-target="#confirm-certify">
+                                <span class="glyphicon glyphicon-ok pull-left" style="padding-top: 1px;"></span>    
+                                Sign & Certify Form
+                            </div>
+                            <div *ngIf="canCertify()" class="btn btn-text btn-danger hideprint" style="margin-left: 20px;" data-toggle="modal" data-target="#reject-msg">
+                                <span class="glyphicon glyphicon-remove pull-left" style="padding-top: 1px;"></span>
+                                Reject 
+                            </div>
+                            <div *ngIf="canSubmitPaper()" class="btn btn-text btn-primary hideprint" style="margin-left: 20%;" data-toggle="modal" data-target="#confirm-paper">
+                                <span class="fa fa-file-text-o pull-left" style="font-size: 1.2em; padding-top: 1px;"></span>
+                                Submit Paper Form
+                            </div>
+                            <input *ngIf="isCertified()" type="text" class="form-control" style="font-weight: bold;" [(ngModel)]="form.reviewingOfficialSignature" disabled />
+                        </div>
+                        <div class="col-xs-3 form-box">
+                            <div class="control-label">
+                                Date (mm/dd/yy)
+                            </div>
+                            <input id="dtSignedDate" type="text" class="form-control" disabled [ngModel]="form.dateOfReviewerSignature | date:'MM/dd/yyyy'" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 form-box">
+                            <div class="control-label">
+                                Comments of Reviewing Officials
+                            </div>
+                            <textarea id="txtReviewerComments" type='text' class="form-control" rows="6" [(ngModel)]="form.commentsOfReviewingOfficial"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Examples-->
+        <oge-form-450-examples></oge-form-450-examples>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-close" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-danger">
+                <div class="modal-title" style="font-size: 1.5em;"><i class="fa fa-exclamation-triangle" style="padding-right: 20px;"></i>Unsaved Changes Detected</div>
+            </div>
+            <div class="modal-body">
+                <p>There are unsaved changes on this form, if you leave this page the changes will be lost.</p>
+            </div>
+            <div class="modal-footer">
+                <div type="button" class="btn btn-primary" style="float: left;" (click)="saveAndClose()">Save and Close</div>
+                <div type="button" class="btn btn-default" data-dismiss="modal">Stay on Page</div>
+                <div class="btn btn-danger btn-ok" (click)="confirmClose()">Leave Page</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-certify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Sign & Certify OGE Form 450</h4>
+            </div>
+            <div class="modal-body">
+                <b>On the basis of information contained in this report, I conclude that the filer is in compliance with applicable laws and regulations, except as noted in the "comments" box below.</b><br />
+                <br />
+                This action will <u>sign</u> and <u>certify</u> this OGE 450.  If you are not ready to certify this form, click <b>Cancel</b>.
+            </div>
+            <div class="modal-footer">
+                <div class="btn btn-success btn-ok" data-dismiss="modal" (click)="certify()">Certify</div>
+                <div class="btn btn-default" data-dismiss="modal">Cancel</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-paper" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Submit Paper Form on Behalf of Filer</h4>
+            </div>
+            <div class="modal-body">
+                <b>The filer has filled out a paper copy of the OGE Form 450.  On the basis of the information contained within it, I conclude that the filer is in compliance with applicable laws and regulations, except as noted in the "comments" box below or otherwise communicated to the filer.</b><br />
+                <br />
+                This action will <u>submit</u> and <u>certify</u> the filers electronic OGE 450 record.  If you have not received or certified the filer's paper copy, click <b>Cancel</b>.
+            </div>
+            <div class="modal-footer">
+                <div class="btn btn-success btn-ok" data-dismiss="modal" (click)="certifyPaper()">Certify</div>
+                <div class="btn btn-default" data-dismiss="modal">Cancel</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="reject-msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Send Back to Filer (Missing Information)</h4>
+            </div>
+            <div class="modal-body">
+                This action will <u>reject</u> this OGE 450 and send an email to the filer with the text you enter below.  If you do not wish to reject this form, click <b>Cancel</b>.
+                <br /><br />
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <textarea rows="6" name="Agency" type="text" class="form-control" [(ngModel)]="form.rejectionNotes"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="btn btn-danger btn-ok" data-dismiss="modal" (click)="reject()">Reject</div>
+                <div class="btn btn-default" data-dismiss="modal">Cancel</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-sign" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>OGE Form 450 Sign & Submit</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="control-label" style="padding-bottom: 15px;">
+                    <input name="PaperCopy" type="checkbox" style="margin-left: 15px;" [(ngModel)]="form.submittedPaperCopy" />
+                    I have signed and submitted a paper copy of my OGE Form 450 to OGC.
+                </div>
+                <div *ngIf="!form.submittedPaperCopy">
+                    <b>I certify that the statements I have made on this form and all attached statements are true, complete, and correct to the best of my knowledge.</b><br />
+                    <br />
+                    This action will <u>sign</u> and <u>submit</u> your OGE 450 to OGC for review and certification.  If you need to make changes, click <b>Cancel</b>.
+                </div>
+                <div *ngIf="form.submittedPaperCopy" style="margin-top: 15px;">
+                    <b>I understand that this electronic record will be used to track the submission and certification of my paper OGE 450.</b><br />
+                    <br />
+                    Please ensure that the information on this form is correct.  You should answer <u>No</u> to all of the questions relating to financial disclosures.<br />
+                    <br />
+                    Continuing with this action will <u>submit</u> your electronic information.  If you need to make changes or have not yet submitted your OGE 450 to OGC, click <b>Cancel</b>.<br />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div id="btnSubmit" class="btn btn-success btn-ok" data-dismiss="modal" (click)="submit()">Sign</div>
+                <div class="btn btn-default" (click)="cancel()" data-dismiss="modal">Cancel</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="paper-filer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>OGE Form 450 Paper Form</h4>
+            </div>
+            <div class="modal-body">
+                <span class="fa fa-info" style="height: 100px; float: left; font-size: 2.5em; color: #222222; vertical-align: middle; text-align: center; padding: 10px 25px 0 15px;" title="Submitted Paper Copy"></span>
+                <p>
+                    The filer has indicated that they will submit a paper copy of their OGE Form 450.  Please refer to the paper submission for review, this electronic submission does not contain financial disclosure information for this filer.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <div class="btn btn-success" data-dismiss="modal">OK</div>
+            </div>
+        </div>
+    </div>
+</div>

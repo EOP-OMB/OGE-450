@@ -1,0 +1,71 @@
+﻿<div *ngIf="settings" class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Application Settings</h3>
+    </div>
+    <div class="panel-body">
+        <div class="alert alert-success alert-absolute" id="settings-success" style="display: none;">
+            <div type="button" class="close" data-dismiss="alert">x</div>
+            <strong>Success! </strong>
+            Settings saved successfully.
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="top-label">
+                    Site Url
+                </div>
+                <input name="siteUrl" type="text" class="form-control" [(ngModel)]="settings.siteUrl" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="top-label">Current Filing Year</div>
+                <input name="currentFilingYear" type="number" class="form-control" [(ngModel)]="settings.currentFilingYear" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="top-label">OGC Email</div>
+                <input name="ogcEmail" type="text" class="form-control" [(ngModel)]="settings.ogcEmail" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="top-label">CC Email</div>
+                <input name="ccEmail" type="text" class="form-control" [(ngModel)]="settings.ccEmail" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="top-label">Form Version</div>
+                <input name="formVersion" type="text" class="form-control" [(ngModel)]="settings.formVersion" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="top-label">
+                    Replaces Version
+                </div>
+                <input name="replacesVersion" type="text" class="form-control" [(ngModel)]="settings.replacesVersion" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="top-label">Minimum Gift Value</div>
+                <input name="minimumGiftValue" type="number" class="form-control" [(ngModel)]="settings.minimumGiftValue" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="top-label">Total Gift Value</div>
+                <input name="totalGiftValue" type="number" class="form-control" [(ngModel)]="settings.totalGiftValue" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <button id="btnSave" class="btn btn-primary pull-right" (click)="saveSettings()" [disabled]="!isDirty()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    

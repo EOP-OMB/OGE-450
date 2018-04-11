@@ -1,0 +1,58 @@
+﻿<div class="alert alert-success alert-fixed" id="success-alert" style="display: none;">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <span class="glyphicon glyphicon-ok-circle text-success" style="font-size: 2em;"></span>
+    <strong>Success!</strong>
+    Employee updated
+</div>
+<input #filterText type="text" placeholder="Search text..." hidden>
+<p-dataTable [value]="gridEmployees" [paginator]="true" [rows]="15" [rowsPerPageOptions]="[15,30,60]" [responsive]="true" [globalFilter]="filterText" #dt>
+    <p-column field="displayName" header="Name" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '24%'}">
+        <ng-template pTemplate="body" let-data="rowData">
+            <a class="link" (click)="gotoDetail(data)">{{ data.displayName }}</a>
+        </ng-template>
+    </p-column>
+    <p-column field="division" header="Division" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '12%'}">
+        <ng-template pTemplate="filter" let-col>
+            <select id="ddlDivisions" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                <option *ngFor="let type of divisions" [value]="type.value">{{type.label}}</option>
+            </select>
+        </ng-template>
+    </p-column>
+    <p-column field="filerType" header="Filer Type" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width': '16%'}">
+        <ng-template pTemplate="filter" let-col>
+            <select id="ddlFilerTypes" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                <option *ngFor="let type of filerTypes" [value]="type.value">{{type.label}}</option>
+            </select>
+        </ng-template>
+    </p-column>
+    <p-column field="reportingStatus" header="Reporting Status" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width':'14%'}">
+        <ng-template pTemplate="filter" let-col>
+            <select class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                <option *ngFor="let status of reportingStatuses" [value]="status.value">{{status.label}}</option>
+            </select>
+        </ng-template>
+    </p-column>
+    <p-column field="currentFormStatus" header="Form Status" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width' : '16%'}">
+        <ng-template pTemplate="filter" let-col>
+            <select class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                <option *ngFor="let status of statuses" [value]="status.value">{{status.label}}</option>
+            </select>
+        </ng-template>
+    </p-column>
+    <p-column field="last450Date" header="Last File Date" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width':'12%'}">
+        <ng-template pTemplate="body" let-data="rowData">
+            {{ data.last450Date | date: "MM/dd/yyyy" }}
+        </ng-template>
+    </p-column>
+    <p-column field="displayName" header="" [style]="{'width':'6%'}">
+        <ng-template pTemplate="body" let-data="rowData">
+            <a class="link" (click)="gotoDetail(data)"><span class="glyphicon glyphicon-pencil text-primary" title="Edit Employee"></span></a>
+            <a class="link" [hidden]="data.inactive" (click)="ignoreEmployee(data)" style="padding-left: 10px;"><span class="glyphicon glyphicon-remove text-danger" title="Deactivate Employee"></span></a>
+            <a class="link" [hidden]="!data.inactive" (click)="ignoreEmployee(data)" style="padding-left: 10px;"><span class="glyphicon glyphicon-plus text-success" title="Activate Employee"></span></a>
+        </ng-template>
+    </p-column>
+</p-dataTable>
+<div style="width: 100%;">
+    <input id="chkHidden" type="checkbox" (change)="filter('')" /><label for="chkHidden" style="padding-left: 5px;">show inactive users</label>
+    <span class="pull-right" style="padding-left: 20px; padding-top: 2px;">Total Records: {{ dt.totalRecords }}</span>
+</div>

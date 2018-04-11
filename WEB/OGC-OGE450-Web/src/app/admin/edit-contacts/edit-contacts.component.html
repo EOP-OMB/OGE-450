@@ -1,0 +1,47 @@
+﻿<div *ngIf="contacts" class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Support Contacts</h3>
+    </div>
+    <div class="panel-body">
+        <div class="alert alert-success alert-absolute" id="contacts-success" style="display: none;">
+            <div type="button" class="close" data-dismiss="alert">x</div>
+            <strong>Success! </strong>
+            Support Contacts saved successfully.
+        </div>
+        <div class="row form-group">
+            <div class="col-md-5">
+                <div class="top-label">
+                    <strong>Name</strong>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="top-label">
+                    <strong>Info</strong>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="top-label">
+                    <strong>Order</strong>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group" *ngFor="let contact of contacts;">
+            <div class="col-md-5">
+                <input name="title" type="text" class="form-control" [(ngModel)]="contact.title" />
+            </div>
+            <div class="col-md-5">
+                <input name="info" type="text" class="form-control" [(ngModel)]="contact.info" />
+            </div>
+            <div class="col-md-2">
+                <input name="sortOrder" type="text" class="form-control" [(ngModel)]="contact.sortOrder" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn" (click)="addRow()"><span class="glyphicon glyphicon-plus" style="color: green; padding-right: 10px;"></span>Add Contact</div>
+                <button id="btnSave" class="btn btn-primary pull-right" (click)="saveLinks()" [disabled]="!isDirty()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+

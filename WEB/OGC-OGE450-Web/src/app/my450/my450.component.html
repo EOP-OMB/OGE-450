@@ -1,0 +1,16 @@
+﻿<div>
+    <div *ngIf="userService.user.currentFormId == 0">
+        <!-- User does not have an active form -->
+        <widget *ngIf="settings" [data]="noFilingWidget" [icon]="'fa-file-text-o'" title="You will receive an email if a filing is required for this calendar year.  At which time you may use this application to file your OGE Form 450."></widget>
+
+        <div class="col-md-4">
+            &nbsp;
+        </div>
+    </div>
+    <div *ngIf="userService.user.currentFormId > 0 && vm.form">
+        <div class="" style="display: block;">
+            <widget [data]="vm.currentFilingWidget" [icon]="'fa-file-text-o'" (widgetClick)="onFilingClick()"></widget>
+            <widget [data]="vm.daysDueWidget" [icon]="'fa-clock-o'" (widgetClick)="onDaysClick()"></widget>
+        </div>
+    </div>
+</div>

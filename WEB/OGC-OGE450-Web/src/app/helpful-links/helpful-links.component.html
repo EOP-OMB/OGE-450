@@ -1,0 +1,8 @@
+﻿<fieldset>
+    <legend>Helpful Links</legend>
+    <ul>
+        <li *ngFor="let link of links">
+            <a href="{{ link.url }}" target="_blank">{{ link.title }}</a>
+        </li>
+    </ul>
+</fieldset>

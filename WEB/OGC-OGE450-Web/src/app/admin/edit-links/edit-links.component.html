@@ -1,0 +1,39 @@
+﻿<div *ngIf="links" class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Helpful Links</h3>
+    </div>
+    <div class="panel-body">
+        <div class="alert alert-success alert-absolute" id="links-success" style="display: none;">
+            <div type="button" class="close" data-dismiss="alert">x</div>
+            <strong>Success! </strong>
+            Helpful Links saved successfully.
+        </div>
+        <div class="row form-group">
+            <div class="col-md-5">
+                <div class="top-label">
+                    <strong>Description</strong>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="top-label">
+                    <strong>Url</strong>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group" *ngFor="let link of links;">
+            <div class="col-md-5">
+                <input name="title" type="text" class="form-control" [(ngModel)]="link.title" />
+            </div>
+            <div class="col-md-7">
+                <input name="url" type="text" class="form-control" [(ngModel)]="link.url" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn" (click)="addRow()"><span class="glyphicon glyphicon-plus" style="color: green; padding-right: 10px;"></span>Add Link</div>
+                <button id="btnSave" class="btn btn-primary pull-right" (click)="saveLinks()" [disabled]="!isDirty()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+

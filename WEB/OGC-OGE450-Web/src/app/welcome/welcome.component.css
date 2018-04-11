@@ -1,0 +1,15 @@
+﻿.welcome-user {
+    font-weight: bold;
+    font-family: Arial;
+    font-size: .9em;
+    padding-top: 2px;
+    padding-right: 5px;
+}
+
+    .welcome-user a {
+        color: inherit;
+    }
+
+ .dropdown-menu {
+    z-index: 1032 !important;
+}

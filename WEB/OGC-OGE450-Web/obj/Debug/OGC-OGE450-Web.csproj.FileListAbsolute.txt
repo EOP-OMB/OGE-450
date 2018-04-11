@@ -1,0 +1,23 @@
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\roslyn\csc.exe
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\roslyn\System.Collections.Immutable.dll
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\roslyn\System.Reflection.Metadata.dll
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\roslyn\vbc.exe
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\roslyn\VBCSCompiler.exe
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\roslyn\VBCSCompiler.exe.config
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\OMBOGC-Web.dll.config
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\OMBOGC-Web.dll
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\OMBOGC-Web.pdb
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\obj\Debug\OGC-OGE450-Web.csprojResolveAssemblyReference.cache
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\obj\Debug\OMBOGC-Web.dll
+C:\work\MAXDSS\Research Projects\Angular2\OGC-OGE450-Web\obj\Debug\OMBOGC-Web.pdb
+C:\work\git\OGE-450\WEB\OGC-OGE450-Web\obj\Debug\OGC-OGE450-Web.csprojResolveAssemblyReference.cache
+C:\work\git\OGE-450\WEB\OGC-OGE450-Web\obj\Debug\OMBOGC-Web.dll
+C:\work\git\OGE-450\WEB\OGC-OGE450-Web\obj\Debug\OMBOGC-Web.pdb

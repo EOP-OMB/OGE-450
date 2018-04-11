@@ -1,0 +1,12 @@
+C:\work\git\OGE-450\API\OGC.Data.SharePoint\bin\Debug\OGC.Data.SharePoint.dll
+C:\work\git\OGE-450\API\OGC.Data.SharePoint\bin\Debug\OGC.Data.SharePoint.pdb
+C:\work\git\OGE-450\API\OGC.Data.SharePoint\bin\Debug\Microsoft.SharePoint.Client.dll
+C:\work\git\OGE-450\API\OGC.Data.SharePoint\bin\Debug\Microsoft.SharePoint.Client.Runtime.dll
+C:\work\git\OGE-450\API\OGC.Data.SharePoint\bin\Debug\Microsoft.SharePoint.Client.Search.dll
+C:\work\git\OGE-450\API\OGC.Data.SharePoint\bin\Debug\Microsoft.SharePoint.Client.UserProfiles.dll
+C:\work\git\OGE-450\API\OGC.Data.SharePoint\bin\Debug\OMB.SharePoint.Infrastructure.dll
+C:\work\git\OGE-450\API\OGC.Data.SharePoint\bin\Debug\System.Management.Automation.dll
+C:\work\git\OGE-450\API\OGC.Data.SharePoint\bin\Debug\OMB.SharePoint.Infrastructure.pdb
+C:\work\git\OGE-450\API\OGC.Data.SharePoint\obj\Debug\OGC.Data.SharePoint.csprojResolveAssemblyReference.cache
+C:\work\git\OGE-450\API\OGC.Data.SharePoint\obj\Debug\OGC.Data.SharePoint.dll
+C:\work\git\OGE-450\API\OGC.Data.SharePoint\obj\Debug\OGC.Data.SharePoint.pdb

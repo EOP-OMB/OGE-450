@@ -1,0 +1,10 @@
+C:\work\git\OGE-450\API\OMB.SharePoint.Infrastructure\bin\Debug\OMB.SharePoint.Infrastructure.dll
+C:\work\git\OGE-450\API\OMB.SharePoint.Infrastructure\bin\Debug\OMB.SharePoint.Infrastructure.pdb
+C:\work\git\OGE-450\API\OMB.SharePoint.Infrastructure\bin\Debug\Microsoft.SharePoint.Client.dll
+C:\work\git\OGE-450\API\OMB.SharePoint.Infrastructure\bin\Debug\Microsoft.SharePoint.Client.Runtime.dll
+C:\work\git\OGE-450\API\OMB.SharePoint.Infrastructure\bin\Debug\Microsoft.SharePoint.Client.Search.dll
+C:\work\git\OGE-450\API\OMB.SharePoint.Infrastructure\bin\Debug\Microsoft.SharePoint.Client.UserProfiles.dll
+C:\work\git\OGE-450\API\OMB.SharePoint.Infrastructure\bin\Debug\System.Management.Automation.dll
+C:\work\git\OGE-450\API\OMB.SharePoint.Infrastructure\obj\Debug\OMB.SharePoint.Infrastructure.csprojResolveAssemblyReference.cache
+C:\work\git\OGE-450\API\OMB.SharePoint.Infrastructure\obj\Debug\OMB.SharePoint.Infrastructure.dll
+C:\work\git\OGE-450\API\OMB.SharePoint.Infrastructure\obj\Debug\OMB.SharePoint.Infrastructure.pdb

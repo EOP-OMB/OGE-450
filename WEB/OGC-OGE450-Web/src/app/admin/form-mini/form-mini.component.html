@@ -1,0 +1,39 @@
+﻿<div *ngIf="form" class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title" style="font-size: 1.5em;"><i class="fa fa-pencil" style="padding-right: 20px;"></i>{{ form.title }}</div>
+    </div>
+    <div class="modal-body">
+
+        <div class="row form-group">
+            <div class="col-md-6">
+                <div class="top-label">Form Status</div>
+                <div class="data-label">{{form.formStatus}}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="top-label">
+                    Year
+                </div>
+                <div class="data-label">{{form.year}}</div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6">
+                <div class="top-label">Reporting Status</div>
+                <div class="data-label">{{form.reportingStatus}}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="top-label">
+                    Due Date
+                </div>
+                <p-calendar [(ngModel)]="tempDueDate" [showIcon]="true"></p-calendar>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-md-12" style="text-align: right;">
+            <div (click)="saveClicked()" class="btn btn-primary">Save</div>
+            <div (click)="cancel()" class="btn btn-default" style="margin-left: 15px;">Cancel</div>
+        </div>
+    </div>
+</div>
+

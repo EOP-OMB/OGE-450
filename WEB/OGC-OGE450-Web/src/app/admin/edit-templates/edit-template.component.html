@@ -1,0 +1,94 @@
+﻿<div *ngIf="templates">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Email Templates</div>
+                <div class="list-group">
+                    <a class="list-group-item" *ngFor="let template of templates;" (click)="templateSelected(template)" [class.active]="template.active" style="cursor: pointer;">
+                        {{ template.title }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="well" style="min-height: 450px;">
+                <div class="alert alert-success alert-absolute" id="template-success" style="display: none;">
+                    <div type="button" class="close" data-dismiss="alert">x</div>
+                    <strong>Success! </strong>
+                    Template saved successfully.
+                </div>
+                <div *ngIf="!selectedTemplate"><h3>Select a template to edit from the list.</h3></div>
+                <div *ngIf="selectedTemplate">
+                    {{selectedTemplate.title}}
+                    <div class="row form-group">
+                        <div class="col-md-4">
+                            <div class="top-label">
+                                Recipient
+                            </div>
+                            <select id="ddlRecipientType" class="form-control" [(ngModel)]="selectedTemplate.recipientType">
+                                <option *ngFor="let type of recipientTypes" [value]="type.value">{{type.label}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <div [hidden]="selectedTemplate.recipientType == 'User'">
+                                <div class="top-label">
+                                    Group Name
+                                </div>
+                                <input name="recipientColumn" type="text" class="form-control" [(ngModel)]="selectedTemplate.recipientColumn" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="top-label">
+                                Include CC (from Settings)
+                            </div>
+                            <input id="includeCc" type='checkbox' style='margin-top: 15px;' [(ngModel)]="selectedTemplate.includeCc" />
+                            <label *ngIf="settings" for="includeCc" style="padding-left: 5px; font-weight: normal !important;">{{ settings.ccEmail }}</label>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="top-label">
+                                Subject
+                            </div>
+                            <input name="subject" type="text" class="form-control" [(ngModel)]="selectedTemplate.subject" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="top-label">
+                                Body<a class="pull-right" data-toggle="collapse" data-target="#fields" style="cursor: pointer;">Template Fields</a>
+                            </div>
+                            <div id="fields" class="collapse">
+                                <table *ngIf="selectedTemplate.templateFields" class="table table-striped table-bordered">
+                                    <thead class="thead thead-default">
+                                        <tr>
+                                            <th>
+                                                Template Field
+                                            </th>
+                                            <th>
+                                                Description
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let key of keys();">
+                                            <td>{{key}}</td>
+                                            <td>{{selectedTemplate.templateFields[key]}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <tinymce-editor [elementId]="'txtBody'" [content]="selectedTemplate.body" (onEditorKeyup)="keyupHandlerFunction($event)" [height]="320"></tinymce-editor>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <button id="btnSave" class="btn btn-primary pull-right" (click)="saveTemplate()" [disabled]="!isDirty()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+h1 {
+  font-size: 1.2em;
+  color: #999;
+  margin-bottom: 0;
+}
+h2 {
+  font-size: 2em;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.navbar-nav > li > a {
+    padding-top:5px !important; 
+    padding-bottom:5px !important;
+}
+
+.navbar {
+    min-height:32px !important;
+}
+
+nav a:visited, a:link {
+  color: #607D8B;
+}
+
+.navbar-default {
+    border-color: #f5e4bd;
+}
+
+.navbar-fixed-top {
+    border-width: 0 0 5px 0;
+}
+
+.navbar-default .navbar-nav > .active > a, 
+.navbar-default .navbar-nav > a:hover, 
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > .open > a, 
+.navbar-default .navbar-nav > .open > a:focus, 
+.navbar-default .navbar-nav > .open > a:hover  {
+    background: #f5e4bd;
+    background: linear-gradient(#FFFFFF, #f5e4bd); /* Standard syntax */
+    color: #00488D;
+    font-weight: bold;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+ }
+
+.navbar-default .navbar-nav,
+.navbar-default .navbar-nav > a,
+.navbar-default .navbar-nav > li > a {
+    color: #D3E5F9;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 3px 2px 0 2px;
+}
+
+.countdown-timer {
+    font-size: 2em;
+    font-weight: bold;
+    vertical-align: middle;
+    text-align: center;
+}
+
+#idleTimeoutDialog {
+    top: 25%; 
+    z-index:9999; 
+}

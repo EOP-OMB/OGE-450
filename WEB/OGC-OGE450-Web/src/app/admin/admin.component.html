@@ -1,0 +1,70 @@
+﻿<div id="home" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <div class="" style="display: block;">
+                    <widget *ngIf="employees" [data]="filersWidget" [icon]="'fa-user-o'" (widgetClick)="onFilersClick()"></widget>
+                    <widget *ngIf="settings" [data]="appSettingsWidget" [icon]="'fa-cog'" (widgetClick)="onSettingsClick()"></widget>
+                    <widget *ngIf="templates" [data]="notificationWidget" [icon]="'fa-envelope-open-o'" (widgetClick)="onEmailsClick()"></widget>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="padding-top: 20px;">
+        <tabs #tabs>
+            <tab #tabEmployees tabTitle="Employees">
+                <div *ngIf="employees" id="employeeCard" class="flip-container">
+                    <div class="card">
+                        <div class="front">
+                            <employees-grid #dtEmployees [employees]="employees" (editEmployee)="editEmployee($event)" (updated)="loadEmployees()"></employees-grid>
+                        </div>
+                        <div class="back">
+                            <employee [employee]="employeeToEdit" (save)="saveEmployee($event)" (close)="closeEmployee()" (updated)="updated()"></employee>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+            <tab #tabForms tabTitle="Forms">
+                <forms-grid *ngIf="tabForms.active" #dtForms [forms]="forms" [edit]="true" (onEdit)="editForm($event)"></forms-grid>
+                <div *ngIf="tabForms.active" class="modal fade" id="edit-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 25vh;">
+                    <div class="modal-dialog">
+                        <form-mini [form]="selectedForm" (close)="editFormClose($event)"></form-mini>
+                    </div>
+                </div>
+            </tab>
+            <tab #tabExtensions tabTitle="Extensions">
+                <extension-grid [extensions]="extensions"></extension-grid>
+            </tab>
+            <tab #tabAppSettings tabTitle="Settings">
+                <div class="col-md-5">
+                    <settings></settings>
+                </div>
+                <div class="col-md-7">
+                    <edit-links></edit-links>
+                    <div style="position: absolute;">
+                        <edit-contacts></edit-contacts>
+                    </div>
+                </div>
+            </tab>
+            <tab #tabNotifications tabTitle="Notifications">
+                <edit-templates [templates]="templates"></edit-templates>
+                <!--<div class="col-md-1">
+                    <i class="fa fa-wrench" style="margin-top: 20px; font-size: 4em;" aria-hidden="true"></i>
+                </div>
+                <div class="col-md-11">
+                    <h3>Feature not  implemented</h3>
+                    <p>You can modify notification templates in SharePoint <a [href]="templateUrl" target="_blank">here</a>.</p>
+                    <p>You can view all outgoing emails in SharePoint <a [href]="emailsUrl" target="_blank">here</a>.</p>
+                </div>-->
+            </tab>
+        </tabs>
+    </div>
+</div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,63 @@
+﻿<input #filterText type="text" placeholder="Search text..." hidden>
+<p-dataTable [value]="forms" [paginator]="true" [rows]="15"  [rowsPerPageOptions]="[15,30,60]" [responsive]="true" [globalFilter]="filterText" #dt>
+    <p-column field="employeesName" header="Name" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '30%'}">
+        <ng-template pTemplate="body" let-data="rowData">
+            <a class="link" (click)="gotoDetail(data.id)">{{ data.employeesName }}</a>
+        </ng-template>
+    </p-column>
+    <p-column field="year" header="Year" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width' : '10%'}">
+        <ng-template pTemplate="filter" let-col>
+            <select class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                <option *ngFor="let year of years" [value]="year.value">{{year.label}}</option>
+            </select>
+        </ng-template>
+    </p-column>
+    <p-column field="reportingStatus" header="Reporting Status" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width' : '14%'}">
+        <ng-template pTemplate="filter" let-col>
+            <select class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                <option *ngFor="let status of reportingStatuses" [value]="status.value">{{status.label}}</option>
+            </select>
+        </ng-template>
+    </p-column>
+    <p-column field="formStatus" header="Status" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '18%'}">
+        <ng-template pTemplate="filter" let-col>
+            <select id="ddlStatus" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                <option *ngFor="let status of statuses" [value]="status.value">{{status.label}}</option>
+            </select>
+        </ng-template>
+    </p-column>
+    <p-column field="formFlags" header="Form Flags" [sortable]="true" [filter]="false" filterMatchMode="contains" [style]="{'width' : '10%'}">
+        <ng-template pTemplate="filter" let-col>
+            <select id="ddlFlags" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                <option *ngFor="let flags of formFlags" [value]="flags.value">{{flags.label}}</option>
+            </select>
+        </ng-template>
+        <ng-template pTemplate="body" let-data="rowData">
+            <!-- Create an icon wrapped by the fa-stack class -->
+            <span class="fa-stack" *ngIf="data.daysExtended > 0" title="Due date has been extended">
+                <!-- The icon that will wrap the number -->
+                <span class="fa fa-calendar-o fa-stack-2x"></span>
+                <!-- a strong element with the custom content, in this case a number -->
+                <strong class="fa-stack-1x" style="padding-top: 3px; color: #222222;">
+                    {{ data.daysExtended }}
+                </strong>
+            </span>
+            <span class="fa fa-file-text-o" *ngIf="data.submittedPaperCopy" style="font-size: 1.6em; color: #222222; vertical-align: middle; padding-left: 3px;" title="Submitted Paper Copy"></span>
+            <span class="fa fa-info-circle text-primary" *ngIf="data.isBlank" style="font-size: 1.6em; vertical-align: middle; padding-left: 3px;" title="Blank submissions answered 'no' to all 5 questions"></span>
+            <span *ngIf="data.isOverdue" style="font-size: 1.6em; vertical-align: middle;" title="Form is overdue" class='fa fa-exclamation-triangle text-danger'></span>
+        </ng-template>
+    </p-column>
+    <p-column field="dueDate" header="Due Date" [filter]="true" [sortable]="true" [style]="{'width' : '18%'}" filterMatchMode="contains">
+        <ng-template pTemplate="filter" let-col>
+            <input type="date" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);" />
+        </ng-template>
+        <ng-template pTemplate="body" let-data="rowData">
+            {{ data.dueDate | date: "MM/dd/yyyy" }}
+            <span *ngIf="this.edit" style="padding-left: 10px; cursor: pointer;" class='text-primary glyphicon glyphicon-pencil' (click)="rowClick(data)"></span>
+        </ng-template>
+    </p-column>
+    <p-column field="isOverdue" header="" [filter]="true" filterMatchMode="equals" hidden="hidden"></p-column>
+</p-dataTable>
+<div style="width: 100%;">
+    <span class="pull-right">Total Records: {{ dt.totalRecords }}</span>
+</div>

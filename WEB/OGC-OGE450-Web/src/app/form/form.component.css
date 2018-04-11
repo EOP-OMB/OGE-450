@@ -1,0 +1,154 @@
+﻿.form-start {
+    margin-top: 74px !important;
+}
+
+.navbar-fixed-top {
+    margin-top: 150px; 
+    z-index: 1029;
+}
+
+@media(max-width: 767px) {
+    .form-start {
+        margin-top: 74px;
+    }
+
+    .navbar-fixed-top {
+        margin-top: 75px; 
+        z-index: 1029;
+    }
+}
+
+input[type="text"], textarea[type="text"], input[type="tel"], input[type="date"] {
+    background-color: #fafcff;
+}
+
+    .navbar-centered .navbar-nav {
+        float: none;
+        text-align: center;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .navbar-centered .navbar-nav > li {
+        float: none;
+    }
+    .navbar-centered .nav > li {
+        display: inline;
+    }
+    .navbar-centered .nav > li > a {
+        display: inline-block;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    #oge-form {
+    max-width: 1024px;
+}
+
+.modal-admin {
+    max-width: 70%;
+    margin-left: 15%;
+    margin-top: 5%;
+}
+
+.form-box {
+    border: 1px solid black;
+    padding: 5px;
+    font-size: .85em;
+}
+
+.form-box-sm {
+    border: 1px solid black;
+    padding: 5px;
+    font-size: .8em;
+}
+
+.solo-form-box {
+    border: 2px solid black;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.intro {
+    font-size: .9em;
+    color: blue;
+}
+
+.control-label {
+    font-weight: bold;
+}
+.row {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    overflow: hidden; 
+}
+     
+[class*="col-"] {
+    margin-bottom: -999px;
+    padding-bottom: 999px;
+}
+
+label {
+    font-weight: normal;
+}
+
+.outer-form-box {
+    display: table; 
+    border: 1px solid black;
+    width: 100%;
+}
+
+.collapse {
+    padding-bottom: 10px;
+}
+
+.required.print:before { 
+    content:""; 
+    color: red;
+}
+
+.break {
+    page-break-before: always;
+    padding-top: 10px;
+}
+
+.section {
+    margin-top: 15px;
+}
+
+.numeral {
+    font-family: 'Times New Roman';
+    font-weight: bold;
+}
+
+.nav-icon {
+    font-size: 1.0em;
+    width: 40px;
+    margin-left: 10px;
+    height: 42px;
+    padding-top: 10px;
+}
+
+.nav-icon > .invert {
+    color: white !important;
+}
+
+.sectionOff {
+    background-color: #eee;
+}
+
+.intro > .row {
+    padding-top: 10px;
+}
+
+#pageNumber > input:after {
+    content: counter(page);
+}
+
+.btn-text > span {
+     padding-right: 10px;
+}
+
+.btn-default {
+    color: #777 !important;
+}
+

@@ -1,0 +1,107 @@
+﻿<div *ngIf="vm.form" class="container">
+    <div class="alert alert-success alert-fixed" id="success-alert" style="display: none; margin-top: 52px;">
+        <div class="btn close" data-dismiss="alert">x</div>
+        <span class="glyphicon glyphicon-ok-circle text-success" style="font-size: 2em;"></span>
+        <strong>Success!</strong>
+        {{ successMessage }}
+    </div>
+
+    <div class="row">
+        <widget [data]="vm.daysDueWidget" [icon]="'fa-clock-o'"></widget>
+        <widget *ngIf="currentExtension" [data]="daysRemainingWidget" [icon]="'fa-calendar'"></widget>
+        <widget *ngIf="currentExtension" [data]="pendingRequestsWidget" [icon]="'fa-cogs'"></widget>
+    </div>
+    <div *ngIf="currentExtension" class="row" style="margin-top: 20px;">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p class="panel-title">Request Extension</p>
+                </div>
+                <div *ngIf="daysRemaining > 0" class="panel-body">
+                    <div class="row form-group">
+                        <div class="col-md-3 control-label required">
+                            <label>Days requested:</label>
+                        </div>
+                        <div class="col-md-2">
+                            <select id="ddlDays" class="form-control" (change)="onDayChange($event)" [(ngModel)]="currentExtension.daysRequested" [disabled]="disableEdits" required>
+                                <option *ngFor="let day of days;" [ngValue]="day">{{day}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-7" style="text-align: right;">
+                            <div style="display: inline-block; font-weight: bold;">Due date:</div>
+                            <div style="display: inline-block; color: red;">{{ vm.form.dueDate | date: 'MM/dd/yyyy' }}</div>
+                            <div style="display: inline-block; color: #5bc0de; text-align: center;"><span class="glyphicon glyphicon-arrow-right"></span></div>
+                            <div style="display: inline-block; color: green;">{{ newDueDate }}</div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-3 control-label required">
+                            <label>Reason:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <textarea class="form-control required" rows="6" [(ngModel)]="currentExtension.reason" [disabled]="disableEdits"></textarea>
+                        </div>
+                    </div>
+                    <div *ngIf="showComments" class="row form-group">
+                        <div class="col-md-3 control-label">
+                            <label>Comments:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <textarea class="form-control" rows="6" [(ngModel)]="currentExtension.reviewerComments"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-md-9 col-md-offset-3" style="text-align: center;">
+                        <div *ngIf="currentExtension.id == 0">
+                            <div class="btn btn-success" style="margin-right: 20px;" (click)="save()">Request</div>
+                        </div>
+                        <div *ngIf="currentExtension.id > 0">
+                            <div *ngIf="canApprove()" class="btn btn-success" style="margin-right: 20px;" (click)="update(true)">Accept</div>
+                            <div *ngIf="canApprove()" class="btn btn-danger" (click)="update(false)">Reject</div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="daysRemaining == 0" class="panel-body">
+                    <p>You have used up all your extension days...</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <span class="panel-title glyphicon glyphicon-info-sign" style="display: inline-block; font-size: 1.2em !important; margin-right: 10px;"></span><span sytle="font-size: 1.1em !important; display: inline-block;" class="panel-title">Info</span>
+                </div>
+                <div class="panel-body">
+                    <div *ngIf="canApprove() && currentExtension.id > 0" style="padding-bottom: 20px;">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="control-label">Year:</div>
+                            </div>
+                            <div class="col-md-8">
+                                {{ vm.form.year }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="control-label">Status:</div>
+                            </div>
+                            <div class="col-md-8">
+                                {{ vm.form.reportingStatus }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="control-label">Filer:</div>
+                            </div>
+                            <div class="col-md-8">
+                                {{ vm.form.employeesName }}
+                            </div>
+                        </div>
+
+                    </div>
+                    <p style="font-size: 1em;" class="panel-title" innerHTML="{{ message }}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

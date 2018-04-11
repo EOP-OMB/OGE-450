@@ -1,0 +1,36 @@
+﻿<div id="home" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <div class="" style="display: block;">
+                    <widget *ngIf="forms" [data]="submittedWidget" [icon]="'fa-cogs'" (widgetClick)="onSubmittedClick()"></widget>
+                    <widget *ngIf="extensions" [data]="extensionWidget" [icon]="'fa-clock-o'" (widgetClick)="onExtensionClick()"></widget>
+                    <widget *ngIf="forms" [data]="overdueWidget" [icon]="'fa-hourglass-end'" (widgetClick)="onOverdueClick()"></widget>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="padding-top: 20px;">
+        <tabs #tabs>
+            <tab #tabForms tabTitle="Forms">
+                <div class="row" style="padding-bottom: 15px;" *ngIf="numberOfBlankForms > 0">
+                    <div class="col-sm-12">
+                        <div class="btn btn-success pull-right" (click)="certifyBlankForms()">Batch Certify Blank Forms</div>
+                    </div>
+                </div>
+                <forms-grid #dtForms [forms]="forms"></forms-grid>
+            </tab>
+            <tab #tabExtensions tabTitle="Extensions">
+                <extension-grid [extensions]="extensions"></extension-grid>
+            </tab>
+        </tabs>
+    </div>
+</div>
+
+    
+    
+    
+    
+
+
+

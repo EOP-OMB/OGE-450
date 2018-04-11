@@ -1,0 +1,53 @@
+﻿
+    /* IE10+ CSS styles go here */
+    /* entire container, keeps perspective */
+    .flip-container {
+	    perspective: 1024px;
+	    transform-style: preserve-3d;
+    }
+        /*  UPDATED! flip the pane when flip class added */
+    	.flip-container.flip .card .back {
+	        transform: rotateY(0deg);
+        }
+
+        .flip-container.flip .card .front {
+	        transform: rotateY(180deg);
+        }
+
+    /* flip speed goes here */
+    .card {
+	    transition: .6s;
+	    transform-style: preserve-3d;
+
+	    position: relative;
+    }
+
+    /* hide back of pane during swap */
+    .front, .back {
+	    backface-visibility: hidden;
+	    transition: .6s;
+	    transform-style: preserve-3d;
+
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+    }
+
+    /*  UPDATED! front pane, placed above back */
+    .front {
+	    transform: rotateY(0deg);
+    }
+
+    /* back, initially hidden pane */
+    .back {
+	    transform: rotateY(-180deg);
+    }
+
+
+.flip-container, .front, .back {
+	width: 100%;
+    height: auto;
+}
+
+
+

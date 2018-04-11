@@ -1,0 +1,57 @@
+﻿<div id="home" class="container"  *ngIf="this.userService.user">
+    <div class="row">
+        <div class="col-sm-12">
+            <my-450></my-450>
+            <div class="col-sm-4">
+                <helpful-links></helpful-links>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-top: 20px;">
+        <div class="col-sm-8">
+            <fieldset>
+                <legend>My Filings</legend>
+                <table *ngIf="forms" id="dtForms" class="table table-striped table-bordered">
+                    <thead class="thead thead-default">
+                        <tr>
+                            <th>
+                                Year
+                            </th>
+                            <th>
+                                Reporting Status
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="forms.length > 0">
+                        <tr *ngFor="let form of forms">
+                            <td><a (click)="gotoDetail(form.id)">{{form.year}}</a></td>
+                            <td><a (click)="gotoDetail(form.id)">{{form.reportingStatus}}</a></td>
+                            <td><a (click)="gotoDetail(form.id)">{{form.formStatus}}</a></td>
+                            <td align="center">
+                                <a title="View" (click)="gotoDetail(form.id)"><i class="fa fa-file-text-o"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="forms.length == 0 && employee">
+                        <tr>
+                            <td colspan="4">You do not have any previous filings on record.</td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="forms.length == 0 && !employee">
+                        <tr>
+                            <td colspan="4">You have no filings on record</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </fieldset>
+        </div>
+        <div class="col-sm-4">
+            <support-contacts></support-contacts>
+        </div>
+    </div>
+</div>

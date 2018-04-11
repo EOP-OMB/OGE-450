@@ -1,0 +1,9 @@
+﻿<fieldset>
+    <legend>Support Contacts</legend>
+    <p>For assistance, please contact the Office of General Counsel</p>
+    <ul>
+        <li *ngFor="let contact of contacts">
+            {{ contact.title }}&nbsp;&nbsp;{{ contact.info }}
+        </li>
+    </ul>
+</fieldset>

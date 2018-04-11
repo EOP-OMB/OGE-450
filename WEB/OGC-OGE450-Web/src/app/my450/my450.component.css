@@ -1,0 +1,19 @@
+﻿.badge-notify{
+   background:red;
+   position:relative;
+   top: -18px;
+   left: -15px;
+}
+
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 25px;
+  line-height: 18px;
+  color: #333333;
+  background-color: #ffffff;
+  
+  /* changes for better demo */
+  margin: 20px 0 0;
+  text-align: center;
+}

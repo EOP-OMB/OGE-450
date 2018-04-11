@@ -1,0 +1,116 @@
+﻿<div *ngIf="editEmp">
+    <div style="background-color: #fafafa; padding: 10px; margin-bottom: 10px; display: block;">
+        <div class="glyphicon glyphicon-arrow-left" style="color: rgba(0,0,0,0.65); cursor: pointer;" (click)="cancel()"></div><br />
+        <div class="col-md-4" style="text-align: center;">
+            <img [src]="editEmp.pictureUrl ? editEmp.pictureUrl : 'assets/PersonPlaceholder.png'" height="120" width="120" style="border-radius: 50%;" />
+            <div class="row">
+                <h4>{{editEmp.displayName}}</h4>
+            </div>
+            <br />
+            <div class="row">
+                <div class="btn btn-default" (click)="flipActiveStatus(editEmp)" title="{{this.activeAction}}"><span class="text-{{this.activeColor}} glyphicon glyphicon-{{this.activeIcon}}" style="margin-right: 10px;"></span>{{this.activeText}}</div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background-color: white !important;">
+                    <h1 class="panel-title">
+                        User Profile
+                        <span class="pull-right" style="font-size: .8em;">
+                            <a [href]="editEmp.profileUrl" target="_blank">Profile Link</a>
+                        </span>
+                    </h1>
+                </div>
+                <div class="panel-body">
+                    <div class="row col-md-6">
+                        <div style="font-weight: bold; font-size: 1.2em; display: block;">{{editEmp.position}}</div>
+                        <div style="display: block; padding-top: 3px;">
+                            <div class="glyphicon glyphicon-envelope" style="margin-top: 2px;"></div><span style="padding-left: 10px;">{{editEmp.emailAddress}}</span>
+                        </div>
+                        <div style="display: block; padding-top: 3px;">
+                            <div class="glyphicon glyphicon-earphone" style="margin-top: 2px;"></div><span style="padding-left: 10px;">{{editEmp.workPhone}}</span></div>
+                        </div>
+                    <div class="col-md-6">
+                        <div class="top-label">Agency</div>
+                        <div class="data-label">{{editEmp.agency}}</div>
+                        <div class="top-label pad">Branch</div>
+                        <div class="data-label">{{editEmp.branch}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background-color: white !important;">
+                    <h1 class="panel-title">
+                        OGE 450
+                    </h1>
+                </div>
+                <div class="panel-body">
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <div class="top-label">Filer Type</div>
+                            <select class="form-control" [(ngModel)]="editEmp.filerType">
+                                <option *ngFor="let ft of filingTypes" [value]="ft.value">{{ft.label}}</option>
+                            </select>
+                            <div *ngIf="editEmp.filerType == '450 Filer'" style="display: block; padding-top: 6px;">
+                                <div class="top-label pad">Reporting Status</div>
+                                <div class="radio-inline">
+                                    <label><input name="ReportingStatus" type="radio" value="New Entrant" [(ngModel)]="editEmp.reportingStatus" (change)="reportingStatusChange()" checked />New Entrant</label>
+                                </div>
+                                <div class="radio-inline">
+                                    <label><input name="ReportingStatus" type="radio" value="Annual" [(ngModel)]="editEmp.reportingStatus" (change)="reportingStatusChange()" />Annual</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="top-label">Appointment Date</div> 
+                            <p-calendar [(ngModel)]="tempAppointmentDate"></p-calendar>
+                        </div>
+                    </div>
+                    <div *ngIf="currentForm" class="row form-group">
+                        <div *ngIf="currentForm.id > 0">
+                            <div class="col-md-6">
+                                <div class="top-label">Form Status</div>
+                                <div class="data-label">{{currentForm.formStatus}}</div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="top-label">
+                                    Due Date
+                                </div>
+                                <div class="data-label">{{currentForm.dueDate | date: 'MM/dd/yyyy'}}</div>
+                            </div>
+                        </div>
+                        <div *ngIf="currentForm.id == 0 && (editEmp.filerType == '450 Filer') && !editEmp.inactive" >
+                            <div class="col-md-6">
+                                <div class="top-label">Start New OGE Form 450 for Filer?</div>
+                                <bSwitch *ngIf="editEmp"
+                                         #switch [switch-off-text]="createFormSwitch.offText"
+                                         [switch-on-text]="createFormSwitch.onText"
+                                         [switch-on-color]="createFormSwitch.color"
+                                         [switch-off-color]="createFormSwitch.offColor"
+                                         [switch-size]="createFormSwitch.size"
+                                         [switch-inverse]="createFormSwitch.switchInverse"
+                                         [(ngModel)]="createFormSwitch.value"
+                                         (onChangeState)="onSwitchChange($event)">
+                                </bSwitch>
+                            </div>
+                            <div class="col-md-6" *ngIf="editEmp.generateForm">
+                                <div class="top-label required">Due Date</div>
+                                <p-calendar id="ddlDueDate" [(ngModel)]="tempDueDate" inputStyleClass="form-control"></p-calendar>
+                            </div>
+                            <div class="col-md-12" *ngIf="editEmp.generateForm">
+                                <div class="top-label pad">{{editEmp.reportingStatus}} Email</div>
+
+                                <tinymce-editor [elementId]="'txtEmail'" [content]="emailText" (onEditorKeyup)="keyUpHandler($event)" [height]="320"></tinymce-editor>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="text-align: center;">
+                        <div (click)="saveClicked()" class="btn btn-primary">Save</div>
+                        <div (click)="cancel()" class="btn btn-default" style="margin-left: 15px;">Cancel</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        &nbsp;
+    </div>
+</div>

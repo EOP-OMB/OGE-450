@@ -1,0 +1,237 @@
+﻿.site-header {
+    background-color: #112e51;
+    border-bottom: none;
+}
+
+.eop-header {
+    width: 100%;
+    z-index: 1031;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+}
+
+.eop-banner {
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #f1f1f1;
+    font-size: 1.3rem;
+    padding-bottom: 0;
+}
+
+.banner-seal {
+    height: 70px;
+    padding-top: 3px;
+    z-index: 100;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.navbar-default {
+    background-color: #112e51;
+    border-color: #112e51;
+    margin-bottom: 0px;
+}
+
+.navbar-header {
+    margin: 4px 0px 4px 0px !important;
+}
+
+.navbar-default .navbar-brand {
+    color: white;
+    float: none;
+    font-size: 1.8em;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    height: auto;
+}
+
+.navbar-brand .text {
+    font-family: "Merriweather", "Georgia", "Cambria", "Times New Roman", "Times", serif;
+    top: 20px;
+    margin-left: 85px;
+    position: absolute;
+}
+
+@media (min-width: 768px) {
+    .agency-text {
+        font-size: 1.2em;
+    }
+
+    .sm {
+        display: none;
+    }
+
+    .button-list {
+        padding-right: 3rem;
+        line-height: 8rem;
+        vertical-align: middle;
+    }
+}
+
+.app-text {
+    font-size: .9em;
+    margin-top: 10px;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: white;
+}
+
+.navbar-toggle {
+    background-color: #0071bc;
+    color: white;
+    border: none;
+}
+
+    .navbar-toggle:hover {
+        background-color: #205493;
+    }
+
+    .navbar-toggle:focus {
+        background-color: #205493;
+    }
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: white;
+}
+
+.btn {
+    margin-left: 15px;
+    font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    border: 1px solid;
+}
+
+.btn-primary {
+    background-color: #0071bc;
+    border-color: #0071bc;
+    width: 130px;
+}
+
+.btn-primary:hover {
+    border-color: #205493;
+    background-color: #205493;
+    border-bottom: 0;
+    color: #ffffff;
+    text-decoration: none;
+}
+.btn-warning {
+    border-color: #d58512;
+}
+
+.btn-default {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+}
+
+    .btn-default:hover {
+        color: #d6d7d9;
+        border: 1px solid #d6d7d9;
+    }
+
+.site-nav-secondary {
+    background-color: #ffffff;
+    border-bottom: 1px solid #d6d7d9;
+    clear: both;
+    height: 5rem;
+    padding-left: 1.5rem;
+    z-index: 10;
+    margin-top: 99px;
+}
+
+    .site-nav-secondary ul {
+        margin-top: 0;
+        margin-bottom: 0;
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+        .site-nav-secondary ul > li {
+            margin-bottom: 0;
+        }
+
+        .site-nav-secondary ul li {
+            display: inline;
+        }
+
+    .site-nav-secondary a {
+        color: #5b616b;
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 5rem;
+        padding: 1.5rem;
+        text-decoration: none;
+        -webkit-font-smoothing: antialiased;
+    }
+
+        .site-nav-secondary a:hover span {
+            border-bottom: 0.7rem solid #0071bc;
+            padding-bottom: 0.9rem;
+            color: #0071bc;
+        }
+
+    .site-nav-secondary .active span {
+        border-bottom: 0.7rem solid #0071bc;
+        padding-bottom: 0.9rem;
+        color: #212121;
+    }
+
+
+ @media (max-width: 767px) {
+    .md {
+        display: none;
+    }
+
+    .button-list {
+        padding-right: 3rem;
+        line-height: 6rem;
+        vertical-align: middle;
+    }
+
+    .site-nav-secondary {
+        margin-top: 76px;
+        height: auto;
+        width: 38%;
+        margin-right: 0px;
+        border-left: 2px solid #d6d7d9;
+        z-index: 1031;
+    }
+
+        .site-nav-secondary ul li {
+            display: block;
+        }
+
+        .site-nav-secondary ul li:hover {
+            background-color: #f1f1f1;
+            color: #0071bc;
+        }
+
+        .site-nav-secondary span {
+            padding: 1.4rem 1.5rem 1rem 1.8rem;
+            width: 100%;
+        }
+
+        .site-nav-secondary a:hover span {
+            background-color: #f1f1f1;
+            color: #0071bc;
+            border-bottom: none;
+        }
+
+        .site-nav-secondary .active span {
+            color: #0071bc;
+            font-weight: 700;
+            border-bottom: none;
+        }
+
+    .agency-text {
+        font-size: 1em;
+    }
+
+    .banner-seal {
+        height: 48px;
+    }
+}
