@@ -53,7 +53,16 @@ export class FormsGridComponent implements OnInit {
         this.formFlags = Lookups.FORM_FLAGS;
     }
 
-    public filter(where: string) {
+    public filter(where: string, reset: boolean = false) {
+        if (reset) {
+            this.dt.reset();
+            $("#ddlStatus").val('null').change();
+            $("#ddlFlags").val('null').change();
+            $("#ddlYear").val('null').change();
+            $("#ddlReportingStatus").val('null').change();
+            $("#dtDateFilter").val('');
+        }
+
         if (where == "Submitted") {
             $("#ddlStatus").val('Submitted').change();
             this.dt.filter(where, 'formStatus', 'contains');

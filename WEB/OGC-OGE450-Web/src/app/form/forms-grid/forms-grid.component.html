@@ -7,14 +7,14 @@
     </p-column>
     <p-column field="year" header="Year" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width' : '10%'}">
         <ng-template pTemplate="filter" let-col>
-            <select class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+            <select id="ddlYear" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
                 <option *ngFor="let year of years" [value]="year.value">{{year.label}}</option>
             </select>
         </ng-template>
     </p-column>
     <p-column field="reportingStatus" header="Reporting Status" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width' : '14%'}">
         <ng-template pTemplate="filter" let-col>
-            <select class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+            <select id="ddlReportingStatus" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
                 <option *ngFor="let status of reportingStatuses" [value]="status.value">{{status.label}}</option>
             </select>
         </ng-template>
@@ -49,7 +49,7 @@
     </p-column>
     <p-column field="dueDate" header="Due Date" [filter]="true" [sortable]="true" [style]="{'width' : '18%'}" filterMatchMode="contains">
         <ng-template pTemplate="filter" let-col>
-            <input type="date" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);" />
+            <input id="dtDateFilter" type="date" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);" />
         </ng-template>
         <ng-template pTemplate="body" let-data="rowData">
             {{ data.dueDate | date: "MM/dd/yyyy" }}

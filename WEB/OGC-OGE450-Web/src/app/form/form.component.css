@@ -3,7 +3,7 @@
 }
 
 .navbar-fixed-top {
-    margin-top: 150px; 
+    margin-top: 150px;
     z-index: 1029;
 }
 
@@ -13,7 +13,7 @@
     }
 
     .navbar-fixed-top {
-        margin-top: 75px; 
+        margin-top: 75px;
         z-index: 1029;
     }
 }
@@ -22,25 +22,28 @@ input[type="text"], textarea[type="text"], input[type="tel"], input[type="date"]
     background-color: #fafcff;
 }
 
-    .navbar-centered .navbar-nav {
-        float: none;
-        text-align: center;
-        margin-left: 10px;
-        margin-right: 10px;
-    }
+.navbar-centered .navbar-nav {
+    float: none;
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
     .navbar-centered .navbar-nav > li {
         float: none;
     }
-    .navbar-centered .nav > li {
-        display: inline;
-    }
+
+.navbar-centered .nav > li {
+    display: inline;
+}
+
     .navbar-centered .nav > li > a {
         display: inline-block;
         padding-left: 5px;
         padding-right: 5px;
     }
 
-    #oge-form {
+#oge-form {
     max-width: 1024px;
 }
 
@@ -76,12 +79,13 @@ input[type="text"], textarea[type="text"], input[type="tel"], input[type="date"]
 .control-label {
     font-weight: bold;
 }
+
 .row {
     margin-left: 0px !important;
     margin-right: 0px !important;
-    overflow: hidden; 
+    overflow: hidden;
 }
-     
+
 [class*="col-"] {
     margin-bottom: -999px;
     padding-bottom: 999px;
@@ -92,7 +96,7 @@ label {
 }
 
 .outer-form-box {
-    display: table; 
+    display: table;
     border: 1px solid black;
     width: 100%;
 }
@@ -101,8 +105,8 @@ label {
     padding-bottom: 10px;
 }
 
-.required.print:before { 
-    content:""; 
+.required.print:before {
+    content: "";
     color: red;
 }
 
@@ -128,9 +132,9 @@ label {
     padding-top: 10px;
 }
 
-.nav-icon > .invert {
-    color: white !important;
-}
+    .nav-icon > .invert {
+        color: white !important;
+    }
 
 .sectionOff {
     background-color: #eee;
@@ -145,10 +149,22 @@ label {
 }
 
 .btn-text > span {
-     padding-right: 10px;
+    padding-right: 10px;
 }
 
 .btn-default {
     color: #777 !important;
 }
 
+#watermark {
+    position: fixed;
+    opacity: 0.25;
+    color: black;
+    font-size: 7em;
+    transform: rotate(-45deg);
+    z-index: 9;
+    text-align: center;
+    width: 100%;
+    left: 0px;
+    top: 55%;
+}

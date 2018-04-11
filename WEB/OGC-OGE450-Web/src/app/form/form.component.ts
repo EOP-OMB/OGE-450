@@ -61,11 +61,10 @@ export class FormComponent implements OnInit, AfterViewInit {
             localStorage.setItem('dirtyOvervide', "0");
             localStorage.setItem('goto', '');
         });
-        
+
         $("a[href^='#']").on('click', function (e) {
             // prevent default anchor click behavior
             e.preventDefault();
-
             // store hash
             var hash = this.hash;
 
@@ -118,7 +117,8 @@ export class FormComponent implements OnInit, AfterViewInit {
             $('#intro-popup').modal();
         else if (this.form.submittedPaperCopy && (this.form.formStatus == FormStatus.SUBMITTED || this.form.formStatus == FormStatus.RE_SUBMITTED || this.form.formStatus == FormStatus.CERTIFIED))
         {
-            $('#paper-filer').modal();
+            $('#watermark').show();
+            $('#steps').hide();
         }
         else
             this.disableForm();
@@ -327,6 +327,7 @@ export class FormComponent implements OnInit, AfterViewInit {
 
     certifyPaper(): void {
         this.form.reviewingOfficialSignature = this.userService.user.displayName;
+        this.form.commentsOfReviewingOfficial = "Certification based on filer’s paper submission.\n" + this.form.commentsOfReviewingOfficial;
         this.form.submittedPaperCopy = true;
         this.save(true, true);
     }

@@ -53,7 +53,16 @@ export class EmployeesGridComponent implements OnInit {
             this.filter("");
     }
 
-    public filter(where: string) {
+    public filter(where: string, reset: boolean = false) {
+        if (reset) {
+            this.dt.reset();
+            $("#ddlDivisions").val('null').change();
+            $("#ddlFilerTypes").val('null').change();
+            $("#ddlReportingStatus").val('null').change();
+            $("#ddlFormStatus").val('null').change();
+            $("#dtDateFilter").val('');
+        }
+
         var showHidden = $('#chkHidden').is(':checked');
 
         this.gridEmployees = this.employees.filter(x => x.inactive == false || showHidden);

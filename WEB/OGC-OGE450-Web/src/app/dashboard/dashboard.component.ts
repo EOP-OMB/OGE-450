@@ -94,7 +94,7 @@ export class DashboardComponent implements OnInit {
 
     onSubmittedClick() {
         this.tabs.selectTab(this.tabForms);
-        this.dtForms.filter("Submitted");
+        this.dtForms.filter("Submitted", true);
     }
 
     onExtensionClick() {
@@ -103,7 +103,7 @@ export class DashboardComponent implements OnInit {
 
     onOverdueClick() {
         this.tabs.selectTab(this.tabForms);
-        this.dtForms.filter("Overdue");
+        this.dtForms.filter("Overdue", true);
     }
     
     certifyBlankForms() {

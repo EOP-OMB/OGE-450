@@ -27,19 +27,22 @@
     </p-column>
     <p-column field="reportingStatus" header="Reporting Status" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width':'14%'}">
         <ng-template pTemplate="filter" let-col>
-            <select class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+            <select id="ddlReportingStatus" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
                 <option *ngFor="let status of reportingStatuses" [value]="status.value">{{status.label}}</option>
             </select>
         </ng-template>
     </p-column>
     <p-column field="currentFormStatus" header="Form Status" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width' : '16%'}">
         <ng-template pTemplate="filter" let-col>
-            <select class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+            <select id="ddlFormStatus" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
                 <option *ngFor="let status of statuses" [value]="status.value">{{status.label}}</option>
             </select>
         </ng-template>
     </p-column>
     <p-column field="last450Date" header="Last File Date" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width':'12%'}">
+        <ng-template pTemplate="filter" let-col>
+            <input id="dtDateFilter" type="date" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);" />
+        </ng-template>
         <ng-template pTemplate="body" let-data="rowData">
             {{ data.last450Date | date: "MM/dd/yyyy" }}
         </ng-template>
