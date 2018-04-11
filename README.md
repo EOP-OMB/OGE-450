@@ -1,5 +1,5 @@
-# OGE-450
-Ethics Portal
+# OGE Form 450: Confidential Financial Disclosure Report
+This form is used by executive branch employees who are less senior than public filers to report their financial interests as well as other interests outside the Government. The purpose of this report is to assist employees and their agencies in avoiding conflicts between duties and private financial interests or affiliations.
 
 Description:
 
