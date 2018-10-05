@@ -19,6 +19,10 @@ namespace OGC.Data.SharePoint.Models
             public const string OGE_FORM_450_MISSING_INFO = "OGE Form 450 Missing Information";
             public const string OGE_FORM_450_NEW_ANNUAL = "OGE Form 450 New Annual Filing";
             public const string OGE_FORM_450_NEW_ENTRANT = "OGE Form 450 New Entrant Filing";
+
+            public const string EVENT_REQUEST_SUBMITTED = "Event Requested Submitted";
+            public const string EVENT_REQUEST_CONFIRMATION = "Event Request Submitted Confirmation";
+            public const string EVENT_REQUEST_ASSIGNED = "Event Request Assigned";
         }
 
         #region properties
@@ -93,9 +97,13 @@ namespace OGC.Data.SharePoint.Models
             {
                 dict = ExtensionRequest.GetEmailFieldsDef(dict);
             }
-            else
+            else if (this.Application == Constants.ApplicationName.OGE_FORM_450)
             {
                 dict = OGEForm450.GetEmailFieldsDef(dict);
+            }
+            else if (this.Application == Constants.ApplicationName.EVENT_CLEARANCE)
+            {
+                dict = EventRequest.GetEmailFieldsDef(dict);
             }
 
             this.TemplateFields = dict;

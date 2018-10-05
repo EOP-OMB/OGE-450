@@ -16,6 +16,9 @@ namespace OMB.SharePoint.Infrastructure
 
         public static PersonProperties GetUserProfile(string loginName)
         {
+            if (string.IsNullOrEmpty(loginName))
+                return null;
+
             using (var context = new ClientContext(SharePointHelper.UserProfileUrl))
             {
                 var web = context.Web;

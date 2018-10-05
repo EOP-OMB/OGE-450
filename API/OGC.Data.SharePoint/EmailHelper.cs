@@ -85,6 +85,22 @@ namespace OGC.Data.SharePoint
 
         private static string GetGroupEmails(string groupName)
         {
+            var users = EmailHelper.GetUsersInGroup(groupName);
+            var emails = "";
+
+            foreach (User u in users)
+            {
+                if (!string.IsNullOrEmpty(u.Email))
+                    emails += u.Email + ",";
+            }
+            
+            emails = emails.TrimEnd(',');
+
+            return emails;
+        }
+
+        public static UserCollection GetUsersInGroup(string groupName)
+        {
             using (ClientContext ctx = new ClientContext(SharePointHelper.Url))
             {
                 var web = SharePointHelper.GetWeb(ctx);
@@ -95,18 +111,7 @@ namespace OGC.Data.SharePoint
                 ctx.Load(users);
                 ctx.ExecuteQuery();
 
-                var emails = "";
-
-                foreach (User u in group.Users)
-                {
-                    if (!string.IsNullOrEmpty(u.Email))
-                        emails += u.Email + ",";
-                }
-                    
-
-                emails = emails.TrimEnd(',');
-
-                return emails;
+                return users;
             }
         }
 
@@ -225,7 +230,7 @@ namespace OGC.Data.SharePoint
         {
             var client = new SmtpClient("mail.omb.gov");
  
-            var from = new MailAddress("notification@omb.gov", "OGE 450", System.Text.Encoding.UTF8);
+            var from = new MailAddress("notification@omb.gov", "OGC Ethics", System.Text.Encoding.UTF8);
 
             var message = new MailMessage();
 
@@ -246,6 +251,13 @@ namespace OGC.Data.SharePoint
 
                 message.Subject = email.Subject;
                 message.SubjectEncoding = System.Text.Encoding.UTF8;
+
+                //if (email.Application == Constants.ApplicationName.EVENT_CLEARANCE)
+                //{
+                //    AddAttachments(message);
+                //}
+                
+
                 client.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
 
                 client.Send(message);

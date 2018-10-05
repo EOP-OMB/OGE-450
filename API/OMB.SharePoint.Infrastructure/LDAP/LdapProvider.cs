@@ -36,9 +36,9 @@ namespace OMB.SharePoint.Infrastructure.LDAP
         {
             var members = new List<LDAPUser>();
 
-            try
+            using (var directoryEntry = GetEntry())
             {
-                using (var directoryEntry = GetEntry())
+                try
                 {
                     var groupDistinguishedName = GetGroupDistinguishedName(directoryEntry, groupName);
 
@@ -47,10 +47,10 @@ namespace OMB.SharePoint.Infrastructure.LDAP
 
                     members = GetMembersOfGroup(directoryEntry, groupDistinguishedName);
                 }
-            }
-            catch (Exception ex)
-            {
-                WriteException(ex);
+                catch (Exception ex)
+                {
+                    WriteException(ex);
+                }
             }
 
             return members;

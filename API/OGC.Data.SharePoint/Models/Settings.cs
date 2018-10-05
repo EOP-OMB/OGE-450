@@ -18,7 +18,10 @@ namespace OGC.Data.SharePoint.Models
         public string ReplacesVersion { get; set; }
         public int MinimumGiftValue { get; set; }
         public int TotalGiftValue { get; set; }
+        public DateTime AnnualDueDate { get; set; }
         #endregion
+
+        public static bool IN_MAINTENANCE_MODE = false;
 
         public Settings()
         {
@@ -37,6 +40,7 @@ namespace OGC.Data.SharePoint.Models
             dest["ReplacesVersion"] = ReplacesVersion;
             dest["MinimumGiftValue"] = MinimumGiftValue;
             dest["TotalGiftValue"] = TotalGiftValue;
+            dest["AnnualDueDate"] = AnnualDueDate;
         }
 
         public override void MapFromList(ListItem item, bool includeChildren = false)
@@ -52,6 +56,7 @@ namespace OGC.Data.SharePoint.Models
             ReplacesVersion = SharePointHelper.ToStringNullSafe(item["ReplacesVersion"]);
             MinimumGiftValue = Convert.ToInt32(item["MinimumGiftValue"]);
             TotalGiftValue = Convert.ToInt32(item["TotalGiftValue"]);
+            AnnualDueDate = Convert.ToDateTime(item["AnnualDueDate"]);
         }
 
         public static Dictionary<string, string> GetAppSettings(Dictionary<string, string> dict)

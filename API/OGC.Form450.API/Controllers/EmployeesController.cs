@@ -81,7 +81,7 @@ namespace OGC.Form450.API.Controllers
 
                 if (OGE450User.IsAdmin)
                 {
-                    if (item.Inactive)
+                    if (item.Inactive || item.EmployeeStatus == Constants.EmployeeStatus.INACTIVE)
                         item.Deactivate();
 
                     var oldItem = Employee.Get(item.Id);
@@ -90,7 +90,9 @@ namespace OGC.Form450.API.Controllers
                     oldItem.AppointmentDate = item.AppointmentDate;
                     oldItem.ReportingStatus = item.ReportingStatus;
                     oldItem.GenerateForm = item.GenerateForm;
-                    oldItem.Inactive = item.Inactive;
+                    oldItem.EmployeeStatus = item.EmployeeStatus;
+                    oldItem.Inactive = item.Inactive || item.EmployeeStatus == Constants.EmployeeStatus.INACTIVE;
+                    oldItem.InactiveDate = item.InactiveDate;
 
                     var emp = oldItem.Save();
 

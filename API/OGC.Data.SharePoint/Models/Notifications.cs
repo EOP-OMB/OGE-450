@@ -18,6 +18,9 @@ namespace OGC.Data.SharePoint.Models
         public string ErrorMessage { get; set; }
         public string Application { get; set; }
         public bool IsAnnouncment { get; set; }
+        //public string AttachmentListName { get; set; }
+        //public string AttachmentKey { get; set; }
+        //public int AttachmentKeyValue { get; set; }
         public int Year
         {
             get
@@ -45,6 +48,27 @@ namespace OGC.Data.SharePoint.Models
             this.ErrorMessage = SharePointHelper.ToStringNullSafe(item["ErrorMessage"]);
             this.Application = SharePointHelper.ToStringNullSafe(item["Application"]);
             this.IsAnnouncment = Convert.ToBoolean(item["IsAnnouncement"]);
+            //this.AttachmentListName = SharePointHelper.ToStringNullSafe(item["AttachmentListName"]);
+            //this.AttachmentKey = SharePointHelper.ToStringNullSafe(item["AttachmentKey"]);
+            //this.AttachmentKeyValue = Convert.ToInt32(item["AttachmentKeyValue"]);
+        }
+
+        public static void UpdateInfo()
+        {
+            var notifications = Notifications.GetAll();
+            var systemNotifications = NotificationTemplates.GetAllBy("Frequency", "Real Time", true);
+
+            foreach(Notifications n in notifications)
+            {
+                if (systemNotifications.Where(x => x.Title == n.Title).Count() > 0)
+                    n.IsAnnouncment = true;
+                else
+                    n.IsAnnouncment = false;
+
+                n.Application = Constants.ApplicationName.OGE_FORM_450;
+
+                n.Save();
+            }
         }
 
         public override void MapToList(ListItem dest)
@@ -60,6 +84,9 @@ namespace OGC.Data.SharePoint.Models
             dest["ErrorMessage"] = this.ErrorMessage;
             dest["Application"] = Application;
             dest["IsAnnouncement"] = IsAnnouncment;
+            //dest["AttachmentListName"] = AttachmentListName;
+            //dest["AttachmentKey"] = AttachmentKey;
+            //dest["AttachmentKeyValue"] = AttachmentKeyValue;
         }
     }
 }

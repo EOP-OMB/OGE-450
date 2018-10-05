@@ -26,6 +26,16 @@ namespace OGC.Data.SharePoint.Models
             this.ListName = this.GetType().Name;
         }
 
+        public ReportableInformation(ReportableInformation ri) : this()
+        {
+            this.AdditionalInfo = ri.AdditionalInfo;
+            this.Description = ri.Description;
+            this.InfoType = ri.InfoType;
+            this.Name = ri.Name;
+            this.NoLongerHeld = ri.NoLongerHeld;
+            this.Title = ri.Title;
+        }
+
         public override void MapToList(ListItem dest)
         {
             base.MapToList(dest);

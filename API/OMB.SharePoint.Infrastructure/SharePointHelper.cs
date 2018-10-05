@@ -3,19 +3,18 @@ using Microsoft.SharePoint.Client;
 using System.Configuration;
 using Microsoft.SharePoint.Client.Search.Query;
 using System.Collections.Generic;
+using OMB.SharePoint.Infrastructure.Models;
+using System.Collections;
 
 namespace OMB.SharePoint.Infrastructure
 {
     public class SharePointHelper
     {
-        public static string UserProfileUrl {
+        public static string UserProfileUrl
+        {
             get
             {
-#if DEBUG
-                return ConfigurationManager.AppSettings.Get("userProfileUrl"); 
-#else
                 return Url;
-#endif
             }
         }
 
@@ -46,9 +45,19 @@ namespace OMB.SharePoint.Infrastructure
         {
             get
             {
-                return ConfigurationManager.AppSettings.Get("adminGroup") ?? ""; 
+                return ConfigurationManager.AppSettings.Get("adminGroup") ?? "";
             }
         }
+
+        public static string RestrictedAdmin
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings.Get("restrictedAdmin") ?? "";
+            }
+        }
+
+        public static string MigrateUrl { get { return ConfigurationManager.AppSettings.Get("migrationUrl"); } }
 
         public static Web GetWeb(ClientContext ctx)
         {
@@ -56,8 +65,8 @@ namespace OMB.SharePoint.Infrastructure
 
             //try
             //{
-                web = ctx.Web;
-                ctx.ExecuteQuery();
+            web = ctx.Web;
+            ctx.ExecuteQuery();
             //}
             //catch (Exception ex)
             //{
@@ -114,6 +123,27 @@ namespace OMB.SharePoint.Infrastructure
             return caml;
         }
 
+        internal static CamlQuery GetAllJoinCaml(string joinList, string joinField, string[] projectedFields)
+        {
+            var caml = new CamlQuery();
+
+            var query = "<View><Query/><ProjectedFields>";
+
+
+            foreach (string field in projectedFields)
+            {
+                query += String.Format("<Field Name='{0}_{1}' Type='Lookup' List='{0}' ShowField='{1}' />", joinList, field);
+            }
+
+            query += "</ProjectedFields><Joins><Join Type='INNER' ListAlias='{0}'><Eq><FieldRef Name='{1}' RefType='Id'/><FieldRef List='{0}' Name='ID'/></Eq></Join></Joins></View>";
+
+            query = String.Format(query, joinList, joinField);
+
+            caml.ViewXml = query;
+
+            return caml;
+        }
+
         public static CamlQuery GetByIdCaml(int id)
         {
             var caml = new CamlQuery();
@@ -133,27 +163,27 @@ namespace OMB.SharePoint.Infrastructure
             return date == DateTime.MinValue ? null : (DateTime?)date;
         }
 
-        internal static CamlQuery GetByCaml(string key, int id, bool notEqual = false)
+        public static CamlQuery GetByCaml(string key, int id, bool notEqual = false)
         {
             var caml = new CamlQuery();
             var eq = notEqual ? "Neq" : "Eq";
 
-            caml.ViewXml = "<View><Query><Where><"+eq+"><FieldRef Name='" + key + "' /><Value Type='Number'>" + id + "</Value></" + eq + "></Where></Query></View>";
+            caml.ViewXml = "<View Scope='RecursiveAll'><Query><Where><" + eq + "><FieldRef Name='" + key + "' /><Value Type='Number'>" + id + "</Value></" + eq + "></Where></Query></View>";
 
             return caml;
         }
 
-        internal static CamlQuery GetByCaml(string key, string value, bool notEqual = false)
+        public static CamlQuery GetByCaml(string key, string value, bool notEqual = false)
         {
             var caml = new CamlQuery();
             var eq = notEqual ? "Neq" : "Eq";
 
-            caml.ViewXml = "<View><Query><Where><" + eq + "><FieldRef Name='" + key +"' /><Value Type='Text'>" + value + "</Value></" + eq + "></Where></Query></View>";
+            caml.ViewXml = "<View Scope='RecursiveAll'><Query><Where><" + eq + "><FieldRef Name='" + key + "' /><Value Type='Text'>" + value + "</Value></" + eq + "></Where></Query></View>";
 
             return caml;
         }
 
-        internal static CamlQuery GetByUserCaml(string key, int userId)
+        public static CamlQuery GetByUserCaml(string key, int userId)
         {
             var caml = new CamlQuery();
 
@@ -162,19 +192,73 @@ namespace OMB.SharePoint.Infrastructure
             return caml;
         }
 
-        public static FieldUserValue GetFieldUser(ClientContext ctx, string filer)
+        public static FieldUserValue GetFieldUser(string upn)
         {
             var userValue = new FieldUserValue();
-            
-            var user = ctx.Web.EnsureUser(filer);
 
-            ctx.Load(user);
+            try
+            {
+                var user = EnsureUser(upn);
 
-            ctx.ExecuteQuery();
-
-            userValue.LookupId = user.Id;
+                userValue.LookupId = user.Id;
+            }
+            catch (Exception ex)
+            {
+                userValue = null;
+            }
 
             return userValue;
+        }
+
+        public static User EnsureUser(string upn)
+        {
+            using (ClientContext ctx = new ClientContext(Url))
+            {
+                var user = ctx.Web.EnsureUser(upn);
+
+                ctx.Load(user);
+
+                ctx.ExecuteQuery();
+
+                return user;
+            }
+        }
+
+        public static void HandleException(Exception ex, string user, string title)
+        {
+            try
+            {
+                var spEx = new Exceptions();
+
+                spEx.Title = title;
+                spEx.User = user;
+                spEx.Message = ex.Message;
+                spEx.InnerException = ex.InnerException == null ? "" : ex.InnerException.ToString();
+                spEx.Data = ExtractData(ex.Data);
+                spEx.HelpLink = ex.HelpLink;
+                spEx.HResult = ex.HResult;
+                spEx.Source = ex.Source;
+                spEx.StackTrace = ex.StackTrace;
+
+                spEx.Save();
+            }
+            catch (Exception ex2)
+            {
+                // TODO: Log exception handling exception to file
+
+            }
+        }
+
+        private static string ExtractData(IDictionary data)
+        {
+            var ret = "";
+
+            foreach (DictionaryEntry entry in data)
+            {
+                ret += string.Format("Key: {0,-20}\tValue: {1}", "'" + entry.Key.ToString() + "'", entry.Value) + "\n";
+            }
+
+            return ret;
         }
     }
 }

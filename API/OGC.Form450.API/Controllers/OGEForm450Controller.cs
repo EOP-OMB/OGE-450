@@ -56,6 +56,14 @@ namespace OGC.Form450.API.Controllers
                         }
                         else
                             return Unauthorized();
+                    case "certifyunchanged":
+                        if (OGE450User.IsAdmin || OGE450User.IsReviewer)
+                        {
+                            list = OGEForm450.CertifyUnchangedForms(OGE450User);
+                            break;
+                        }
+                        else
+                            return Unauthorized();
                     case "reviewer":
                         if (OGE450User.IsAdmin || OGE450User.IsReviewer)
                         {

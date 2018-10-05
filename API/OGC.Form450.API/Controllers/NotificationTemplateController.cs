@@ -23,7 +23,7 @@ namespace OGC.Form450.API.Controllers
 
                 if (OGE450User.IsAdmin)
                 {
-                    var templates = NotificationTemplates.GetAll();
+                    var templates = NotificationTemplates.GetAllBy("Application", Constants.ApplicationName.OGE_FORM_450);
 
                     return Json(templates.OrderBy(x => x.Title), CamelCase);
                 }

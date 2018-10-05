@@ -14,6 +14,14 @@ namespace OMB.SharePoint.Infrastructure.LDAP
     {
         public delegate void WrappedOpDelegate();
 
+        public static string LDAPPath
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings.Get("ldapPath") ?? "";
+            }
+        }
+
         public static void CatchException(WrappedOpDelegate whatToDo)
         {
             try
@@ -25,31 +33,22 @@ namespace OMB.SharePoint.Infrastructure.LDAP
             }
         }
 
+        public static List<LDAPUser> SearchUsersByGroup(string group)
+        {
+            var provider = new LdapProvider(LDAPHelper.LDAPPath);
+
+            var members = provider.GetMembersOfGroup(group).ToList();
+
+            return members;
+        }
 
         public static List<LDAPUser> SearchUsers(string pattern)
         {
             var filter = ConfigurationManager.AppSettings["ldapEmployeeFilter"];
 
-            var provider = new LdapProvider("LDAP://DC=TODO");
+            var provider = new LdapProvider(LDAPHelper.LDAPPath);
 
             return provider.GetUsers(filter);
-        }
-
-        private static void SetupUserLoadProperties(DirectorySearcher ds)
-        {
-            ds.ReferralChasing = ReferralChasingOption.All;
-            ds.PropertiesToLoad.Add("userPrincipalName");
-            ds.PropertiesToLoad.Add("extensionAttribute3"); 
-            ds.PropertiesToLoad.Add("displayName");
-            ds.PropertiesToLoad.Add("employeeType");
-            ds.PropertiesToLoad.Add("department");
-            ds.PropertiesToLoad.Add("physicalDeliveryOfficeName");
-            ds.PropertiesToLoad.Add("title");
-            ds.PropertiesToLoad.Add("memberOf");
-            ds.PropertiesToLoad.Add("userAccountControl");
-            ds.PropertiesToLoad.Add("samaccountname");
-            ds.PropertiesToLoad.Add("givenname");
-            ds.PropertiesToLoad.Add("sn");
         }
 
         public static void WriteException(Exception ex, string title)

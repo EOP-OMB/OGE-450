@@ -33,7 +33,8 @@ namespace OMB.SharePoint.Infrastructure
         public virtual void MapFromList(ListItem item, bool includeChildren = false)
         {
             this.Id = item.Id;
-            this.Title = item["Title"].ToString();
+            this.Title = item["Title"] == null ? "No Title" : item["Title"].ToString();
+
             this.CreatedBy = ((FieldUserValue)item["Author"]).LookupValue;
             this.Created = Convert.ToDateTime(item["Created"]);
             this.ModifiedBy = ((FieldUserValue)item["Editor"]).LookupValue;
@@ -42,7 +43,7 @@ namespace OMB.SharePoint.Infrastructure
 
         public virtual void MapToList(ListItem dest)
         {
-            dest["Title"] = Title;
+            dest["Title"] = string.IsNullOrEmpty(Title) ? "No Title" : Title;
         }
 
         public virtual T Save()
@@ -75,7 +76,7 @@ namespace OMB.SharePoint.Infrastructure
             }
             catch (Exception ex)
             {
-                throw new Exception("Unable to save " + ListName + " with id " + Id + ". " + ex.Message);
+                throw new Exception("Unable to save " + ListName + " with id " + Id + ". " + ex.Message, ex);
             }
 
             return Get(newItem.Id);
@@ -98,7 +99,7 @@ namespace OMB.SharePoint.Infrastructure
             }
             catch (Exception ex)
             {
-                throw new Exception("Unable to delete " + t.ListName + " with id " + Id + ". " + ex.Message);
+                throw new Exception("Unable to delete " + t.ListName + " with id " + Id + ". " + ex.Message, ex);
             }
         }
 
@@ -121,7 +122,7 @@ namespace OMB.SharePoint.Infrastructure
             }
             catch (Exception ex)
             {
-                throw new Exception("Unable to get " + t.ListName + " with id " + id + ". " + ex.Message);
+                throw new Exception("Unable to get " + t.ListName + " with id " + id + ". " + ex.Message, ex);
             }
 
             return t;
@@ -160,7 +161,7 @@ namespace OMB.SharePoint.Infrastructure
             }
             catch (Exception ex)
             {
-                throw new Exception("Unable to get " + type.ListName + ". " + ex.Message);
+                throw new Exception("Unable to get " + type.ListName + ". " + ex.Message, ex);
             }
 
             return results;
@@ -193,7 +194,40 @@ namespace OMB.SharePoint.Infrastructure
             }
             catch (Exception ex)
             {
-                throw new Exception("Unable to get " + type.ListName + ". " + ex.Message);
+                throw new Exception("Unable to get " + type.ListName + ". " + ex.Message, ex);
+            }
+
+            return results;
+        }
+
+        public static List<T> GetAllJoined(string joinList, string joinField, string[] projectedFields)
+        {
+            var ctx = new ClientContext(SharePointHelper.Url);
+            var type = new T();
+            var results = new List<T>();
+
+            try
+            {
+                var web = SharePointHelper.GetWeb(ctx);
+                var list = SharePointHelper.GetList(ctx, web, type.ListName);
+
+                var caml = SharePointHelper.GetAllJoinCaml(joinList, joinField, projectedFields);
+                var items = list.GetItems(caml);
+                ctx.Load(items);
+                ctx.ExecuteQuery();
+
+                foreach (ListItem item in items)
+                {
+                    var t = new T();
+
+                    t.MapFromList(item);
+
+                    results.Add(t);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Unable to get " + type.ListName + ". " + ex.Message, ex);
             }
 
             return results;
@@ -221,7 +255,7 @@ namespace OMB.SharePoint.Infrastructure
             }
             catch (Exception ex)
             {
-                throw new Exception("Unable to get " + t.ListName + ". " + ex.Message);
+                throw new Exception("Unable to get " + t.ListName + ". " + ex.Message, ex);
             }
 
             return t;
@@ -245,11 +279,10 @@ namespace OMB.SharePoint.Infrastructure
                 var item = items.FirstOrDefault();
 
                 t.MapFromList(item);
-
             }
             catch (Exception ex)
             {
-                throw new Exception("Unable to get " + t.ListName + ". " + ex.Message);
+                throw new Exception("Unable to get " + t.ListName + ". " + ex.Message, ex);
             }
 
             return t;
@@ -283,7 +316,7 @@ namespace OMB.SharePoint.Infrastructure
             }
             catch (Exception ex)
             {
-                throw new Exception("Unable to get " + type.ListName + ". " + ex.Message);
+                throw new Exception("Unable to get " + type.ListName + ". " + ex.Message, ex);
             }
 
             return results;
@@ -315,7 +348,7 @@ namespace OMB.SharePoint.Infrastructure
             }
             catch (Exception ex)
             {
-                throw new Exception("Unable to get " + type.ListName + ". " + ex.Message);
+                throw new Exception("Unable to get " + type.ListName + ". " + ex.Message, ex);
             }
 
             return results;
@@ -347,7 +380,7 @@ namespace OMB.SharePoint.Infrastructure
             }
             catch (Exception ex)
             {
-                throw new Exception("Unable to get " + type.ListName + ". " + ex.Message);
+                throw new Exception("Unable to get " + type.ListName + ". " + ex.Message, ex);
             }
 
             return results;
