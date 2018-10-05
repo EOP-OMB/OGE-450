@@ -47,6 +47,13 @@ export class AdminComponent implements OnInit {
     appSettingsWidget: Widget = new Widget();
     notificationWidget: Widget = new Widget();
 
+    formUrl: string;
+    linksUrl: string;
+    emailsUrl: string;
+    templateUrl: string;
+    settingsUrl: string;
+    contactsUrl: string;
+
     employeeToEdit: Employee;
     reload: boolean = false;
 
@@ -57,7 +64,12 @@ export class AdminComponent implements OnInit {
         private templateService: NotificationTemplateService,
         private router: Router
     ) {
-        
+        this.formUrl = environment.sharePointUrl + 'Lists/OGEForm450/AllItems.aspx';
+        this.templateUrl = environment.sharePointUrl + 'Lists/NotificationTemplates/AllItems.aspx';
+        this.linksUrl = environment.sharePointUrl + 'Lists/Helpful%20Links/AllItems.aspx';
+        this.emailsUrl = environment.sharePointUrl + 'Lists/Notifications/AllItems.aspx';
+        this.settingsUrl = environment.sharePointUrl + 'Lists/Settings/AllItems.aspx';
+        this.contactsUrl = environment.sharePointUrl + 'Lists/SupportContacts/AllItems.aspx';
     }
 
     ngOnInit(): void {
@@ -108,7 +120,7 @@ export class AdminComponent implements OnInit {
                 this.updateSettingsWidget();
             });
     }
-
+    
     updateFilingWidget() {
         if (this.employees) {
             var newEmps = this.employees.filter(x => x.filerType == "Not Assigned" && x.inactive == false);
@@ -148,7 +160,7 @@ export class AdminComponent implements OnInit {
 
     onFilersClick() {
         this.tabs.selectTab(this.tabEmployees);
-        this.dtEmployees.filter("Not Assigned");
+        this.dtEmployees.filter("Not Assigned", true);
     }
 
     onSettingsClick() {

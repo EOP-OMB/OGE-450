@@ -8,6 +8,11 @@
             <strong>Success! </strong>
             Settings saved successfully.
         </div>
+        <div class="alert alert-success alert-absolute" id="annual-success" style="display: none;">
+            <div type="button" class="close" data-dismiss="alert">x</div>
+            <strong>Success! </strong>
+            A new annual filing has begun.  All applicable filers have been assigned a form.
+        </div>
         <div class="row form-group">
             <div class="col-md-12">
                 <div class="top-label">
@@ -61,8 +66,34 @@
             </div>
         </div>
         <div class="row form-group">
-            <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="btn btn-success" data-toggle="modal" data-target="#confirm-annual">Initiate Annual Filing</div>
+            </div>
+            <div class="col-md-6">
                 <button id="btnSave" class="btn btn-primary pull-right" (click)="saveSettings()" [disabled]="!isDirty()">Save</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirm-annual" tabindex="-1" role="dialog" aria-hidden="true" *ngIf="settings">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-danger">
+                    <div class="modal-title" style="font-size: 1.5em;"><i class="fa fa-exclamation-triangle" style="padding-right: 20px;"></i>WARNING!</div>
+                </div>
+                <div class="modal-body">
+                    <p>Performing this action will trigger a new filing year.</p>
+                    <ul>
+                        <li>Any incomplete filing for <strong>{{ settings.currentFilingYear }}</strong> filing year will be marked as 'expired'</li>
+                        <li>The filing year will move to <strong>{{ settings.currentFilingYear + 1 }}</strong></li>
+                        <li>All employees with a filer type of '450 Filer' who are not 'On Leave' or 'On Detail' will be assigned a new 'Annual' OGE Form 450</li>
+                        <li>New forms will be a copy of the previous filing year's form if applicable</li>
+                    </ul>
+                    <p>Only run this process if you are <strong>certain</strong> you wish to start a new filing year as this cannot be undone.  Are you sure you wish to continue?</p>
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <div type="button" class="btn btn-success" style="margin-right: 20px;" data-dismiss="modal" (click)="triggerAnnualFiling()">Yes</div>
+                    <div type="button" class="btn btn-default" data-dismiss="modal">No</div>
+                </div>
             </div>
         </div>
     </div>

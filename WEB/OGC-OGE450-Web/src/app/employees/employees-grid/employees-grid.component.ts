@@ -33,6 +33,7 @@ export class EmployeesGridComponent implements OnInit {
     statuses: SelectItem[];
     filerTypes: SelectItem[];
     divisions: SelectItem[];
+    employeeStatuses: SelectItem[];
 
     constructor(private employeeService: EmployeesService,
         private router: Router,
@@ -43,6 +44,7 @@ export class EmployeesGridComponent implements OnInit {
     ngOnInit(): void {
         this.years = Lookups.YEARS;
         this.reportingStatuses = Lookups.REPORTING_STATUSES;
+        this.employeeStatuses = Lookups.EMPLOYEE_STATUSES;
         this.filerTypes = Lookups.FILER_TYPES;
         this.statuses = Lookups.FORM_STATUSES;
         this.divisions = Lookups.DIVISIONS;

@@ -34,6 +34,15 @@ export class SettingsService {
             .catch(this.handleError);
     }
 
+    initiateAnnualRollover(): Promise<Settings> {
+        var url = `${this.serviceUrl}?a=annual`;
+
+        return this.http.get(url)
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handleError);
+    }
+
     update(settings: Settings): Promise<Settings> {
         const url = `${this.serviceUrl}`;
 

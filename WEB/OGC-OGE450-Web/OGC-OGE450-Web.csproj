@@ -30,6 +30,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,14 +38,6 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -101,6 +94,8 @@
     <Content Include="src\app\common\widget.component.html" />
     <Content Include="src\app\healthcheck\health-check.component.css" />
     <Content Include="src\app\healthcheck\health-check.component.html" />
+    <Content Include="src\app\home\maintenance\maintenance.component.css" />
+    <Content Include="src\app\home\maintenance\maintenance.component.html" />
     <Content Include="src\app\login\login.component.html" />
     <Content Include="src\app\support-contacts\support-contacts.component.css" />
     <Content Include="src\app\support-contacts\support-contacts.component.html" />
@@ -135,6 +130,15 @@
     <Content Include="src\assets\skins\lightgray\fonts\tinymce.eot" />
     <Content Include="src\assets\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="src\assets\skins\lightgray\fonts\tinymce.woff" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Prod.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Test.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="src\app\app.component.css" />
@@ -159,6 +163,7 @@
     <Content Include="src\favicon.ico" />
     <Content Include="src\index.html" />
     <Content Include="src\styles.css" />
+    <Content Include="version.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +218,7 @@
     <TypeScriptCompile Include="src\app\helpful-links\helpful-links.component.ts" />
     <TypeScriptCompile Include="src\app\helpful-links\helpful-links.service.ts" />
     <TypeScriptCompile Include="src\app\home\home.component.ts" />
+    <TypeScriptCompile Include="src\app\home\maintenance\maintenance.component.ts" />
     <TypeScriptCompile Include="src\app\login\login.component.ts" />
     <TypeScriptCompile Include="src\app\logout\logout.component.ts" />
     <TypeScriptCompile Include="src\app\extension-request\extension-request.ts" />
@@ -223,6 +229,7 @@
     <TypeScriptCompile Include="src\app\form\reportable-information.ts" />
     <TypeScriptCompile Include="src\app\dashboard\reviewer-dashboard.ts" />
     <TypeScriptCompile Include="src\app\admin\settings\settings.ts" />
+    <TypeScriptCompile Include="src\app\security\maintenance.guard.ts" />
     <TypeScriptCompile Include="src\app\support-contacts\support-contact.ts" />
     <TypeScriptCompile Include="src\app\user\user-info.ts" />
     <TypeScriptCompile Include="src\app\common\widget.ts" />
@@ -241,12 +248,10 @@
     <TypeScriptCompile Include="src\app\tabs\tab.component.ts" />
     <TypeScriptCompile Include="src\app\tabs\tabs.component.ts" />
     <TypeScriptCompile Include="src\app\welcome\welcome.component.ts" />
-    <TypeScriptCompile Include="src\environments\environment.debug.ts" />
     <TypeScriptCompile Include="src\environments\environment.dev.ts" />
-    <TypeScriptCompile Include="src\environments\environment.max.ts" />
+    <TypeScriptCompile Include="src\environments\environment.test.ts" />
     <TypeScriptCompile Include="src\environments\environment.prod.ts" />
     <TypeScriptCompile Include="src\environments\environment.ts" />
-    <TypeScriptCompile Include="src\environments\environment.ethics.ts" />
     <TypeScriptCompile Include="src\main.ts" />
     <TypeScriptCompile Include="src\polyfills.ts" />
     <TypeScriptCompile Include="src\test.ts" />
@@ -261,6 +266,12 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />

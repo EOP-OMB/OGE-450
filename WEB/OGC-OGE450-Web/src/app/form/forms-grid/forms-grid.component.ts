@@ -5,6 +5,7 @@ import { SelectItem, DataTable } from 'primeng/primeng';
 import { Switch } from '../../common/switch';
 import { Lookups, FormStatus, FormFlags } from '../../common/constants';
 import { OGEForm450 } from '../oge-form-450';
+import { OGEForm450Service } from '../oge-form-450.service';
 
 declare var $: any;
 
@@ -36,8 +37,10 @@ export class FormsGridComponent implements OnInit {
 
     overdueFilter: Switch = new Switch();
 
+    selectedForm: OGEForm450;
+
     constructor(private router: Router,
-    ) {
+        private formService: OGEForm450Service) {
         this.overdueFilter.value = false;
         this.overdueFilter.onText = "Overdue";
         this.overdueFilter.color = "danger";
@@ -47,6 +50,8 @@ export class FormsGridComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.selectedForm = new OGEForm450();
+
         this.years = Lookups.YEARS;
         this.reportingStatuses = Lookups.REPORTING_STATUSES;
         this.statuses = Lookups.FORM_STATUSES;
@@ -100,5 +105,25 @@ export class FormsGridComponent implements OnInit {
 
     rowClick(form: OGEForm450) {
         this.onEdit.emit(form);
+    }
+
+    confirmCancel(form: OGEForm450) {
+        this.selectedForm = form;
+        $('#confirm-cancel').modal('show');
+    }
+
+    cancelForm(form: OGEForm450) {
+        form.formStatus = FormStatus.CANCELED;
+        this.formService.update(form).then(response => {
+            $("#success-alert").alert();
+
+            $("#success-alert").fadeTo(2000, 500).slideUp(500, function () {
+                $("#success-alert").slideUp(500);
+            });
+        });
+    }
+
+    canCancel(form: OGEForm450) {
+        return form.formStatus != FormStatus.CANCELED && form.formStatus != FormStatus.EXPIRED && form.formStatus != FormStatus.CERTIFIED;
     }
 }

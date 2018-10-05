@@ -31,6 +31,7 @@ export class DashboardComponent implements OnInit {
     extensions: ExtensionRequest[];
 
     numberOfBlankForms: number = 0;
+    numberOfUnchangedForms: number = 0;
     
     submittedWidget: Widget = new Widget();
     extensionWidget: Widget = new Widget();
@@ -85,6 +86,9 @@ export class DashboardComponent implements OnInit {
 
                 var blankForms = forms.filter(x => x.isBlank);
                 this.numberOfBlankForms = blankForms.length;
+
+                var unchangedForms = forms.filter(x => x.isUnchanged);
+                this.numberOfUnchangedForms = unchangedForms.length;
             });
     }
 
@@ -108,7 +112,15 @@ export class DashboardComponent implements OnInit {
     
     certifyBlankForms() {
         if (confirm("Proceeding with this action will auto certify all 'blank' forms.  All submitted forms where the filer answered 'no' to all 5 sections will be certified.  Are you sure you want to continue?")) {
-            this.formService.certifyBlankForms().then(forms => {
+            this.formService.certifyForms('blank').then(forms => {
+                this.loadForms();
+            });
+        }
+    }
+
+    certifyUnchangedForms() {
+        if (confirm("Proceeding with this action will auto certify all 'unchanged' forms.  All submitted forms where the filer made no changes to their previous year's certified form.  Are you sure you want to continue?")) {
+            this.formService.certifyForms('unchanged').then(forms => {
                 this.loadForms();
             });
         }

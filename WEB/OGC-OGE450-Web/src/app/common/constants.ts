@@ -8,6 +8,7 @@
     public static SUBMITTED: string = "Submitted";
     public static CERTIFIED: string = "Certified";
     public static CANCELED: string = "Canceled";
+    public static EXPIRED: string = "Expired";
 }
 
 export class ExtensionStatus {
@@ -30,6 +31,14 @@ export class FilerTypes {
     public static NON_FILER: string = "Non-Filer";
 }
 
+export class EmployeeStatus {
+    public static ACTIVE: string = "Active";
+    public static ON_DETAIL: string = "On Detail";
+    public static ON_LEAVE: string = "On Leave";
+    public static DETAILEE: string = "Detailee";
+    public static INACTIVE: string = "Inactive";
+}
+
 export class RecipientTypes {
     public static USER: string = "User";
     public static GROUP: string = "Group";
@@ -40,6 +49,7 @@ export class FormFlags {
     public static PAPER_COPY: string = "Paper Copy";
     public static BLANK_SUBMISSION: string = "Blank";
     public static OVERDUE: string = "Overdue";
+    public static UNCHANGED: string = "Unchanged";
 }
 
 import { SelectItem } from 'primeng/primeng';
@@ -48,6 +58,7 @@ export class Lookups {
     public static YEARS: SelectItem[];
     public static EXTENSION_STATUSES: SelectItem[];
     public static FILER_TYPES: SelectItem[];
+    public static EMPLOYEE_STATUSES: SelectItem[];
     public static REPORTING_STATUSES: SelectItem[];
     public static FORM_STATUSES: SelectItem[];
     public static RECIPIENT_TYPES: SelectItem[];
@@ -71,6 +82,7 @@ export class Lookups {
         Lookups.FORM_FLAGS.push({ label: FormFlags.BLANK_SUBMISSION, value: FormFlags.BLANK_SUBMISSION });
         Lookups.FORM_FLAGS.push({ label: FormFlags.PAPER_COPY, value: FormFlags.PAPER_COPY });
         Lookups.FORM_FLAGS.push({ label: FormFlags.OVERDUE, value: FormFlags.OVERDUE });
+        Lookups.FORM_FLAGS.push({ label: FormFlags.UNCHANGED, value: FormFlags.UNCHANGED });
 
         Lookups.EXTENSION_STATUSES = [];
         Lookups.EXTENSION_STATUSES.push({ label: 'All', value: null });
@@ -87,6 +99,14 @@ export class Lookups {
         Lookups.FILER_TYPES.push({ label: FilerTypes.NON_FILER, value: FilerTypes.NON_FILER });
         Lookups.FILER_TYPES.push({ label: FilerTypes._450_WAIVED, value: FilerTypes._450_WAIVED });
 
+        Lookups.EMPLOYEE_STATUSES = [];
+        Lookups.EMPLOYEE_STATUSES.push({ label: 'All', value: null });
+        Lookups.EMPLOYEE_STATUSES.push({ label: EmployeeStatus.ACTIVE, value: EmployeeStatus.ACTIVE });
+        Lookups.EMPLOYEE_STATUSES.push({ label: EmployeeStatus.ON_DETAIL, value: EmployeeStatus.ON_DETAIL });
+        Lookups.EMPLOYEE_STATUSES.push({ label: EmployeeStatus.ON_LEAVE, value: EmployeeStatus.ON_LEAVE });
+        Lookups.EMPLOYEE_STATUSES.push({ label: EmployeeStatus.DETAILEE, value: EmployeeStatus.DETAILEE });
+        Lookups.EMPLOYEE_STATUSES.push({ label: EmployeeStatus.INACTIVE, value: EmployeeStatus.INACTIVE });
+
         Lookups.REPORTING_STATUSES = [];
         Lookups.REPORTING_STATUSES.push({ label: 'All', value: null });
         Lookups.REPORTING_STATUSES.push({ label: ReportingStatus.NEW_ENTRANT, value: ReportingStatus.NEW_ENTRANT });
@@ -102,6 +122,7 @@ export class Lookups {
         Lookups.FORM_STATUSES.push({ label: FormStatus.RE_SUBMITTED, value: FormStatus.RE_SUBMITTED });
         Lookups.FORM_STATUSES.push({ label: FormStatus.CERTIFIED, value: FormStatus.CERTIFIED });
         Lookups.FORM_STATUSES.push({ label: FormStatus.CANCELED, value: FormStatus.CANCELED });
+        Lookups.FORM_STATUSES.push({ label: FormStatus.EXPIRED, value: FormStatus.EXPIRED });
 
         Lookups.RECIPIENT_TYPES = [];
         Lookups.RECIPIENT_TYPES.push({ label: RecipientTypes.USER, value: RecipientTypes.USER });

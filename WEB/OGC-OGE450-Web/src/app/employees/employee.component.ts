@@ -31,6 +31,7 @@ export class EmployeeComponent implements OnInit {
 
     currentForm: OGEForm450;
 
+    employeeStatuses: SelectItem[];
     filingTypes: SelectItem[];
     editEmp: Employee;
 
@@ -55,6 +56,8 @@ export class EmployeeComponent implements OnInit {
 
     ngOnInit(): void {
         this.filingTypes = Lookups.FILER_TYPES;
+        this.employeeStatuses = Lookups.EMPLOYEE_STATUSES;
+        console.log(this.employeeStatuses);
     }
 
     ngOnChanges(): void {
@@ -67,7 +70,7 @@ export class EmployeeComponent implements OnInit {
         this.createFormSwitch.offColor = "default";
         this.createFormSwitch.size = "normal";
 
-        Logging.log('ngOnChanges: employee.component.ts');
+        console.log(this.employee);
         
         if (this.employee) {
             

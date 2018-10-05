@@ -19,6 +19,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { TinyMceEditorComponent } from './common/tinymce-editor.component';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+    import { MaintenanceComponent } from './home/maintenance/maintenance.component';
 import { My450Component } from './my450/my450.component';
     import { WidgetComponent } from './common/widget.component';
     import { HelpfulLinksComponent } from './helpful-links/helpful-links.component';
@@ -66,6 +67,7 @@ import { NotificationTemplateService } from './admin/edit-templates/notification
 
 // guards
 import { LoggedInGuard } from "./security/logged-in.guard";
+import { MaintenanceGuard } from "./security/maintenance.guard";
 import { ReviewerGuard, AdminGuard } from "./security/reviewer.guard";
 
 // error handling
@@ -105,6 +107,7 @@ export function httpServiceFactory(backend: XHRBackend, options: RequestOptions,
         BannerComponent,
         WelcomeComponent,
         HomeComponent,
+        MaintenanceComponent,
         My450Component,
         ExtensionRequestComponent,
         DashboardComponent,
@@ -146,6 +149,7 @@ export function httpServiceFactory(backend: XHRBackend, options: RequestOptions,
         },
         OGEForm450Service,
         LoggedInGuard,
+        MaintenanceGuard,
         ReviewerGuard,
         AdminGuard,
         PreventUnsavedChangesGuard,

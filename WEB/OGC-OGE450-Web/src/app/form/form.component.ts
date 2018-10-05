@@ -101,7 +101,7 @@ export class FormComponent implements OnInit, AfterViewInit {
         this.giftsOrTravelReimbursements = this.form.reportableInformationList.filter(x => x.infoType === "GiftsOrTravelReimbursements");
 
         this.origForm = JSON.parse(JSON.stringify(this.form));
-
+        this.tempAppointmentDate = Helper.getDate(this.form.dateOfAppointment);
         if (this.form.reportingStatus == ReportingStatus.NEW_ENTRANT) {
             $('#dtDateOfAppointment').show();
             $('#dtNoDate').hide();
@@ -202,6 +202,7 @@ export class FormComponent implements OnInit, AfterViewInit {
     };
 
     public isDirty(): boolean {
+
         return JSON.stringify(this.origForm) != JSON.stringify(this.form);
     }
 
@@ -236,8 +237,19 @@ export class FormComponent implements OnInit, AfterViewInit {
        window.print();
     }
 
+    //getAppointmentDate(): string {
+    //    var dt = $('#dtDateOfAppointment');
+
+    //    this.tempAppointmentDate = Helper.getDate(dt.val());
+
+    //    return Helper.formatDate(this.tempAppointmentDate);
+    //}
+
     save(submitting: boolean, close: boolean = false): void {
         if (this.canSave() || submitting) {
+            //console.log(this.tempAppointmentDate);
+            //this.form.dateOfAppointment = this.getAppointmentDate();
+            //console.log(this.form.dateOfAppointment);
             this.formService.update(this.form)
                 .then(response => {
                     this.userService.user.currentFormStatus = response.formStatus;

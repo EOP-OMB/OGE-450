@@ -13,9 +13,10 @@
     <div style="padding-top: 20px;">
         <tabs #tabs>
             <tab #tabForms tabTitle="Forms">
-                <div class="row" style="padding-bottom: 15px;" *ngIf="numberOfBlankForms > 0">
+                <div class="row" style="padding-bottom: 15px;" *ngIf="numberOfBlankForms > 0 || numberOfUnchangedForms > 0">
                     <div class="col-sm-12">
-                        <div class="btn btn-success pull-right" (click)="certifyBlankForms()">Batch Certify Blank Forms</div>
+                        <div *ngIf="numberOfBlankForms > 0" class="btn btn-success pull-right" (click)="certifyBlankForms()">Batch Certify Blank Forms</div>
+                        <div *ngIf="numberOfUnchangedForms > 0" class="btn btn-success pull-right" (click)="certifyUnchangedForms()">Batch Certify Unchanged Forms</div>
                     </div>
                 </div>
                 <forms-grid #dtForms [forms]="forms"></forms-grid>

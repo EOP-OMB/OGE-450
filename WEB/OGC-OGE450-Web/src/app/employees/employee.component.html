@@ -36,6 +36,12 @@
                         <div class="top-label pad">Branch</div>
                         <div class="data-label">{{editEmp.branch}}</div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="top-label">Employee Status</div>
+                        <select class="form-control" [(ngModel)]="editEmp.employeeStatus">
+                            <option *ngFor="let es of employeeStatuses" [value]="es.value">{{es.label}}</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="panel panel-default">

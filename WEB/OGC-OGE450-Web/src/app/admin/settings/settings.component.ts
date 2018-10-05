@@ -1,4 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { SettingsService } from './settings.service';
 import { Settings } from './settings';
 
@@ -14,7 +15,8 @@ export class SettingsComponent implements OnInit {
     private settings: Settings;
     private origSettings: Settings;
 
-    constructor(private settingsService: SettingsService) { }
+    constructor(private settingsService: SettingsService,
+        private router: Router) { }
 
     ngOnInit(): void {
         this.getSettings();
@@ -44,6 +46,14 @@ export class SettingsComponent implements OnInit {
             $("#settings-success").fadeTo(2000, 500).slideUp(500, function () {
                 $("#settings-success").slideUp(500);
             });
+        });
+    }
+
+    triggerAnnualFiling() {
+        this.settingsService.initiateAnnualRollover().then(response => {
+            this.settings = response;
+
+            this.router.navigate(['/maintenance']);
         });
     }
 }

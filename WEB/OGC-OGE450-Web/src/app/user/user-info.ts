@@ -7,4 +7,5 @@
     currentFormId: number;
     currentFormStatus: string;
     userProfileUrl: string;
+    inMaintMode: boolean;
 }

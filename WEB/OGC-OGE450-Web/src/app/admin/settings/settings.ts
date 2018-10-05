@@ -9,4 +9,6 @@
     totalGiftValue: number;
 
     ccEmail: string;
+
+    annualDueDate: Date;
 }

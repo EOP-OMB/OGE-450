@@ -25,7 +25,7 @@ export function authenticateAdfs(adalService: AdalService, secretService: Secret
         
         if (adalService.userInfo.isAuthenticated) {
             Logging.log('authenticated!');
-
+            
             return userService.load();
         }
     };

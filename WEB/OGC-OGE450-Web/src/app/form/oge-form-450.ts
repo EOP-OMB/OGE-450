@@ -43,6 +43,7 @@ export class OGEForm450 {
 
     isOverdue: boolean;
     isBlank: boolean;
+    isUnchanged: boolean;
 
     extendedText: string;
 

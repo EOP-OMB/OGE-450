@@ -42,8 +42,8 @@ export class OGEForm450Service {
             .catch(this.handleError);
     }
 
-    certifyBlankForms(): Promise<OGEForm450[]> {
-        var url = `${this.serviceUrl}?a=certifyblank`;
+    certifyForms(action: string): Promise<OGEForm450[]> {
+        var url = `${this.serviceUrl}?a=certify` + action;
 
         return this.http.get(url)
             .toPromise()

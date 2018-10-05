@@ -69,6 +69,7 @@ export class EmployeesService {
         newEmp.pictureUrl = emp.pictureUrl;
         newEmp.generateForm = emp.generateForm;
         newEmp.appointmentDate = emp.appointmentDate;
+        newEmp.employeeStatus = emp.employeeStatus;
 
         newEmp.newEntrantEmailText = emp.newEntrantEmailText;
         newEmp.annualEmailText = emp.annualEmailText;

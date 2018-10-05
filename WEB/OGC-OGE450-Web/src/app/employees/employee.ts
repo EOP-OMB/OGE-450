@@ -5,6 +5,7 @@
     inactive: boolean;
     inactiveDate: Date;
     filerType: string;
+    employeeStatus: string;
     reportingStatus: string;
     last450Date: Date;
     appointmentDate: string;

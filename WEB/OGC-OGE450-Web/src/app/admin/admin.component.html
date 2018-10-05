@@ -36,13 +36,15 @@
                 <extension-grid [extensions]="extensions"></extension-grid>
             </tab>
             <tab #tabAppSettings tabTitle="Settings">
-                <div class="col-md-5">
-                    <settings></settings>
-                </div>
-                <div class="col-md-7">
-                    <edit-links></edit-links>
-                    <div style="position: absolute;">
-                        <edit-contacts></edit-contacts>
+                <div class="row">
+                    <div class="col-md-5">
+                        <settings></settings>
+                    </div>
+                    <div class="col-md-7">
+                        <edit-links></edit-links>
+                        <div style="position: absolute;">
+                            <edit-contacts></edit-contacts>
+                        </div>
                     </div>
                 </div>
             </tab>

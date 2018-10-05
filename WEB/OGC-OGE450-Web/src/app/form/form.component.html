@@ -137,10 +137,11 @@
                             <label><input name="ReportingStatus" type="radio" value="Annual" [(ngModel)]="form.reportingStatus" disabled />Annual</label>
                         </div>
                     </div>
-                    <div class="col-xs-5 form-box">
+                    <div class="col-xs-5 form-box" style="overflow: visible !important;">
                         <div class="control-label">
                             If new Entrant, Date of Appointment to Position (mm/dd/yyyy)
-                            <input id="dtDateOfAppointment" name="DateOfAppointment" type="date" class="form-control" style="width: 65%; display: inline;" [ngModel]="form.dateOfAppointment | date:'yyyy-MM-dd'" (ngModelChange)="form.dateOfAppointment = $event"  />
+                            <!--<p-calendar id="dtDateOfAppointment" inputStyleClass="form-control" [(ngModel)]="tempAppointmentDate"></p-calendar>-->
+                            <input id="dtDateOfAppointment" name="DateOfAppointment" type="date" class="form-control" style="width: 65%; display: inline;" [ngModel]="tempAppointmentDate | date:'yyyy-MM-dd'" (ngModelChange)="form.dateOfAppointment = $event" />
                             <input id="dtNoDate" name="DateOfAppointment" type="text" class="form-control" style="width: 65%; display: inline;" hidden disabled />
                         </div>
                     </div>
