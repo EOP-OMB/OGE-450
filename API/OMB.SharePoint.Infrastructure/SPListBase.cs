@@ -46,6 +46,38 @@ namespace OMB.SharePoint.Infrastructure
             dest["Title"] = string.IsNullOrEmpty(Title) ? "No Title" : Title;
         }
 
+        public Dictionary<string, string> GetFieldVersionHistory(string fieldName)
+        {
+            var dict = new Dictionary<string, string>();
+
+            using (ClientContext ctx = new ClientContext(SharePointHelper.Url))
+            {
+                // Get versions of specific document from library - item and file
+                List list = ctx.Web.Lists.GetByTitle(ListName);
+                ListItem item = list.GetItemById(Id);
+                ListItemVersionCollection versions = item.Versions;
+                ctx.Load(list);
+                ctx.Load(item);
+                ctx.Load(versions);
+                
+                ctx.ExecuteQuery();
+
+                // Loop list item versions and access data of specific fields
+                foreach (var version in versions)
+                {
+                    string versionValue = string.Empty;
+                    if (version.FieldValues[fieldName] != null)
+                    {
+                        versionValue = version.FieldValues[fieldName].ToString();
+                    }
+
+                    dict.Add(version.VersionLabel, versionValue);
+                }
+            }
+
+            return dict;
+        }
+
         public virtual T Save()
         {
             ListItem newItem;

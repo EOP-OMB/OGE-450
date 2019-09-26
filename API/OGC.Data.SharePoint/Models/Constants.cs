@@ -81,6 +81,7 @@ namespace OGC.Data.SharePoint.Models
             public const string APPROVED = "Closed - Approved";
             public const string CANCELED = "Closed - Canceled";
             public const string WITHDRAWN = "Closed - Withdrawn";
+            public const string DENIED = "Closed - Denied";
         }
 
         public class AttachmentType

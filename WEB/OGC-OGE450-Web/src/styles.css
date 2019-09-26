@@ -374,3 +374,14 @@ input[type="number"] {
 .table-striped > tbody > tr:nth-child(odd) {
     background-color: white !important;
 }
+
+
+.download-button {
+    color: green;
+    padding: 0px 5px 5px 0px;
+    font-size: 1.5em;
+}
+
+    .download-button > i {
+        cursor: pointer;
+    }

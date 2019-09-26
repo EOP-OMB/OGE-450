@@ -1,0 +1,20 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/API/OGC.Data.SharePoint/bin/Debug
+/API/OGC.Data.SharePoint/obj/Debug
+/API/OGC.Form450.API/bin
+/API/OGC.Form450.API/obj/Debug
+/API/OMB.SharePoint.Infrastructure/bin/Debug
+/API/OGC.Form450.API/Properties/PublishProfiles/Test.pubxml
+/API/OMB.SharePoint.Infrastructure/obj/Debug
+/WEB/.vs/OGC-OGE450-Web/v16
+/WEB/OGC-OGE450-Web/obj/Debug
+/WEB/OGC-OGE450-Web/bin
+/WEB/.vs/OGC-OGE450-Web/config
+/WEB/OGC-OGE450-Web/Web.Test.config
+/WEB/OGC-OGE450-Web/Web.Prod.config
+/WEB/OGC-OGE450-Web/Web.Debug.config
+/WEB/OGC-OGE450-Web/package-lock.json
+/WEB/OGC-OGE450-Web/OGC-OGE450-Web.csproj.user

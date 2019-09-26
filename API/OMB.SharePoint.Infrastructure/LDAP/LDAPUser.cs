@@ -35,6 +35,7 @@ namespace OMB.SharePoint.Infrastructure.LDAP
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string MemberOf { get; set; }
+        public string WhenCreated { get; set; }
 
         public LDAPUser()
         {
@@ -51,6 +52,7 @@ namespace OMB.SharePoint.Infrastructure.LDAP
             LDAPHelper.CatchException(delegate { SamAccountName = result.Properties["samaccountname"][0].ToString(); });
             LDAPHelper.CatchException(delegate { FirstName = result.Properties["givenname"][0].ToString(); });
             LDAPHelper.CatchException(delegate { LastName = result.Properties["sn"][0].ToString(); });
+            LDAPHelper.CatchException(delegate { WhenCreated = result.Properties["whenCreated"][0].ToString(); });
 
             UPN = result.Properties["UserPrincipalName"][0].ToString();
             DisplayName = result.Properties["displayName"][0].ToString();

@@ -8,7 +8,7 @@ using OMB.SharePoint.Infrastructure;
 
 namespace OGC.Data.SharePoint.Models
 {
-    public class ReportableInformation : SPListBase<ReportableInformation>, ISPList
+    public class ReportableInformation : SPListBaseYear<ReportableInformation>, ISPList
     {
         #region Properties
         public int OGEForm450Id { get; set; }
@@ -24,16 +24,6 @@ namespace OGC.Data.SharePoint.Models
         public ReportableInformation()
         {
             this.ListName = this.GetType().Name;
-        }
-
-        public ReportableInformation(ReportableInformation ri) : this()
-        {
-            this.AdditionalInfo = ri.AdditionalInfo;
-            this.Description = ri.Description;
-            this.InfoType = ri.InfoType;
-            this.Name = ri.Name;
-            this.NoLongerHeld = ri.NoLongerHeld;
-            this.Title = ri.Title;
         }
 
         public override void MapToList(ListItem dest)

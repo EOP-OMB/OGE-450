@@ -1,11 +1,16 @@
-﻿<div class="alert alert-success alert-fixed" id="success-alert" style="display: none;">
+<div class="alert alert-success alert-fixed" id="success-alert" style="display: none;">
     <button type="button" class="close" data-dismiss="alert">x</button>
     <span class="glyphicon glyphicon-ok-circle text-success" style="font-size: 2em;"></span>
     <strong>Success!</strong>
     Form Canceled Successfully
 </div>
 <input #filterText type="text" placeholder="Search text..." hidden>
-<p-dataTable [value]="forms" [paginator]="true" [rows]="15"  [rowsPerPageOptions]="[15,30,60]" [responsive]="true" [globalFilter]="filterText" #dt>
+<div class="row">
+    <div class="col-md-12">
+        <div *ngIf="dt" class="pull-right download-button"><i class="fa fa-file-excel-o" (click)="dt.exportCSV()" title="Download (csv)"></i></div>
+    </div>
+</div>
+<p-dataTable [value]="forms" [paginator]="true" [rows]="15"  [rowsPerPageOptions]="[15,30,60]" [responsive]="true" [globalFilter]="filterText" (onPage)="onPage($event)" (onSort)="onSort($event)" (onFilter)="onFilter($event)" #dt>
     <p-column field="employeesName" header="Name" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '30%'}">
         <ng-template pTemplate="body" let-data="rowData">
             <a class="link" (click)="gotoDetail(data.id)">{{ data.employeesName }}</a>
@@ -20,7 +25,7 @@
     </p-column>
     <p-column field="reportingStatus" header="Reporting Status" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width' : '13%'}">
         <ng-template pTemplate="filter" let-col>
-            <select id="ddlReportingStatus" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+            <select id="ddlReportingStatus2" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
                 <option *ngFor="let status of reportingStatuses" [value]="status.value">{{status.label}}</option>
             </select>
         </ng-template>
@@ -28,11 +33,11 @@
     <p-column field="formStatus" header="Status" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '17%'}">
         <ng-template pTemplate="filter" let-col>
             <select id="ddlStatus" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
-                <option *ngFor="let status of statuses" [value]="status.value">{{status.label}}</option>
+                <option *ngFor="let stat of statuses" [value]="stat.value">{{stat.label}}</option>
             </select>
         </ng-template>
     </p-column>
-    <p-column field="formFlags" header="Form Flags" [sortable]="true" [filter]="false" filterMatchMode="contains" [style]="{'width' : '12%'}">
+    <p-column field="formFlags" header="Form Flags" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '12%'}">
         <ng-template pTemplate="filter" let-col>
             <select id="ddlFlags" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
                 <option *ngFor="let flags of formFlags" [value]="flags.value">{{flags.label}}</option>

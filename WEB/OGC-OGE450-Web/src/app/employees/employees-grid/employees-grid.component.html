@@ -1,11 +1,16 @@
-﻿<div class="alert alert-success alert-fixed" id="success-alert" style="display: none;">
+<div class="alert alert-success alert-fixed" id="success-alert" style="display: none;">
     <button type="button" class="close" data-dismiss="alert">x</button>
     <span class="glyphicon glyphicon-ok-circle text-success" style="font-size: 2em;"></span>
     <strong>Success!</strong>
     Employee updated
 </div>
 <input #filterText type="text" placeholder="Search text..." hidden>
-<p-dataTable [value]="gridEmployees" [paginator]="true" [rows]="15" [rowsPerPageOptions]="[15,30,60]" [responsive]="true" [globalFilter]="filterText" #dt>
+<div class="row">
+    <div class="col-md-12">
+        <div *ngIf="dt" class="pull-right download-button"><i class="fa fa-file-excel-o" (click)="dt.exportCSV()" title="Download (csv)"></i></div>
+    </div>
+</div>
+<p-dataTable [value]="gridEmployees" [paginator]="true" [rows]="15" [rowsPerPageOptions]="[15,30,60]" [responsive]="true" [globalFilter]="filterText" (onPage)="onPage($event)" (onSort)="onSort($event)" (onFilter)="onFilter($event)"  #dt>
     <p-column field="displayName" header="Name" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '22%'}">
         <ng-template pTemplate="body" let-data="rowData">
             <a class="link" (click)="gotoDetail(data)">{{ data.displayName }}</a>

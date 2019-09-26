@@ -20,6 +20,9 @@ namespace OGC.Data.SharePoint.Models
         public string ReasonForAttending { get; set; }
 
         public UserInfo Employee { get; set; }
+
+        public bool InformedSupervisor { get; set; }
+        public string NameOfSupervisor { get; set; }
         #endregion
 
         public Attendee()
@@ -46,6 +49,8 @@ namespace OGC.Data.SharePoint.Models
             dest["IsGivingRemarks"] = Convert.ToBoolean(IsGivingRemarks);
             dest["Remarks"] = Remarks;
             dest["ReasonForAttending"] = ReasonForAttending;
+            dest["InformedSupervisor"] = InformedSupervisor;
+            dest["NameOfSupervisor"] = NameOfSupervisor;
         }
 
         public static void FixAttendee()
@@ -81,6 +86,9 @@ namespace OGC.Data.SharePoint.Models
             IsGivingRemarks = Convert.ToBoolean(item["IsGivingRemarks"]);
             Remarks = SharePointHelper.ToStringNullSafe(item["Remarks"]);
             ReasonForAttending = SharePointHelper.ToStringNullSafe(item["ReasonForAttending"]);
+
+            InformedSupervisor = SharePointHelper.ToStringNullSafe(item["InformedSupervisor"]) == "True";
+            NameOfSupervisor = SharePointHelper.ToStringNullSafe(item["NameOfSupervisor"]);
         }
         #endregion
     }

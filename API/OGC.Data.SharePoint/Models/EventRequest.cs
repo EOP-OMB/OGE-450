@@ -274,7 +274,7 @@ namespace OGC.Data.SharePoint.Models
                     result = "Unable to assign event request, you do not have permission to perform this action.";
             }
 
-            if (oldItem != null && !oldItem.Status.Contains(Constants.EventRequestStatus.CLOSED) && this.Status.Contains(Constants.EventRequestStatus.CLOSED))
+            if (oldItem != null && !oldItem.Status.Contains("Closed") && this.Status.Contains("Closed"))
             {
                 // Attempting to close, only let admin or reviewer close, otherwise return error
                 if (appUser.IsAdmin || appUser.IsReviewer)
@@ -345,14 +345,15 @@ namespace OGC.Data.SharePoint.Models
             {
                 var data = "​​​​Name of Attendee: {0}<br />";
 
-                data += "Political or Career Employee: {1}<br />";
-                data += "Attending Capacity: {2}<br />";
-                data += "Attendee Giving Remarks: {3}<br />";
-                data += "Remarks: {4}<br />";
-                data += "Reason for Attending: {5}";
+                data += "Has your supervisor been informed of this request?: {1}<br />";
+                data += "Name of Supervisor: {2}<br />";
+                data += "Political or Career Employee: {3}<br />";
+                data += "Attending Capacity: {4}<br />";
+                data += "Attendee Giving Remarks: {5}<br />";
+                data += "Remarks: {6}<br />";
+                data += "Reason for Attending: {7}";
 
-                
-                data = string.Format(data, new string[] { att.Employee == null ? "" : att.Employee.DisplayName, att.EmployeeType, att.Capacity, att.IsGivingRemarks ? "Yes" : "No", att.Remarks, att.ReasonForAttending});
+                data = string.Format(data, new string[] { att.Employee == null ? "" : att.Employee.DisplayName, att.InformedSupervisor ? "Yes" : "No", att.NameOfSupervisor, att.EmployeeType, att.Capacity, att.IsGivingRemarks ? "Yes" : "No", att.Remarks, att.ReasonForAttending});
 
                 attendeeData += data + "<br /><br />";
                 attendeeString += att.Employee.DisplayName + ", ";

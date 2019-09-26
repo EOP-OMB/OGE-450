@@ -148,7 +148,7 @@ namespace OMB.SharePoint.Infrastructure.LDAP
 
             if (entry != null)
             {
-                var propertiesToLoad = new string[] { "givenname", "samaccountname", "sn", "userPrincipalName", "extensionAttribute3", "displayName", "employeeType", "department", "physicalDeliveryOfficeName", "title", "userAccountControl" };
+                var propertiesToLoad = new string[] { "givenname", "samaccountname", "sn", "userPrincipalName", "extensionAttribute3", "displayName", "employeeType", "department", "physicalDeliveryOfficeName", "title", "userAccountControl", "whenCreated" };
 
                 using (DirectorySearcher ds = new DirectorySearcher(entry, filter, propertiesToLoad))
                 {

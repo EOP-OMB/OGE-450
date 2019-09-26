@@ -55,6 +55,7 @@ namespace OGC.Data.SharePoint.Models
         public bool IsUnchanged { get; set; }
 
         public string AppUser { get; set; }
+
         public string CorrelationId { get; set; }
 
         public string FormFlags { get; set; }
@@ -66,6 +67,10 @@ namespace OGC.Data.SharePoint.Models
 
         public string Note { get; set; }
         public bool SubmittedPaperCopy { get; set; }
+
+        public DateTime? DateOfSubstantiveReview { get; set; }
+
+        public string SubstantiveReviewer { get; set; }
         #endregion
 
         public OGEForm450()
@@ -129,7 +134,10 @@ namespace OGC.Data.SharePoint.Models
             
             if (user.IsReviewer || user.IsAdmin)
             {
-                
+                if (!string.IsNullOrEmpty(this.SubstantiveReviewer))
+                {
+                    this.DateOfSubstantiveReview = DateOfSubstantiveReview.HasValue ? DateOfSubstantiveReview.Value : DateTime.Now;
+                }
 
                 if (this.isRejected)
                 {
@@ -241,6 +249,7 @@ namespace OGC.Data.SharePoint.Models
             this.DateOfAppointment = SharePointHelper.ToDateTimeNullIfMin(Convert.ToDateTime(item["DateOfAppointment"]));
             this.DateOfEmployeeSignature = SharePointHelper.ToDateTimeNullIfMin(Convert.ToDateTime(item["DateOfEmployeeSignature"]));
             this.DateOfReviewerSignature = SharePointHelper.ToDateTimeNullIfMin(Convert.ToDateTime(item["DateOfReviewerSignature"]));
+            this.DateOfSubstantiveReview = SharePointHelper.ToDateTimeNullIfMin(Convert.ToDateTime(item["DateOfSubstantiveReview"]));
             this.DateReceivedByAgency = SharePointHelper.ToDateTimeNullIfMin(Convert.ToDateTime(item["DateReceivedByAgency"]));
             this.EmployeeSignature = SharePointHelper.ToStringNullSafe(item["EmployeeSignature"]);
             this.EmailAddress = SharePointHelper.ToStringNullSafe(item["EmailAddress"]);
@@ -256,6 +265,7 @@ namespace OGC.Data.SharePoint.Models
             this.PositionTitle = SharePointHelper.ToStringNullSafe(item["PositionTitle"]);
             this.ReportingStatus = SharePointHelper.ToStringNullSafe(item["ReportingStatus"]);
             this.ReviewingOfficialSignature = SharePointHelper.ToStringNullSafe(item["ReviewingOfficialSignature"]);
+            this.SubstantiveReviewer = SharePointHelper.ToStringNullSafe(item["SubstantiveReviewer"]);
             this.FormStatus = SharePointHelper.ToStringNullSafe(item["FormStatus"]);
             this.WorkPhone = SharePointHelper.ToStringNullSafe(item["WorkPhone"]);
             this.Year = Convert.ToInt32(item["Year"]);
@@ -270,7 +280,7 @@ namespace OGC.Data.SharePoint.Models
             
 
             if (includeChildren)
-                this.ReportableInformationList = ReportableInformation.GetAllBy(ListName + "Id", Id);
+                this.ReportableInformationList = ReportableInformation.GetAllBy(ListName + "Id", Id, this.Year);
         }
 
         private string GetFormFlags()
@@ -317,6 +327,7 @@ namespace OGC.Data.SharePoint.Models
             dest["DateOfEmployeeSignature"] = SharePointHelper.ToDateTimeNullIfMin(DateOfEmployeeSignature);
             dest["DateOfReviewerSignature"] = SharePointHelper.ToDateTimeNullIfMin(this.DateOfReviewerSignature);
             dest["DateReceivedByAgency"] = SharePointHelper.ToDateTimeNullIfMin(this.DateReceivedByAgency);
+            dest["DateOfSubstantiveReview"] = SharePointHelper.ToDateTimeNullIfMin(this.DateOfSubstantiveReview);
             dest["EmailAddress"] = this.EmailAddress;
             dest["EmployeesName"] = this.EmployeesName;
             dest["EmployeeSignature"] = this.EmployeeSignature;
@@ -334,6 +345,7 @@ namespace OGC.Data.SharePoint.Models
 
             dest["ReportingStatus"] = this.ReportingStatus;
             dest["ReviewingOfficialSignature"] = this.ReviewingOfficialSignature;
+            dest["SubstantiveReviewer"] = this.SubstantiveReviewer;
             dest["WorkPhone"] = this.WorkPhone;
             dest["DueDate"] = this.DueDate;
 
@@ -369,7 +381,7 @@ namespace OGC.Data.SharePoint.Models
                 prevForm = forms.Where(x => x.Year == settings.CurrentFilingYear - 1 && x.FormStatus != Constants.FormStatus.CANCELED).OrderByDescending(x => x.DueDate).FirstOrDefault();
 
                 if (prevForm != null)
-                    prevForm.ReportableInformationList = ReportableInformation.GetAllBy(prevForm.ListName + "Id", prevForm.Id);
+                    prevForm.ReportableInformationList = ReportableInformation.GetAllBy(prevForm.ListName + "Id", prevForm.Id, prevForm.Year);
             }
             
             return prevForm;
@@ -416,7 +428,14 @@ namespace OGC.Data.SharePoint.Models
             {
                 foreach (ReportableInformation ri in copy.ReportableInformationList)
                 {
-                    var newInfo = new ReportableInformation(ri);
+                    var newInfo = new ReportableInformation();
+
+                    newInfo.AdditionalInfo = ri.AdditionalInfo;
+                    newInfo.Description = ri.Description;
+                    newInfo.InfoType = ri.InfoType;
+                    newInfo.Name = ri.Name;
+                    newInfo.NoLongerHeld = ri.NoLongerHeld;
+                    newInfo.Title = ri.Title;
 
                     newForm.ReportableInformationList.Add(newInfo);
                 }
@@ -526,13 +545,13 @@ namespace OGC.Data.SharePoint.Models
             foreach (ReportableInformation info in this.ReportableInformationList)
             {
                 if (info.Id > 0 && info.IsEmpty())
-                    info.Delete();
+                    info.Delete(this.Year);
                 else
                 {
                     if (info.OGEForm450Id == 0)
                         info.OGEForm450Id = this.Id;
 
-                    info.Save();
+                    info.Save(this.Year);
                 }
                 
             }
@@ -541,11 +560,13 @@ namespace OGC.Data.SharePoint.Models
         public static List<OGEForm450> CertifyBlankForms(UserInfo user)
         {
             var blankForms = GetAllReviewable();
-            blankForms = blankForms.Where(x => x.IsBlank == true && (x.FormStatus == Constants.FormStatus.SUBMITTED || x.FormStatus == Constants.FormStatus.RE_SUBMITTED)).ToList();
+            // Added constraint of only certifying ANNUAL forms per Laurie's request 7/11/2019 -SBK
+            blankForms = blankForms.Where(x => x.IsBlank == true && x.ReportingStatus == Constants.ReportingStatus.ANNUAL && (x.FormStatus == Constants.FormStatus.SUBMITTED || x.FormStatus == Constants.FormStatus.RE_SUBMITTED)).ToList();
 
             foreach (OGEForm450 form in blankForms)
             {
                 var filer = UserInfo.GetUser(form.Filer);
+
                 var oldItem = OGEForm450.Get(form.Id);
 
                 form.ReviewingOfficialSignature = user.DisplayName;

@@ -6,6 +6,7 @@ using Microsoft.SharePoint.Client;
 using OMB.SharePoint.Infrastructure;
 using System.Security.Claims;
 using Microsoft.SharePoint.Client.Search.Query;
+using System.ServiceModel.Security;
 
 namespace OGC.Data.SharePoint.Models
 {
@@ -15,6 +16,7 @@ namespace OGC.Data.SharePoint.Models
         public string Upn { get; set; }
         public string DisplayName { get; set; }
         public string Email { get; set; }
+        public string Manager { get; private set; }
         public bool IsReviewer { get; set; }
         public bool IsAdmin { get; set; }
         public bool IsRestrictedAdmin { get; set; }
@@ -44,15 +46,24 @@ namespace OGC.Data.SharePoint.Models
         {
             using (ClientContext clientContext = new ClientContext(SharePointHelper.SearchUrl))
             {
-                KeywordQuery keywordQuery = new KeywordQuery(clientContext);
-                keywordQuery.QueryText = query + "*";
-                keywordQuery.TrimDuplicates = true;
-                keywordQuery.SourceId = Guid.Parse(SharePointHelper.SourceId);
+                ClientResult<ResultTableCollection> results;
 
-                SearchExecutor searchExecutor = new SearchExecutor(clientContext);
-                ClientResult<ResultTableCollection> results = searchExecutor.ExecuteQuery(keywordQuery);
+                try
+                {
+                    KeywordQuery keywordQuery = new KeywordQuery(clientContext);
+                    keywordQuery.QueryText = query + "*";
+                    keywordQuery.TrimDuplicates = true;
+                    keywordQuery.SourceId = Guid.Parse(SharePointHelper.SourceId);
 
-                clientContext.ExecuteQuery();
+                    SearchExecutor searchExecutor = new SearchExecutor(clientContext);
+                    results = searchExecutor.ExecuteQuery(keywordQuery);
+
+                    clientContext.ExecuteQuery();
+                }
+                catch(MessageSecurityException ex)
+                {
+                    results = new ClientResult<ResultTableCollection>();
+                }
 
                 var users = new List<UserInfo>();
 
@@ -62,6 +73,7 @@ namespace OGC.Data.SharePoint.Models
                     {
                         if (result["PreferredName"] != null && result["AccountName"] != null)
                         {
+                            //var user = GetUser(result["AccountName"].ToString(), false, false);
                             var user = new UserInfo() { DisplayName = result["PreferredName"].ToString(), Upn = result["AccountName"].ToString() };
 
                             if (!users.Contains(user))
@@ -142,7 +154,9 @@ namespace OGC.Data.SharePoint.Models
             info.Id = u.Id;
             info.Upn = u.LoginName;
 
-            var form = GetUserForm(u.LoginName);
+            OGEForm450 form = null;
+
+            form = GetUserForm(u.LoginName);
 
             if (form != null)
             {
@@ -162,7 +176,7 @@ namespace OGC.Data.SharePoint.Models
                 info.DisplayName = profile.IsPropertyAvailable("DisplayName") ? profile.DisplayName : u.LoginName;
                 info.UserProfileUrl = profile.IsPropertyAvailable("UserUrl") ? profile.UserUrl : "";
                 info.Email = profile.IsPropertyAvailable("Email") ? profile.Email : "";
-
+                //info.Manager = (profile.IsPropertyAvailable("UserProfileProperties") && profile.UserProfileProperties.ContainsKey("Manager")) ? profile.UserProfileProperties["Manager"] : string.Empty;
                 info.PhoneNumber = (profile.IsPropertyAvailable("UserProfileProperties") && profile.UserProfileProperties.ContainsKey("WorkPhone")) ? profile.UserProfileProperties["WorkPhone"] : string.Empty;
                 info.Branch = (profile.IsPropertyAvailable("UserProfileProperties") && profile.UserProfileProperties.ContainsKey("Office")) ? profile.UserProfileProperties["Office"] : string.Empty;
             }

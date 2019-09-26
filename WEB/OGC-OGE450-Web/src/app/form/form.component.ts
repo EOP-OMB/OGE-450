@@ -1,4 +1,4 @@
-﻿import { Helper } from '../common/helper'
+import { Helper } from '../common/helper'
 import { environment } from '../../environments/environment'
 import { Component, Input, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params, CanDeactivate } from '@angular/router';
@@ -39,6 +39,7 @@ export class FormComponent implements OnInit, AfterViewInit {
     giftsOrTravelReimbursements: ReportableInformation[];
 
     tempAppointmentDate: Date;
+    tempReviewDate: Date;
 
     constructor(
         private formService: OGEForm450Service,
@@ -92,6 +93,8 @@ export class FormComponent implements OnInit, AfterViewInit {
 
     initialize(form: OGEForm450) {
         this.form = form;
+
+        this.tempReviewDate = this.form.dateOfSubstantiveReview;
 
         this.initializePopovers();
         this.assetsAndIncome = this.form.reportableInformationList.filter(x => x.infoType === "AssetsAndIncome");
@@ -179,6 +182,9 @@ export class FormComponent implements OnInit, AfterViewInit {
             $('#txtReviewerComments').prop('disabled', true);
         else if (!this.isCertified())
             $('#txtReviewerComments').prop('disabled', false);
+
+        if (this.canReview())
+            $('#dtReviewDate').prop('disabled', false);
     }
 
     initializePopovers(): void {
@@ -246,7 +252,7 @@ export class FormComponent implements OnInit, AfterViewInit {
     //}
 
     save(submitting: boolean, close: boolean = false): void {
-        if (this.canSave() || submitting) {
+        if (this.canSave() || submitting || this.canReview()) {
             //console.log(this.tempAppointmentDate);
             //this.form.dateOfAppointment = this.getAppointmentDate();
             //console.log(this.form.dateOfAppointment);
@@ -337,6 +343,13 @@ export class FormComponent implements OnInit, AfterViewInit {
         }
     }
 
+    reviewComplete(): void {
+        if (this.canReview()) {
+            this.form.substantiveReviewer = this.userService.user.displayName;
+            this.save(false, false);
+        }
+    }
+
     certifyPaper(): void {
         this.form.reviewingOfficialSignature = this.userService.user.displayName;
         this.form.commentsOfReviewingOfficial = "Certification based on filer’s paper submission.\n" + this.form.commentsOfReviewingOfficial;
@@ -359,6 +372,10 @@ export class FormComponent implements OnInit, AfterViewInit {
 
     isSubmitted(): boolean {
         return (this.form.formStatus == FormStatus.SUBMITTED || this.form.formStatus == FormStatus.RE_SUBMITTED);
+    }
+
+    canReview(): boolean {
+        return !this.canSubmit() && ((this.isReviewer && (this.form.filer != this.userService.user.upn || environment.debug)) || this.isAdmin);
     }
 
     canCertify(): boolean {

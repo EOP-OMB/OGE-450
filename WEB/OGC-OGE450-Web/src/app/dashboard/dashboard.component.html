@@ -1,4 +1,4 @@
-﻿<div id="home" class="container">
+<div id="home" class="container">
     <div class="row">
         <div class="col-md-12">
             <div>
@@ -19,10 +19,10 @@
                         <div *ngIf="numberOfUnchangedForms > 0" class="btn btn-success pull-right" (click)="certifyUnchangedForms()">Batch Certify Unchanged Forms</div>
                     </div>
                 </div>
-                <forms-grid #dtForms [forms]="forms"></forms-grid>
+                <forms-grid #dtForms [forms]="forms" gridId="dashboardForms"></forms-grid>
             </tab>
             <tab #tabExtensions tabTitle="Extensions">
-                <extension-grid [extensions]="extensions"></extension-grid>
+                <extension-grid [extensions]="extensions" gridId="dashExtensions"></extension-grid>
             </tab>
         </tabs>
     </div>

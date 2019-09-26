@@ -228,9 +228,9 @@ namespace OGC.Data.SharePoint
 
         private static void SendEmail(Notifications email)
         {
-            var client = new SmtpClient("mail.omb.gov");
+            var client = new SmtpClient("SMTP URL");
  
-            var from = new MailAddress("notification@omb.gov", "OGC Ethics", System.Text.Encoding.UTF8);
+            var from = new MailAddress("", "Ethics App", System.Text.Encoding.UTF8);
 
             var message = new MailMessage();
 
@@ -241,13 +241,16 @@ namespace OGC.Data.SharePoint
                 foreach (string to in email.Recipient.Split(','))
                     message.To.Add(new MailAddress(to));
 
-                message.ReplyToList.Add(new MailAddress("DONOTREPLY@omb.gov"));
+                message.ReplyToList.Add(new MailAddress("DONOTREPLY@"));
                 message.IsBodyHtml = true;
 
                 message.Body = email.Body;
 
                 if (!string.IsNullOrEmpty(email.Cc))
-                    message.CC.Add(new MailAddress(email.Cc));
+                {
+                    foreach (string cc in email.Cc.Split(',', ';'))
+                        message.CC.Add(new MailAddress(cc));
+                }   
 
                 message.Subject = email.Subject;
                 message.SubjectEncoding = System.Text.Encoding.UTF8;

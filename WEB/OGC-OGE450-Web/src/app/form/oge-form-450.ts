@@ -1,4 +1,4 @@
-﻿import { ReportableInformation } from './reportable-information';
+import { ReportableInformation } from './reportable-information';
 import { FormFlags } from '../common/constants';
 
 export class OGEForm450 {
@@ -50,4 +50,7 @@ export class OGEForm450 {
     submittedPaperCopy: boolean;
 
     formFlags: string;
+
+    dateOfSubstantiveReview: Date;
+    substantiveReviewer: string;
 }

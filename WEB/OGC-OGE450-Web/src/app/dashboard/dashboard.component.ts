@@ -1,10 +1,10 @@
-﻿import { Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReviewerDashboard } from '../dashboard/reviewer-dashboard';
 import { TabsComponent } from '../tabs/tabs.component';
 import { TabComponent } from '../tabs/tab.component';
 import { SelectItem } from 'primeng/primeng';
-import { FormStatus } from '../common/constants';
+import { FormStatus, ReportingStatus } from '../common/constants';
 
 import { OGEForm450 } from '../form/oge-form-450';
 import { OGEForm450Service } from '../form/oge-form-450.service';
@@ -66,7 +66,9 @@ export class DashboardComponent implements OnInit {
             .then(forms => {
                 this.forms = forms;
 
-                this.submittedWidget.title = this.forms.filter(x => x.formStatus == FormStatus.SUBMITTED || x.formStatus == FormStatus.RE_SUBMITTED).length.toString();
+                var submittedForms = this.forms.filter(x => x.formStatus == FormStatus.SUBMITTED || x.formStatus == FormStatus.RE_SUBMITTED)
+
+                this.submittedWidget.title = submittedForms.length.toString();
                 this.submittedWidget.text = "Submitted";
                 this.submittedWidget.actionText = "require reviewer action";
 
@@ -84,10 +86,10 @@ export class DashboardComponent implements OnInit {
                 else
                     this.overdueWidget.color = "danger";
 
-                var blankForms = forms.filter(x => x.isBlank);
+                var blankForms = submittedForms.filter(x => x.isBlank && x.reportingStatus == ReportingStatus.ANNUAL);
                 this.numberOfBlankForms = blankForms.length;
 
-                var unchangedForms = forms.filter(x => x.isUnchanged);
+                var unchangedForms = submittedForms.filter(x => x.isUnchanged);
                 this.numberOfUnchangedForms = unchangedForms.length;
             });
     }
@@ -111,7 +113,7 @@ export class DashboardComponent implements OnInit {
     }
     
     certifyBlankForms() {
-        if (confirm("Proceeding with this action will auto certify all 'blank' forms.  All submitted forms where the filer answered 'no' to all 5 sections will be certified.  Are you sure you want to continue?")) {
+        if (confirm("Proceeding with this action will auto certify all 'blank' forms  for annual filers only.  All submitted forms where the filer answered 'no' to all 5 sections will be certified.  Are you sure you want to continue?")) {
             this.formService.certifyForms('blank').then(forms => {
                 this.loadForms();
             });
