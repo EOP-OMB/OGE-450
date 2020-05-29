@@ -10,7 +10,7 @@
         <div *ngIf="dt" class="pull-right download-button"><i class="fa fa-file-excel-o" (click)="dt.exportCSV()" title="Download (csv)"></i></div>
     </div>
 </div>
-<p-dataTable [value]="forms" [paginator]="true" [rows]="15"  [rowsPerPageOptions]="[15,30,60]" [responsive]="true" [globalFilter]="filterText" (onPage)="onPage($event)" (onSort)="onSort($event)" (onFilter)="onFilter($event)" #dt>
+<p-dataTable [value]="forms" [paginator]="true" [rows]="15" [rowsPerPageOptions]="[15,30,60]" [responsive]="true" [globalFilter]="filterText" (onPage)="onPage($event)" (onSort)="onSort($event)" (onFilter)="onFilter($event)" #dt>
     <p-column field="employeesName" header="Name" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '30%'}">
         <ng-template pTemplate="body" let-data="rowData">
             <a class="link" (click)="gotoDetail(data.id)">{{ data.employeesName }}</a>
@@ -30,14 +30,22 @@
             </select>
         </ng-template>
     </p-column>
-    <p-column field="formStatus" header="Status" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '17%'}">
+    <p-column field="formStatus" header="Status" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '10%'}">
         <ng-template pTemplate="filter" let-col>
             <select id="ddlStatus" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
                 <option *ngFor="let stat of statuses" [value]="stat.value">{{stat.label}}</option>
             </select>
         </ng-template>
     </p-column>
-    <p-column field="formFlags" header="Form Flags" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '12%'}">
+    <p-column field="dateSubmitted" header="Date Filed" [filter]="true" [sortable]="true" [style]="{'width' : '12%'}" filterMatchMode="contains">
+        <ng-template pTemplate="filter" let-col>
+            <input id="dtFiledDateFilter" type="date" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);" />
+        </ng-template>
+        <ng-template pTemplate="body" let-data="rowData">
+            {{ data.dateSubmitted }}
+        </ng-template>
+    </p-column>
+    <p-column field="formFlags" header="Flags" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '7%'}">
         <ng-template pTemplate="filter" let-col>
             <select id="ddlFlags" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
                 <option *ngFor="let flags of formFlags" [value]="flags.value">{{flags.label}}</option>
@@ -59,12 +67,12 @@
             <span *ngIf="data.isOverdue" class='fa fa-exclamation-triangle text-danger' style="font-size: 1.6em; vertical-align: middle;" title="Form is overdue"></span>
         </ng-template>
     </p-column>
-    <p-column field="dueDate" header="Due Date" [filter]="true" [sortable]="true" [style]="{'width' : '12%'}" filterMatchMode="contains">
+    <p-column field="dueDateString" header="Due Date" [filter]="true" [sortable]="true" [style]="{'width' : '12%'}" filterMatchMode="contains">
         <ng-template pTemplate="filter" let-col>
             <input id="dtDateFilter" type="date" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);" />
         </ng-template>
         <ng-template pTemplate="body" let-data="rowData">
-            {{ data.dueDate | date: "MM/dd/yyyy" }}
+            {{ data.dueDateString }}
         </ng-template>
     </p-column>
     <p-column header="Actions" [filter]="false" [hidden]="!this.edit" [style]="{'width' : '6%'}">
@@ -73,7 +81,11 @@
             <span *ngIf="canCancel(data)" style="padding-left: 10px; cursor: pointer;" class='text-danger glyphicon glyphicon-ban-circle' (click)="confirmCancel(data)" title="Cancel Form"></span>
         </ng-template>
     </p-column>
-    <p-column field="isOverdue" header="" [filter]="true" filterMatchMode="equals" hidden="hidden"></p-column>
+    <p-column field="daysToCertification" header="Days to Certify" hidden="hidden"></p-column>
+    <p-column field="daysToReview" header="Days to Review" hidden="hidden"></p-column>
+    <p-column field="certifiedIn60Days" header="Certified in 60 Days" hidden="hidden"></p-column>
+    <p-column field="reviewedIn60Days" header="Reviewed in 60 Days" hidden="hidden"></p-column>
+    <p-column field="isOverdue" header="Is Overdue" [filter]="true" filterMatchMode="equals" hidden="hidden"></p-column>
 </p-dataTable>
 <div style="width: 100%;">
     <span class="pull-right">Total Records: {{ dt.totalRecords }}</span>

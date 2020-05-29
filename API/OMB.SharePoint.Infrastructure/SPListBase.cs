@@ -232,6 +232,39 @@ namespace OMB.SharePoint.Infrastructure
             return results;
         }
 
+        public static List<T> GetAllDocuments()
+        {
+            var ctx = new ClientContext(SharePointHelper.Url);
+            var type = new T();
+            var results = new List<T>();
+
+            try
+            {
+                var web = SharePointHelper.GetWeb(ctx);
+                var list = SharePointHelper.GetList(ctx, web, type.ListName);
+                
+                var caml = SharePointHelper.GetAllDocumentsCaml();
+                var items = list.GetItems(caml);
+                ctx.Load(items);
+                ctx.ExecuteQuery();
+
+                foreach (ListItem item in items)
+                {
+                    var t = new T();
+
+                    t.MapFromList(item);
+
+                    results.Add(t);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Unable to get " + type.ListName + ". " + ex.Message, ex);
+            }
+
+            return results;
+        }
+
         public static List<T> GetAllJoined(string joinList, string joinField, string[] projectedFields)
         {
             var ctx = new ClientContext(SharePointHelper.Url);

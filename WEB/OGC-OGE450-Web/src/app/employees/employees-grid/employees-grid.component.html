@@ -11,26 +11,19 @@
     </div>
 </div>
 <p-dataTable [value]="gridEmployees" [paginator]="true" [rows]="15" [rowsPerPageOptions]="[15,30,60]" [responsive]="true" [globalFilter]="filterText" (onPage)="onPage($event)" (onSort)="onSort($event)" (onFilter)="onFilter($event)"  #dt>
-    <p-column field="displayName" header="Name" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '22%'}">
+    <p-column field="displayName" header="Name" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '27%'}">
         <ng-template pTemplate="body" let-data="rowData">
             <a class="link" (click)="gotoDetail(data)">{{ data.displayName }}</a>
         </ng-template>
     </p-column>
-    <p-column field="division" header="Division" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '11%'}">
-        <ng-template pTemplate="filter" let-col>
-            <select id="ddlDivisions" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
-                <option *ngFor="let type of divisions" [value]="type.value">{{type.label}}</option>
-            </select>
-        </ng-template>
-    </p-column>
-    <p-column field="filerType" header="Filer Type" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width': '14%'}">
+    <p-column field="filerType" header="Filer Type" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width': '15%'}">
         <ng-template pTemplate="filter" let-col>
             <select id="ddlFilerTypes" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
                 <option *ngFor="let type of filerTypes" [value]="type.value">{{type.label}}</option>
             </select>
         </ng-template>
     </p-column>
-    <p-column field="employeeStatus" header="Status" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width':'12%'}">
+    <p-column field="employeeStatus" header="Status" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width':'13%'}">
         <ng-template pTemplate="filter" let-col>
             <select id="ddlEmployeeStatus" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
                 <option *ngFor="let status of employeeStatuses" [value]="status.value">{{status.label}}</option>
@@ -44,14 +37,14 @@
             </select>
         </ng-template>
     </p-column>
-    <p-column field="currentFormStatus" header="Form Status" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width' : '12%'}">
+    <p-column field="currentFormStatus" header="Form Status" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width' : '13%'}">
         <ng-template pTemplate="filter" let-col>
             <select id="ddlFormStatus" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
                 <option *ngFor="let status of statuses" [value]="status.value">{{status.label}}</option>
             </select>
         </ng-template>
     </p-column>
-    <p-column field="last450Date" header="Last File Date" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width':'12%'}">
+    <p-column field="last450Date" header="Last File Date" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width':'15%'}">
         <ng-template pTemplate="filter" let-col>
             <input id="dtDateFilter" type="date" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);" />
         </ng-template>

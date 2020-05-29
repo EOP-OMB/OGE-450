@@ -1,0 +1,48 @@
+<div (window:beforeunload)="confirmClose()"></div>
+<div id="ogeForm450" class="container section form-start">
+    <div *ngIf="form && settings">
+        <oge-form-450 #ogeForm450 [form]="form" [prevForm]="prevForm" [settings]="settings" (onClose)="closeForm($event)" (onSave)="saveForm($event)" (onCompare)="compareForms($event)" [mode]="mode"></oge-form-450>
+    </div>
+    <div class="alert alert-success alert-fixed" id="success-alert" style="display: none; margin-top: 145px;">
+        <div type="button" class="close" data-dismiss="alert">x</div>
+        <strong>Success! </strong>
+        Form saved successfully.
+    </div>
+</div>
+
+
+<div class="modal fade" id="confirm-close" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-danger">
+                <div class="modal-title" style="font-size: 1.5em;"><i class="fa fa-exclamation-triangle" style="padding-right: 20px;"></i>Unsaved Changes Detected</div>
+            </div>
+            <div class="modal-body">
+                <p>There are unsaved changes on this form, if you leave this page the changes will be lost.</p>
+            </div>
+            <div class="modal-footer">
+                <div type="button" class="btn btn-primary" style="float: left;" (click)="saveAndClose()">Save and Close</div>
+                <div type="button" class="btn btn-default" data-dismiss="modal">Stay on Page</div>
+                <div class="btn btn-danger btn-ok" (click)="confirmClose()">Leave Page</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="compare-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">OGE Form 450 Compare</h4>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="settings && prevForm">
+                    <app-form-compare [form]="form" [prevForm]="prevForm" [settings]="settings"></app-form-compare>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

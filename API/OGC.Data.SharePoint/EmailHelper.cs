@@ -43,7 +43,14 @@ namespace OGC.Data.SharePoint
 
             notification.Status = "Pending";
             notification.Title = template.Title;
-            notification.Subject = Replace(template.Subject, dictionary);
+
+            var subject = Replace(template.Subject, dictionary);
+
+            if (subject.Length > 255)
+                subject = subject.Substring(0, 251) + "...";
+
+            notification.Subject = subject;
+
             notification.Body = body;
             notification.Application = template.Application;
             notification.IsAnnouncment = template.Frequency != "Real Time";
@@ -228,9 +235,9 @@ namespace OGC.Data.SharePoint
 
         private static void SendEmail(Notifications email)
         {
-            var client = new SmtpClient("SMTP URL");
+            var client = new SmtpClient("mail.omb.gov");
  
-            var from = new MailAddress("", "Ethics App", System.Text.Encoding.UTF8);
+            var from = new MailAddress("notification@omb.gov", "OGC Ethics", System.Text.Encoding.UTF8);
 
             var message = new MailMessage();
 
@@ -241,7 +248,7 @@ namespace OGC.Data.SharePoint
                 foreach (string to in email.Recipient.Split(','))
                     message.To.Add(new MailAddress(to));
 
-                message.ReplyToList.Add(new MailAddress("DONOTREPLY@"));
+                message.ReplyToList.Add(new MailAddress("DONOTREPLY@omb.gov"));
                 message.IsBodyHtml = true;
 
                 message.Body = email.Body;

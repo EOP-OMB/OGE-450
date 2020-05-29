@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt';
 import { environment } from '../../environments/environment';
@@ -18,54 +18,67 @@ export class OGEForm450Service {
     }
 
     getAll(): Promise<OGEForm450[]> {
-        return this.http.get(this.serviceUrl)
+        return this.getFormattedArray(this.serviceUrl);
+    }
+
+    private getFormattedArray(url: string) {
+        return this.http.get(url)
             .toPromise()
-            .then(response => response.json())
+            .then(response => {
+                var data: OGEForm450[] = [];
+
+                var obj = response.json();
+
+                obj.forEach(x => {
+                    var obj = this.formatResponse(x);
+                    data.push(obj);
+                });
+
+                return data;
+            })
             .catch(this.handleError);
     }
 
     getMyForms(): Promise<OGEForm450[]> {
         var url = `${this.serviceUrl}?a=myforms`;
 
-        return this.http.get(url)
-            .toPromise()
-            .then(response => response.json())
-            .catch(this.handleError);
+        return this.getFormattedArray(url);
     }
 
     getReviewableForms(): Promise<OGEForm450[]> {
         var url = `${this.serviceUrl}?a=reviewer`;
 
-        return this.http.get(url)
-            .toPromise()
-            .then(response => response.json())
-            .catch(this.handleError);
+        return this.getFormattedArray(url);
     }
 
     certifyForms(action: string): Promise<OGEForm450[]> {
         var url = `${this.serviceUrl}?a=certify` + action;
 
-        return this.http.get(url)
-            .toPromise()
-            .then(response => response.json())
-            .catch(this.handleError);
+        return this.getFormattedArray(url);
     }
 
     get(id: number): Promise<OGEForm450> {
         var url = `${this.serviceUrl}/${id}`;
 
+        return this.getFormattedObject(url);
+    }
+
+    private getFormattedObject(url: string) {
         return this.http.get(url)
             .toPromise()
-            .then(response => response.json())
+            .then(response => {
+                var obj = response.json();
+                if (obj != null)
+                    obj = this.formatResponse(obj);
+                return obj;
+            })
             .catch(this.handleError);
     }
 
-     create(name: string): Promise<OGEForm450> {
-        return this.http
-            .post(this.serviceUrl, JSON.stringify({ name: name }))
-            .toPromise()
-            .then(res => res.json().data as OGEForm450)
-            .catch(this.handleError);
+    getPrevious(id: number): Promise<OGEForm450> {
+        var url = `${this.serviceUrl}?a=prev&id=` + id;
+
+        return this.getFormattedObject(url);
     }
 
     update(form: OGEForm450): Promise<OGEForm450> {
@@ -88,6 +101,10 @@ export class OGEForm450Service {
 
     private handleError(error: Response | any): Promise<any> {
         return Promise.reject(error.message || error);
+    }
+
+    formatResponse(data: OGEForm450): OGEForm450 {
+        return Object.assign(new OGEForm450(), data);
     }
 }
 

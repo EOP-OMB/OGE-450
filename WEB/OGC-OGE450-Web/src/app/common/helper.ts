@@ -1,4 +1,4 @@
-﻿import { environment } from '../../environments/environment'
+import { environment } from '../../environments/environment'
 
 export class Helper {
     static addDays(date: Date, days: number): Date {
@@ -23,10 +23,13 @@ export class Helper {
     }
 
     static formatDate(date: Date): string {
-        if (date)
-            return Helper.format(date.getMonth() + 1, "00") + '/' + Helper.format(date.getDate(), "00") + '/' + date.getFullYear();
-        else
-            return null;
+        var dateString: string = null;
+
+        if (date) {
+            dateString = Helper.format(date.getMonth() + 1, "00") + '/' + Helper.format(date.getDate(), "00") + '/' + date.getFullYear();
+        }
+
+        return dateString;
     }
 
     static getDate(value: string, useToday: boolean = false): Date {
@@ -37,7 +40,7 @@ export class Helper {
         var s = format + value;
 
         s = s.substring(s.length - format.length);
-        
+
         return s;
     }
 }

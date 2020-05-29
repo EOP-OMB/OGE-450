@@ -116,15 +116,7 @@ namespace OGC.Form450.API.Controllers
 
                 if (emp != null && !string.IsNullOrEmpty(emp.AccountName))
                 {
-                    var previousForm = OGEForm450.GetPreviousFormByUser(emp.AccountName, settings);
-                    OGEForm450 form;
-
-                    if (previousForm == null)
-                        form = OGEForm450.Create(emp);
-                    else
-                        form = OGEForm450.Create(emp, previousForm, settings);
-
-                    form.ProcessEmails();
+                    OGEForm450.GenerateNewForm(emp, settings);
                 }
             }
             catch (Exception ex)

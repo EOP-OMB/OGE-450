@@ -85,6 +85,35 @@ namespace OGC.Form450.API.Controllers
 
         }
 
+        [HttpGet]
+        public IHttpActionResult Get(string a, int id)
+        {
+            try
+            {
+                var identity = HttpContext.Current.User.Identity as ClaimsIdentity;
+                OGE450User = UserInfo.GetUser(identity);
+
+                var currentForm = OGEForm450.Get(id);
+                var form = OGEForm450.GetPreviousForm(id);
+
+                if (form != null)
+                {
+                    // Return unauthorized if user is not admin or reviewer and trying to access someone elses filing
+                    if (!OGE450User.IsAdmin && !OGE450User.IsReviewer && form.Filer != OGE450User.Upn)
+                        return Unauthorized();
+
+                    SetReportableInformation(form, currentForm);
+                }
+
+                return Json(form, CamelCase);
+
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
         private List<OGEForm450> GetMyForms(UserInfo user)
         {
             var list = OGEForm450.GetAllByUser("Filer", user.Id).OrderByDescending(x => x.DueDate).ToList();
@@ -110,6 +139,7 @@ namespace OGC.Form450.API.Controllers
                 OGE450User = UserInfo.GetUser(identity);
 
                 var form = OGEForm450.Get(id);
+                var previousForm = OGEForm450.GetPreviousForm(id);
 
                 if (form != null)
                 {
@@ -117,7 +147,7 @@ namespace OGC.Form450.API.Controllers
                     if (!OGE450User.IsAdmin && !OGE450User.IsReviewer && form.Filer != OGE450User.Upn)
                         return Unauthorized();
 
-                    SetReportableInformation(form);
+                    SetReportableInformation(form, previousForm);
 
                     return Json(form, CamelCase);
                 }
@@ -130,6 +160,7 @@ namespace OGC.Form450.API.Controllers
                 return HandleException(ex);
             }
         }
+
 
         [HttpPut]
         public IHttpActionResult Update(OGEForm450 item)
@@ -180,7 +211,8 @@ namespace OGC.Form450.API.Controllers
                 // wait until after Save to process emails, if an error occurs it will be caught and the emails will not get processed.
                 item.ProcessEmails();
 
-                SetReportableInformation(form);
+                var previous = OGEForm450.GetPreviousForm(form.Id);
+                SetReportableInformation(form, previous);
 
                 return Json(form, CamelCase);
             }
@@ -190,27 +222,36 @@ namespace OGC.Form450.API.Controllers
             }
         }
 
-        private void SetReportableInformation(OGEForm450 form)
+        private void SetReportableInformation(OGEForm450 form, OGEForm450 compareForm)
         {
             var count = form.ReportableInformationList.Count(x => x.InfoType == InfoType.AssetsAndIncome);
-            for (int i = count; i < MIN_ASSETS; i++)
+            for (int i = count; i < CalcMin(MIN_ASSETS, form, compareForm, InfoType.AssetsAndIncome); i++)
                 form.ReportableInformationList.Add(new ReportableInformation() { InfoType = InfoType.AssetsAndIncome, Name = "", NoLongerHeld = false });
 
             count = form.ReportableInformationList.Count(x => x.InfoType == InfoType.Liabilities);
-            for (int i = count; i < MIN_LIABILITIES; i++)
+            for (int i = count; i < CalcMin(MIN_LIABILITIES, form, compareForm, InfoType.Liabilities); i++)
                 form.ReportableInformationList.Add(new ReportableInformation() { InfoType = InfoType.Liabilities, Name = "", Description = "" });
 
             count = form.ReportableInformationList.Count(x => x.InfoType == InfoType.OutsidePositions);
-            for (int i = count; i < MIN_POSITIONS; i++)
+            for (int i = count; i < CalcMin(MIN_POSITIONS, form, compareForm, InfoType.OutsidePositions); i++)
                 form.ReportableInformationList.Add(new ReportableInformation() { InfoType = InfoType.OutsidePositions, Name = "", Description = "", AdditionalInfo = "", NoLongerHeld = false });
 
             count = form.ReportableInformationList.Count(x => x.InfoType == InfoType.AgreementsOrArrangements);
-            for (int i = count; i < MIN_AGREEMENTS; i++)
+            for (int i = count; i < CalcMin(MIN_AGREEMENTS, form, compareForm, InfoType.AgreementsOrArrangements); i++)
                 form.ReportableInformationList.Add(new ReportableInformation() { InfoType = InfoType.AgreementsOrArrangements, Name = "", AdditionalInfo = "" });
 
             count = form.ReportableInformationList.Count(x => x.InfoType == InfoType.GiftsOrTravelReimbursements);
-            for (int i = count; i < MIN_GIFTS; i++)
+            for (int i = count; i < CalcMin(MIN_GIFTS, form, compareForm, InfoType.GiftsOrTravelReimbursements); i++)
                 form.ReportableInformationList.Add(new ReportableInformation() { InfoType = InfoType.GiftsOrTravelReimbursements, Name = "", AdditionalInfo = "" });
+        }
+
+        private int CalcMin(int min, OGEForm450 form, OGEForm450 compareForm, string type)
+        {
+            var formCount = form != null ? form.ReportableInformationList.Count(x => x.InfoType == type) : min;
+            var compareCount = compareForm != null ? compareForm.ReportableInformationList.Count(x => x.InfoType == type) : min;
+
+            var count = formCount > compareCount ? formCount : compareCount;
+            return count < min ? min : count;
         }
 
         private OGEForm450 ClearEmptyReportableInformation(OGEForm450 form)

@@ -19,6 +19,7 @@ namespace OGC.Data.SharePoint.Models
         public bool NoLongerHeld { get; set; }
         public string AppUser { get; set; }
         public string CorrelationId { get; set; }
+        public bool IsDeleted { get; set; }
         #endregion
 
         public ReportableInformation()
@@ -42,6 +43,7 @@ namespace OGC.Data.SharePoint.Models
             dest["NoLongerHeld"] = NoLongerHeld;
             dest["AppUser"] = AppUser;
             dest["CorrelationId"] = CorrelationId;
+            dest["IsDeleted"] = IsDeleted;
         }
 
         public override void MapFromList(ListItem item, bool includeChildren = false)
@@ -54,6 +56,7 @@ namespace OGC.Data.SharePoint.Models
             Description = SharePointHelper.ToStringNullSafe(item["Description"]);
             AdditionalInfo = SharePointHelper.ToStringNullSafe(item["AdditionalInfo"]);
             NoLongerHeld = Convert.ToBoolean(item["NoLongerHeld"]);
+            IsDeleted = Convert.ToBoolean(item["IsDeleted"]);
         }
 
         public bool IsEmpty()

@@ -353,10 +353,18 @@ namespace OGC.Data.SharePoint.Models
                 data += "Remarks: {6}<br />";
                 data += "Reason for Attending: {7}";
 
-                data = string.Format(data, new string[] { att.Employee == null ? "" : att.Employee.DisplayName, att.InformedSupervisor ? "Yes" : "No", att.NameOfSupervisor, att.EmployeeType, att.Capacity, att.IsGivingRemarks ? "Yes" : "No", att.Remarks, att.ReasonForAttending});
+                data = string.Format(data, new string[] {
+                    ((att.Employee == null) ? "" : att.Employee.DisplayName),
+                    (att.InformedSupervisor ? "Yes" : "No"),
+                    att.NameOfSupervisor ?? "",
+                    att.EmployeeType ?? "",
+                    att.Capacity ?? "",
+                    (att.IsGivingRemarks ? "Yes" : "No"),
+                    att.Remarks ?? "",
+                    att.ReasonForAttending ?? ""});
 
                 attendeeData += data + "<br /><br />";
-                attendeeString += att.Employee.DisplayName + ", ";
+                attendeeString += (att.Employee == null ? "Unknown Employee" : att.Employee.DisplayName) + ", ";
             }
 
             if (attendeeData.Length > 12) 

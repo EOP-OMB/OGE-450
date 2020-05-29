@@ -18,3 +18,5 @@
 /WEB/OGC-OGE450-Web/Web.Debug.config
 /WEB/OGC-OGE450-Web/package-lock.json
 /WEB/OGC-OGE450-Web/OGC-OGE450-Web.csproj.user
+/API/.vs/OGC.Form450
+*.user

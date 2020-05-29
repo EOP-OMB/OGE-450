@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -55,7 +55,29 @@
     <Content Include="src\app\admin\settings\settings.component.html" />
     <Content Include="src\app\banner\banner.component.css" />
     <Content Include="src\app\banner\banner.component.html" />
+    <TypeScriptCompile Include="src\app\common\controls\check-box\check-box.component.ts" />
+    <TypeScriptCompile Include="src\app\common\controls\control-base\control-base.component.ts" />
+    <TypeScriptCompile Include="src\app\common\controls\date-picker\date-picker.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\common\controls\date-picker\date-picker.component.ts" />
+    <TypeScriptCompile Include="src\app\common\controls\radio-button\radio-button.component.ts" />
+    <TypeScriptCompile Include="src\app\common\controls\short-text\short-text.component.ts" />
+    <TypeScriptCompile Include="src\app\common\controls\text-area\text-area.component.ts" />
+    <TypeScriptCompile Include="src\app\common\form-compare\form-compare.component.ts" />
     <TypeScriptCompile Include="src\app\common\grid-options.ts" />
+    <Content Include="src\app\common\controls\check-box\check-box.component.css" />
+    <Content Include="src\app\common\controls\check-box\check-box.component.html" />
+    <Content Include="src\app\common\controls\control-base\control-base.component.css" />
+    <Content Include="src\app\common\controls\control-base\control-base.component.html" />
+    <Content Include="src\app\common\controls\date-picker\date-picker.component.css" />
+    <Content Include="src\app\common\controls\date-picker\date-picker.component.html" />
+    <Content Include="src\app\common\controls\radio-button\radio-button.component.css" />
+    <Content Include="src\app\common\controls\radio-button\radio-button.component.html" />
+    <Content Include="src\app\common\controls\short-text\short-text.component.css" />
+    <Content Include="src\app\common\controls\short-text\short-text.component.html" />
+    <Content Include="src\app\common\controls\text-area\text-area.component.css" />
+    <Content Include="src\app\common\controls\text-area\text-area.component.html" />
+    <Content Include="src\app\common\form-compare\form-compare.component.css" />
+    <Content Include="src\app\common\form-compare\form-compare.component.html" />
     <Content Include="src\app\employees\employee.component.css" />
     <Content Include="src\app\employees\employee.component.html" />
     <Content Include="src\app\employees\employees-grid\employees-grid.component.css" />
@@ -65,6 +87,8 @@
     <Content Include="src\app\extension-request\extension-request.component.css" />
     <Content Include="src\app\extension-request\extension-request.component.html" />
     <Content Include="src\app\common\widget.component.html" />
+    <Content Include="src\app\form-view\form-view.component.css" />
+    <Content Include="src\app\form-view\form-view.component.html" />
     <Content Include="src\app\healthcheck\health-check.component.css" />
     <Content Include="src\app\healthcheck\health-check.component.html" />
     <Content Include="src\app\home\maintenance\maintenance.component.css" />
@@ -180,6 +204,7 @@
     <TypeScriptCompile Include="src\app\extension-request\extension-grid\extension-grid.component.ts" />
     <TypeScriptCompile Include="src\app\extension-request\extension-request.component.ts" />
     <TypeScriptCompile Include="src\app\extension-request\extension-request.service.ts" />
+    <TypeScriptCompile Include="src\app\form-view\form-view.component.ts" />
     <TypeScriptCompile Include="src\app\form\forms-grid\forms-grid.component.ts" />
     <TypeScriptCompile Include="src\app\form\examples\examples.component.ts" />
     <TypeScriptCompile Include="src\app\form\form.component.ts" />

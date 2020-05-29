@@ -1,4 +1,4 @@
-﻿// routing
+// routing
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -11,12 +11,12 @@ import { LoginComponent } from "./login/login.component";
 import { LogoutComponent } from "./logout/logout.component";
 import { ErrorComponent } from './error/error.component';
 import { PageNotFoundComponent } from './error/page-not-found.component';
-import { FormComponent, PreventUnsavedChangesGuard } from './form/form.component';
+import { FormViewComponent, PreventUnsavedChangesGuard } from './form-view/form-view.component';
 import { ExtensionRequestComponent } from './extension-request/extension-request.component';
 import { HealthCheckComponent } from './healthcheck/health-check.component';
 
 // resolvers
-import { OGEForm450Resolver } from './form/resolvers.service';
+import { OGEForm450Resolver, PreviousOGEForm450Resolver } from './form/resolvers.service';
 
 // guards
 import { LoggedInGuard } from "./security/logged-in.guard";
@@ -63,9 +63,10 @@ const appRoutes: Routes = [
     },
     {
         path: 'form/:id',
-        component: FormComponent,
+        component: FormViewComponent,
         resolve: {
-            form: OGEForm450Resolver
+            form: OGEForm450Resolver,
+            prev: PreviousOGEForm450Resolver
         },
         canActivate: [LoggedInGuard, MaintenanceGuard],
         canDeactivate: [PreventUnsavedChangesGuard],
@@ -91,7 +92,7 @@ const appRoutes: Routes = [
 @NgModule({
     imports: [RouterModule.forRoot(appRoutes)],
     exports: [RouterModule],
-    providers: [OGEForm450Resolver],
+    providers: [OGEForm450Resolver, PreviousOGEForm450Resolver],
 })
 
 export class AppRoutingModule { }

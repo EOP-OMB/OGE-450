@@ -1,0 +1,2 @@
+<div *ngIf="showLabel" class="control-label required {{ indicator }}"><ng-content></ng-content></div>
+<textarea [rows]="rows" [name]="name" type="text" class="form-control {{ displayCssClass }}" [ngStyle]="customStyle" [(ngModel)]="value" [disabled]="disabled"></textarea>

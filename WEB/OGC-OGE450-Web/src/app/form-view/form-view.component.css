@@ -1,0 +1,13 @@
+.form-start {
+    margin-top: 74px !important;
+}
+
+.modal-dialog {
+    width: 90% !important;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.modal-title {
+    text-align: center;
+}

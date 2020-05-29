@@ -64,6 +64,7 @@ export class DashboardComponent implements OnInit {
         this.formService
             .getReviewableForms()
             .then(forms => {
+                console.log(forms);
                 this.forms = forms;
 
                 var submittedForms = this.forms.filter(x => x.formStatus == FormStatus.SUBMITTED || x.formStatus == FormStatus.RE_SUBMITTED)

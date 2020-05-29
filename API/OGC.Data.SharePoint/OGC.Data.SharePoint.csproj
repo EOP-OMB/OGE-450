@@ -105,6 +105,8 @@
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\DebugLog.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\EthicsForm.cs" />
+    <Compile Include="Models\EthicsTeam.cs" />
     <Compile Include="Models\Migration\EthicsClearance.cs" />
     <Compile Include="Models\EventRequest.cs" />
     <Compile Include="Models\ExtensionRequest.cs" />

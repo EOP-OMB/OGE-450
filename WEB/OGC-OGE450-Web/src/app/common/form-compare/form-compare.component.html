@@ -1,0 +1,15 @@
+<div class="legend-box">
+    <div class="legend-label legend-title">Legend:</div>
+    <div class="legend-label legend-new">(+) : New</div>
+    <div class="legend-label legend-removed">(-) : Removed</div>
+    <div class="legend-label legend-updated">(#) : Updated</div>
+</div>
+<div class="compare-container" *ngIf="prevForm && form">
+    <div class="compare-item previous">
+        <oge-form-450 #ogeForm450 [form]="prevForm" [prevForm]="form" [settings]="settings" mode="COMPARE"></oge-form-450>
+    </div>
+    <div class="compare-item current">
+        <oge-form-450 #ogeForm450 [form]="form" [prevForm]="prevForm" [settings]="settings" mode="COMPARE"></oge-form-450>
+    </div>
+</div>
+

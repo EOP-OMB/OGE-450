@@ -71,6 +71,9 @@ namespace OGC.Data.SharePoint.Models
         public DateTime? DateOfSubstantiveReview { get; set; }
 
         public string SubstantiveReviewer { get; set; }
+
+        public bool IsSubmitting { get; set; }
+        public DateTime ReSubmittedDate { get; private set; }
         #endregion
 
         public OGEForm450()
@@ -114,12 +117,24 @@ namespace OGC.Data.SharePoint.Models
 
             this.DaysExtended = oldItem.DaysExtended;
 
-            if (user.Upn == filer.Upn && !string.IsNullOrEmpty(this.EmployeeSignature) && oldItem.EmployeeSignature != this.EmployeeSignature)
+            if (user.Upn == filer.Upn && IsSubmitting == true)
             {
                 // If the Employee signed the form, stamp the date/time and update the FormStatus to Submitted
-                this.DateReceivedByAgency = DateTime.Now;
-                this.DateOfEmployeeSignature = DateTime.Now.Date;
-                this.FormStatus = oldItem.FormStatus == Constants.FormStatus.MISSING_INFORMATION ? Constants.FormStatus.RE_SUBMITTED : Constants.FormStatus.SUBMITTED;
+                if (oldItem.FormStatus == Constants.FormStatus.MISSING_INFORMATION)
+                {
+                    // Re-submission
+                    this.FormStatus = Constants.FormStatus.RE_SUBMITTED;
+                    ReSubmittedDate = DateTime.Now.Date;
+                }
+                else
+                {
+                    // First Submission
+                    this.FormStatus = Constants.FormStatus.SUBMITTED;
+                    this.DateOfEmployeeSignature = DateTime.Now.Date;
+                    this.EmployeeSignature = user.DisplayName;
+                    this.DateReceivedByAgency = DateTime.Now;
+                }
+
                 IsUnchanged = CompareVsPreviousForm(user);
                 _pendingEmails.Add(EmailHelper.GetEmail(NotificationTemplates.NotificationTypes.OGE_FORM_450_SUBMITTED, filer, emailData));
                 _pendingEmails.Add(EmailHelper.GetEmail(NotificationTemplates.NotificationTypes.OGE_FORM_450_CONFIRMATION, filer, emailData));
@@ -142,8 +157,6 @@ namespace OGC.Data.SharePoint.Models
                 if (this.isRejected)
                 {
                     this.FormStatus = Constants.FormStatus.MISSING_INFORMATION;
-                    this.EmployeeSignature = "";
-                    this.DateOfEmployeeSignature = null;
                     _pendingEmails.Add(EmailHelper.GetEmail(NotificationTemplates.NotificationTypes.OGE_FORM_450_MISSING_INFO, filer, emailData));
                 }
 
@@ -157,6 +170,19 @@ namespace OGC.Data.SharePoint.Models
             }
             else
                 this.CommentsOfReviewingOfficial = oldItem.CommentsOfReviewingOfficial;
+        }
+
+        public static void GenerateNewForm(Employee emp, Settings settings = null)
+        {
+            var previousForm = OGEForm450.GetPreviousFormByUser(emp.AccountName, settings);
+            OGEForm450 form;
+
+            if (previousForm == null)
+                form = OGEForm450.Create(emp);
+            else
+                form = OGEForm450.Create(emp, previousForm, settings);
+
+            form.ProcessEmails();
         }
 
         private bool CompareVsPreviousForm(UserInfo user)
@@ -275,6 +301,7 @@ namespace OGC.Data.SharePoint.Models
             this.ExtendedText = this.DaysExtended > 0 ? "Yes (" + this.DaysExtended.ToString() + ")" : "No";
             this.SubmittedPaperCopy = Convert.ToBoolean(item["SubmittedPaperCopy"]);
             this.IsUnchanged = SharePointHelper.ToStringNullSafe(item["IsUnchanged"]) == "True";
+            this.ReSubmittedDate = Convert.ToDateTime(item["ResubmittedDate"]);
 
             this.FormFlags = GetFormFlags();
             
@@ -356,10 +383,24 @@ namespace OGC.Data.SharePoint.Models
             dest["SubmittedPaperCopy"] = Convert.ToBoolean(this.SubmittedPaperCopy);
 
             dest["IsUnchanged"] = this.IsUnchanged;
+            dest["ResubmittedDate"] = SharePointHelper.ToDateTimeNullIfMin(this.ReSubmittedDate);
         }
         #endregion
 
         #region Methods
+        public static OGEForm450 GetPreviousForm(int id)
+        {
+            var form = OGEForm450.Get(id);
+
+            var forms = OGEForm450.GetAllBy("Year", form.Year - 1);
+
+            form = forms.Where(x => x.Filer == form.Filer &&  x.FormStatus != Constants.FormStatus.CANCELED).OrderByDescending(x => x.DueDate).FirstOrDefault();
+            if (form != null)
+                form = OGEForm450.Get(form.Id);
+
+            return form;
+        }
+
         public static OGEForm450 GetCurrentFormByUser(string accountName)
         {
             var settings = Settings.GetAll().FirstOrDefault();
@@ -545,15 +586,16 @@ namespace OGC.Data.SharePoint.Models
             foreach (ReportableInformation info in this.ReportableInformationList)
             {
                 if (info.Id > 0 && info.IsEmpty())
-                    info.Delete(this.Year);
+                {
+                    info.IsDeleted = true;
+                }
                 else
                 {
                     if (info.OGEForm450Id == 0)
                         info.OGEForm450Id = this.Id;
-
-                    info.Save(this.Year);
                 }
-                
+
+                info.Save(this.Year);
             }
         }
 
