@@ -1,11 +1,12 @@
-﻿import { Router } from '@angular/router';
-import { Component, Input, OnInit, OnChanges, SimpleChanges, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, ViewChild, Output, EventEmitter, SimpleChange } from '@angular/core';
 import { SelectItem, DataTable } from 'primeng/primeng';
 
 import { Switch } from '../../common/switch';
 import { Lookups, FormStatus, FormFlags } from '../../common/constants';
 import { OGEForm450 } from '../oge-form-450';
 import { OGEForm450Service } from '../oge-form-450.service';
+import { GridPersistence } from '../../common/grid-options';
 
 declare var $: any;
 
@@ -24,6 +25,9 @@ export class FormsGridComponent implements OnInit {
     @Input()
     edit: boolean = false;
 
+    @Input()
+    gridId: string;
+
     @Output()
     onEdit = new EventEmitter<any>();
 
@@ -39,8 +43,25 @@ export class FormsGridComponent implements OnInit {
 
     selectedForm: OGEForm450;
 
+    public gridState: GridPersistence;
+
+    onSort(e: { field: string, order: number }) {
+        this.gridState.setSort(e.field, e.order);
+    }
+
+    onPage(e: { first: number, rows: number }) {
+        this.gridState.setPage(e.rows, e.first);
+    }
+
+    onFilter(e: any) {
+        this.gridState.setGridFilters(e.filters);
+    }
+    
     constructor(private router: Router,
         private formService: OGEForm450Service) {
+
+        this.gridState = new GridPersistence();
+
         this.overdueFilter.value = false;
         this.overdueFilter.onText = "Overdue";
         this.overdueFilter.color = "danger";
@@ -58,6 +79,36 @@ export class FormsGridComponent implements OnInit {
         this.formFlags = Lookups.FORM_FLAGS;
     }
 
+    ngOnChanges(changes: { [propKey: string]: SimpleChange }): void {
+        if (changes["gridId"])
+            this.gridState.key = this.gridId;
+
+        this.loadPersistantGridSettings();
+    }
+
+    loadPersistantGridSettings() {
+        this.gridState.load(this.gridId);
+
+        if (this.gridState.gridOptions) {
+            setTimeout(() => {
+                this.gridState.gridOptions.controls.forEach(x => {
+                    $('#' + x.id).val(x.value).change();
+                });
+
+                if (this.gridState.gridOptions.filters) {
+                    this.dt.filters = this.gridState.gridOptions.filters;
+                }
+
+                this.dt.sortField = this.gridState.gridOptions.sortField;
+                this.dt.sortOrder = this.gridState.gridOptions.sortOrder;
+                this.dt.sortSingle();
+                this.dt.first = this.gridState.gridOptions.first;
+                this.dt.rows = this.gridState.gridOptions.rows;
+                this.dt.paginate();
+            }, 0);
+        }
+    }
+
     public filter(where: string, reset: boolean = false) {
         if (reset) {
             this.dt.reset();
@@ -66,16 +117,24 @@ export class FormsGridComponent implements OnInit {
             $("#ddlYear").val('null').change();
             $("#ddlReportingStatus").val('null').change();
             $("#dtDateFilter").val('');
+
+            this.gridState.resetControls();
         }
 
         if (where == "Submitted") {
             $("#ddlStatus").val('Submitted').change();
+            this.gridState.setGridControl('formStatus', where, 'ddlStatus');
             this.dt.filter(where, 'formStatus', 'contains');
+
+            this.gridState.save();
         }
         else if (where == "Overdue") {
             this.overdueFilter.value = true;
             $("#ddlFlags").val('Overdue').change();
+            this.gridState.setGridControl('formFlags', where, 'ddlFlags');
             this.dt.filter(where, 'formFlags', 'contains');
+
+            this.gridState.save();
         }
     }
 
@@ -87,14 +146,10 @@ export class FormsGridComponent implements OnInit {
         var value = e.target.value;
 
         if (value == 'null') value = null;
-        
-        this.dt.filter(value, field, matchMode);
-    }
 
-    onSwitchChange(e) {
-        var value = e.currentValue ? true : null;
-        
-        this.dt.filter(value, 'isOverdue', 'equals');
+        this.gridState.setGridControl(field, value, e.target.id);
+
+        this.dt.filter(value, field, matchMode);
     }
 
     isOverdue(form: OGEForm450): boolean {

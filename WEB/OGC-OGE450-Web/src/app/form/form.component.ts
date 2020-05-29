@@ -1,19 +1,16 @@
-﻿import { Helper } from '../common/helper'
 import { environment } from '../../environments/environment'
-import { Component, Input, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute, Params, CanDeactivate } from '@angular/router';
+import { Component, Input, OnInit, AfterViewInit, ViewChild, Output, EventEmitter, OnChanges } from '@angular/core';
 import { FormStatus, ReportingStatus } from '../common/constants';
 
 import 'rxjs/add/operator/switchMap';
 
-import { OGEForm450Service } from './oge-form-450.service';
 import { OGEForm450 } from './oge-form-450';
 import { Settings } from '../admin/settings/settings';
 import { ReportableInformation } from './reportable-information';
-import { IntroComponent } from './intro/intro.component';
 import { UserService } from '../user/user.service';
 import { SettingsService } from '../admin/settings/settings.service';
 import { Roles } from '../security/roles';
+import { Helper } from '../common/helper';
 
 declare var $: any;
 
@@ -23,11 +20,34 @@ declare var $: any;
     styleUrls: ['./form.component.css']
 })
 
-export class FormComponent implements OnInit, AfterViewInit {
-    @Input() form: OGEForm450;
+export class FormComponent implements OnInit, OnChanges, AfterViewInit {
+    @Input()
+    form: OGEForm450;
+
+    @Input()
+    prevForm: OGEForm450;
+
+    compareForm: OGEForm450;
+
+    @Input()
+    settings: Settings;
+
+    @Output()
+    onSave = new EventEmitter<any>();
+
+    @Output()
+    onClose = new EventEmitter<any>();
+
+    @Output()
+    onCompare = new EventEmitter<any>();
+
+    @Input()
+    mode: string = 'EDIT';  // EDIT - Regular mode for filers, REVIEW - Highlight changes can still edit/review as normal, COMPARE - Side by Side mode, read only
+
+    @ViewChild(('topDiv')) topDiv: any;
+
     origForm: OGEForm450;
 
-    settings: Settings = new Settings();
     printView: boolean = false;
     isReviewer: boolean;
     isAdmin: boolean;
@@ -38,30 +58,23 @@ export class FormComponent implements OnInit, AfterViewInit {
     agreementsOrArrangements: ReportableInformation[];
     giftsOrTravelReimbursements: ReportableInformation[];
 
+    compareAssets: ReportableInformation[];
+    compareLiabilities: ReportableInformation[];
+    comparePositions: ReportableInformation[];
+    compareArrangements: ReportableInformation[];
+    compareGifts: ReportableInformation[];
+
     tempAppointmentDate: Date;
+    tempReviewDate: Date;
 
     constructor(
-        private formService: OGEForm450Service,
-        private route: ActivatedRoute,
-        private router: Router,
-        private userService: UserService,
-        private settingsService: SettingsService,
+        private userService: UserService
     ) {
-        this.settingsService.get().then(response => {
-            this.settings = response;
-        });
-
         this.isReviewer = this.userService.isInRole(Roles.Reviewer);
         this.isAdmin = this.userService.isInRole(Roles.Admin);
     }
 
     ngOnInit(): void {
-        this.route.data.subscribe((data: { form: OGEForm450 }) => {
-            this.initialize(data.form);
-            localStorage.setItem('dirtyOvervide', "0");
-            localStorage.setItem('goto', '');
-        });
-
         $("a[href^='#']").on('click', function (e) {
             // prevent default anchor click behavior
             e.preventDefault();
@@ -74,7 +87,6 @@ export class FormComponent implements OnInit, AfterViewInit {
                 $("#section-off-alert").fadeTo(5000, 500).slideUp(500, function () {
                     $("#section-off-alert").slideUp(500);
                 });
-                
             }
 
             scroll(hash);
@@ -90,8 +102,11 @@ export class FormComponent implements OnInit, AfterViewInit {
         }
     }
 
-    initialize(form: OGEForm450) {
-        this.form = form;
+    ngOnChanges() {
+        if (this.mode != "EDIT" && this.prevForm != null)
+            this.compareForm = this.prevForm;
+
+        this.tempReviewDate = this.form.dateOfSubstantiveReview;
 
         this.initializePopovers();
         this.assetsAndIncome = this.form.reportableInformationList.filter(x => x.infoType === "AssetsAndIncome");
@@ -100,31 +115,32 @@ export class FormComponent implements OnInit, AfterViewInit {
         this.agreementsOrArrangements = this.form.reportableInformationList.filter(x => x.infoType === "AgreementsOrArrangements");
         this.giftsOrTravelReimbursements = this.form.reportableInformationList.filter(x => x.infoType === "GiftsOrTravelReimbursements");
 
+        if (this.compareForm && this.compareForm.reportableInformationList) {
+            this.compareAssets = this.compareForm.reportableInformationList.filter(x => x.infoType === "AssetsAndIncome");
+            this.compareLiabilities = this.compareForm.reportableInformationList.filter(x => x.infoType === "Liabilities");
+            this.comparePositions = this.compareForm.reportableInformationList.filter(x => x.infoType === "OutsidePositions");
+            this.compareArrangements = this.compareForm.reportableInformationList.filter(x => x.infoType === "AgreementsOrArrangements");
+            this.compareGifts = this.compareForm.reportableInformationList.filter(x => x.infoType === "GiftsOrTravelReimbursements");
+        }
+
         this.origForm = JSON.parse(JSON.stringify(this.form));
         this.tempAppointmentDate = Helper.getDate(this.form.dateOfAppointment);
-        if (this.form.reportingStatus == ReportingStatus.NEW_ENTRANT) {
-            $('#dtDateOfAppointment').show();
-            $('#dtNoDate').hide();
-        }
-        else {
-            $('#dtDateOfAppointment').hide();
-            $('#dtNoDate').show();
-        }
+
+        this.disableForm();
     }
 
     ngAfterViewInit() {
-        if (this.form.formStatus == FormStatus.NOT_STARTED && this.form.filer == this.userService.user.upn)
-            $('#intro-popup').modal();
-        else if (this.form.submittedPaperCopy && (this.form.formStatus == FormStatus.SUBMITTED || this.form.formStatus == FormStatus.RE_SUBMITTED || this.form.formStatus == FormStatus.CERTIFIED))
-        {
+        if (this.form.submittedPaperCopy && (this.form.formStatus == FormStatus.SUBMITTED || this.form.formStatus == FormStatus.RE_SUBMITTED || this.form.formStatus == FormStatus.CERTIFIED)) {
             $('#watermark').show();
             $('#steps').hide();
         }
-        else
-            this.disableForm();
 
         var headerHtml = $('#pageHeader').html();
         $('.header').html(headerHtml);
+    }
+
+    public get newEntrant(): string {
+        return ReportingStatus.NEW_ENTRANT;
     }
 
     scroll(hash: string): void {
@@ -165,20 +181,22 @@ export class FormComponent implements OnInit, AfterViewInit {
         this.form.reportableInformationList.push(newRow);
     };
 
+    inputDisabled: boolean = false;
+    reviewCommentsDisabled: boolean = true;
+    showReviewSection: boolean = true;
+
     disableForm(): void {
         if (!this.canSave()) {
-            $('input,textarea').prop('disabled', true);
-            $('.add-row').hide();
+            this.inputDisabled = true;
         }
+        if (!this.isReviewer || this.mode == "COMPARE")
+            this.reviewCommentsDisabled = true;
+        else if (!this.isCertified())
+            this.reviewCommentsDisabled = false;
 
         // Hide reviewer section until certified or if it's returned to user
         if (!(this.isReviewer || this.isCertified() || this.isMissingInformation()))
-            $('#sectionR').hide();
-
-        if (!this.isReviewer)
-            $('#txtReviewerComments').prop('disabled', true);
-        else if (!this.isCertified())
-            $('#txtReviewerComments').prop('disabled', false);
+            this.showReviewSection = false;
     }
 
     initializePopovers(): void {
@@ -207,67 +225,24 @@ export class FormComponent implements OnInit, AfterViewInit {
     }
 
     goBack(): void {
-        if (this.canSave() && this.isDirty())
-            $('#confirm-close').modal();
-        else
-            this.confirmClose();
+        this.onClose.emit();
     }
 
-    saveAndClose() {
-        this.save(false, true);
-    }
-
-    confirmClose() {
-        localStorage.setItem('dirtyOvervide', "1");
-        $('#confirm-close').modal('hide');
-
-        // Check to see if we were trying to go somewhere other than previous, if not go back to previous
-        var prev = localStorage.getItem('goto') ? localStorage.getItem('goto') : '';
-
-        if (prev == '') {
-            prev = localStorage.getItem('prev') ? localStorage.getItem('prev') : '/home';
-            if (prev.includes('form'))
-                prev = '/';
-        }
-
-        this.router.navigate([prev]);
-    }
 
     print(): void {
-       window.print();
+        window.print();
     }
 
-    //getAppointmentDate(): string {
-    //    var dt = $('#dtDateOfAppointment');
-
-    //    this.tempAppointmentDate = Helper.getDate(dt.val());
-
-    //    return Helper.formatDate(this.tempAppointmentDate);
-    //}
-
     save(submitting: boolean, close: boolean = false): void {
-        if (this.canSave() || submitting) {
-            //console.log(this.tempAppointmentDate);
-            //this.form.dateOfAppointment = this.getAppointmentDate();
-            //console.log(this.form.dateOfAppointment);
-            this.formService.update(this.form)
-                .then(response => {
-                    this.userService.user.currentFormStatus = response.formStatus;
+        this.form.closeAfterSaving = close;
 
-                    if (close) {
-                        this.confirmClose();
-                    }
-                    else {
-                        this.initialize(response);
-
-                        $("#success-alert").alert();
-
-                        $("#success-alert").fadeTo(2000, 500).slideUp(500, function () {
-                            $("#success-alert").slideUp(500);
-                        });
-                    }
-                });
+        if (this.canSave() || submitting || this.canReview()) {
+            this.onSave.emit(this.form);
         }
+    }
+
+    compare() {
+        this.onCompare.emit();
     }
 
     signClicked() {
@@ -282,7 +257,7 @@ export class FormComponent implements OnInit, AfterViewInit {
                 $("#invalid-alert").slideUp(500);
             });
 
-            this.scroll('#oge-form');
+            this.scroll('#oge-form');    
         }
     }
 
@@ -291,9 +266,7 @@ export class FormComponent implements OnInit, AfterViewInit {
         var valid = this.validateForm();
 
         if (valid && this.canSubmit()) {
-            this.form.employeeSignature = this.userService.user.displayName;
-            this.form.dateOfEmployeeSignature = new Date().toDateString();
-            this.form.formStatus = this.form.formStatus == FormStatus.MISSING_INFORMATION ? FormStatus.RE_SUBMITTED : FormStatus.SUBMITTED;
+            this.form.isSubmitting = true;
             this.save(true, true);
             this.disableForm();
         }
@@ -337,6 +310,13 @@ export class FormComponent implements OnInit, AfterViewInit {
         }
     }
 
+    reviewComplete(): void {
+        if (this.canReview()) {
+            this.form.substantiveReviewer = this.userService.user.displayName;
+            this.save(false, false);
+        }
+    }
+
     certifyPaper(): void {
         this.form.reviewingOfficialSignature = this.userService.user.displayName;
         this.form.commentsOfReviewingOfficial = "Certification based on filer’s paper submission.\n" + this.form.commentsOfReviewingOfficial;
@@ -352,7 +332,7 @@ export class FormComponent implements OnInit, AfterViewInit {
     }
 
     canSubmit(): boolean {
-        var ret = (this.form.formStatus == FormStatus.NOT_STARTED || this.form.formStatus == FormStatus.DRAFT || this.form.formStatus == FormStatus.MISSING_INFORMATION) && this.form.filer == this.userService.user.upn;
+        var ret = (this.form.formStatus == FormStatus.NOT_STARTED || this.form.formStatus == FormStatus.DRAFT || this.form.formStatus == FormStatus.MISSING_INFORMATION) && (this.form.filer == this.userService.user.upn) && this.mode != "COMPARE";
 
         return ret;
     }
@@ -361,12 +341,16 @@ export class FormComponent implements OnInit, AfterViewInit {
         return (this.form.formStatus == FormStatus.SUBMITTED || this.form.formStatus == FormStatus.RE_SUBMITTED);
     }
 
+    canReview(): boolean {
+        return !this.canSubmit() && !this.isCertified() && ((this.isReviewer && (this.form.filer != this.userService.user.upn || environment.debug)) || this.isAdmin) && this.mode != "COMPARE";
+    }
+
     canCertify(): boolean {
-        return this.isSubmitted() && ((this.isReviewer && (this.form.filer != this.userService.user.upn || environment.debug)) || this.isAdmin) ;
+        return this.isSubmitted() && ((this.isReviewer && (this.form.filer != this.userService.user.upn || environment.debug)) || this.isAdmin) && this.mode != "COMPARE";
     }
 
     canSubmitPaper(): boolean {
-        return (this.isReviewer || this.isAdmin) && !this.isSubmitted() && !this.isCertified();
+        return (this.isReviewer || this.isAdmin) && !this.isSubmitted() && !this.isCertified() && this.mode != "COMPARE";
     }
 
     isCertified(): boolean {
@@ -382,21 +366,10 @@ export class FormComponent implements OnInit, AfterViewInit {
     }
 
     canEdit(): boolean {
-        var ret = this.canCertify() || !(this.form.formStatus == FormStatus.SUBMITTED || this.form.formStatus == FormStatus.RE_SUBMITTED || this.form.formStatus == FormStatus.CERTIFIED);
+        var ret = (this.canCertify() || !(this.form.formStatus == FormStatus.SUBMITTED || this.form.formStatus == FormStatus.RE_SUBMITTED || this.form.formStatus == FormStatus.CERTIFIED)) && this.mode != "COMPARE";
 
         return ret;
     }
 }
 
-export class PreventUnsavedChangesGuard implements CanDeactivate<FormComponent> {
-    canDeactivate(component: FormComponent) {
-        var override = localStorage.getItem('dirtyOvervide') ? localStorage.getItem('dirtyOvervide') == "1" : false;
-        
-        if (component.canSave() && !override && component.isDirty()) {
-            $('#confirm-close').modal();
-            return false;
-        }
 
-        return true;
-    }
-}

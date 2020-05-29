@@ -1,0 +1,5 @@
+<div class="radio-padding {{ (selectedValue != prevValue && value != prevValue) ? displayCssClass : '' }}">
+    <div class="radio text-center">
+        <label><input type="radio" [name]="name" [value]="selectedValue" [(ngModel)]="value" [disabled]="disabled" /><div class="control-label"><ng-content></ng-content></div></label>
+    </div>
+</div>

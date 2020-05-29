@@ -25,7 +25,7 @@ import { My450Component } from './my450/my450.component';
     import { HelpfulLinksComponent } from './helpful-links/helpful-links.component';
     import { SupportContactsComponent } from './support-contacts/support-contacts.component';
     import { DashboardComponent } from './dashboard/dashboard.component';
-import { FormComponent, PreventUnsavedChangesGuard } from './form/form.component';
+import { FormComponent } from './form/form.component';
     import { IntroComponent } from './form/intro/intro.component';
     import { ExamplesComponent } from './form/examples/examples.component';
     import { PageHeaderComponent } from './form/inserts/page-header.component';
@@ -78,6 +78,14 @@ import { PageNotFoundComponent } from './error/page-not-found.component';
 // Idle handling
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the core NgIdleModule but includes keepalive providers for easy wireup
 import { MomentModule } from 'angular2-moment'; // optional, provides moment-style pipes for date formatting
+import { FormViewComponent, PreventUnsavedChangesGuard } from './form-view/form-view.component';
+import { ShortTextComponent } from './common/controls/short-text/short-text.component';
+import { ControlBaseComponent } from './common/controls/control-base/control-base.component';
+import { TextAreaComponent } from './common/controls/text-area/text-area.component';
+import { DatePickerComponent } from './common/controls/date-picker/date-picker.component';
+import { CheckBoxComponent } from './common/controls/check-box/check-box.component';
+import { RadioButtonComponent } from './common/controls/radio-button/radio-button.component';
+import { FormCompareComponent } from './common/form-compare/form-compare.component';
 
 export function httpServiceFactory(backend: XHRBackend, options: RequestOptions, router: Router) {
     return new HttpService(backend, options, router);
@@ -135,7 +143,15 @@ export function httpServiceFactory(backend: XHRBackend, options: RequestOptions,
         EditLinksComponent,
         EditContactsComponent,
         EditTemplateComponent,
-        TinyMceEditorComponent
+        TinyMceEditorComponent,
+        FormViewComponent,
+        ShortTextComponent,
+        ControlBaseComponent,
+        TextAreaComponent,
+        DatePickerComponent,
+        CheckBoxComponent,
+        RadioButtonComponent,
+        FormCompareComponent
     ],
     providers: [
         {

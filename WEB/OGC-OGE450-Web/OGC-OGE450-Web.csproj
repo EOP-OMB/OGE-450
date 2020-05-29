@@ -1,9 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
-  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -42,31 +38,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Web.DynamicData" />
-    <Reference Include="System.Web.Entity" />
-    <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Web.Services" />
-    <Reference Include="System.EnterpriseServices" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="karma.conf.js" />
-    <Content Include="packages.config" />
     <Content Include="e2e\tsconfig.json" />
     <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <Content Include="protractor.conf.js" />
@@ -83,6 +55,29 @@
     <Content Include="src\app\admin\settings\settings.component.html" />
     <Content Include="src\app\banner\banner.component.css" />
     <Content Include="src\app\banner\banner.component.html" />
+    <TypeScriptCompile Include="src\app\common\controls\check-box\check-box.component.ts" />
+    <TypeScriptCompile Include="src\app\common\controls\control-base\control-base.component.ts" />
+    <TypeScriptCompile Include="src\app\common\controls\date-picker\date-picker.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\common\controls\date-picker\date-picker.component.ts" />
+    <TypeScriptCompile Include="src\app\common\controls\radio-button\radio-button.component.ts" />
+    <TypeScriptCompile Include="src\app\common\controls\short-text\short-text.component.ts" />
+    <TypeScriptCompile Include="src\app\common\controls\text-area\text-area.component.ts" />
+    <TypeScriptCompile Include="src\app\common\form-compare\form-compare.component.ts" />
+    <TypeScriptCompile Include="src\app\common\grid-options.ts" />
+    <Content Include="src\app\common\controls\check-box\check-box.component.css" />
+    <Content Include="src\app\common\controls\check-box\check-box.component.html" />
+    <Content Include="src\app\common\controls\control-base\control-base.component.css" />
+    <Content Include="src\app\common\controls\control-base\control-base.component.html" />
+    <Content Include="src\app\common\controls\date-picker\date-picker.component.css" />
+    <Content Include="src\app\common\controls\date-picker\date-picker.component.html" />
+    <Content Include="src\app\common\controls\radio-button\radio-button.component.css" />
+    <Content Include="src\app\common\controls\radio-button\radio-button.component.html" />
+    <Content Include="src\app\common\controls\short-text\short-text.component.css" />
+    <Content Include="src\app\common\controls\short-text\short-text.component.html" />
+    <Content Include="src\app\common\controls\text-area\text-area.component.css" />
+    <Content Include="src\app\common\controls\text-area\text-area.component.html" />
+    <Content Include="src\app\common\form-compare\form-compare.component.css" />
+    <Content Include="src\app\common\form-compare\form-compare.component.html" />
     <Content Include="src\app\employees\employee.component.css" />
     <Content Include="src\app\employees\employee.component.html" />
     <Content Include="src\app\employees\employees-grid\employees-grid.component.css" />
@@ -92,6 +87,8 @@
     <Content Include="src\app\extension-request\extension-request.component.css" />
     <Content Include="src\app\extension-request\extension-request.component.html" />
     <Content Include="src\app\common\widget.component.html" />
+    <Content Include="src\app\form-view\form-view.component.css" />
+    <Content Include="src\app\form-view\form-view.component.html" />
     <Content Include="src\app\healthcheck\health-check.component.css" />
     <Content Include="src\app\healthcheck\health-check.component.html" />
     <Content Include="src\app\home\maintenance\maintenance.component.css" />
@@ -207,6 +204,7 @@
     <TypeScriptCompile Include="src\app\extension-request\extension-grid\extension-grid.component.ts" />
     <TypeScriptCompile Include="src\app\extension-request\extension-request.component.ts" />
     <TypeScriptCompile Include="src\app\extension-request\extension-request.service.ts" />
+    <TypeScriptCompile Include="src\app\form-view\form-view.component.ts" />
     <TypeScriptCompile Include="src\app\form\forms-grid\forms-grid.component.ts" />
     <TypeScriptCompile Include="src\app\form\examples\examples.component.ts" />
     <TypeScriptCompile Include="src\app\form\form.component.ts" />

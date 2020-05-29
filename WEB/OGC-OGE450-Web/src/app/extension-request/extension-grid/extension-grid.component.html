@@ -1,5 +1,10 @@
-﻿<input #filterText type="text" placeholder="Search text..." hidden>
-<p-dataTable [value]="extensions" [paginator]="true" [rows]="15" [rowsPerPageOptions]="[15,30,60]" [responsive]="true" [globalFilter]="filterText" #dt>
+<input #filterText type="text" placeholder="Search text..." hidden>
+<div class="row">
+    <div class="col-md-12">
+        <div *ngIf="dt" class="pull-right download-button"><i class="fa fa-file-excel-o" (click)="dt.exportCSV()" title="Download (csv)"></i></div>
+    </div>
+</div>
+<p-dataTable [value]="extensions" [paginator]="true" [rows]="15" [rowsPerPageOptions]="[15,30,60]" [responsive]="true" [globalFilter]="filterText" (onPage)="onPage($event)" (onSort)="onSort($event)" (onFilter)="onFilter($event)" #dt>
     <p-column field="filerName" header="Name" [sortable]="true" [filter]="true" [style]="{'width' : '30%'}">
         <ng-template pTemplate="body" let-data="rowData">
             <a *ngIf="data.status == pending" class="link" (click)="gotoDetail(data)">{{ data.filerName }}</a>
@@ -8,13 +13,15 @@
     </p-column>
     <p-column field="year" header="Year" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width' : '10%'}">
         <ng-template pTemplate="filter" let-col>
-            <p-dropdown [options]="years" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+            <select id="ddlExtYear" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                <option *ngFor="let year of years" [value]="year.value">{{year.label}}</option>
+            </select>
         </ng-template>
     </p-column>
     <p-column field="daysRequested" header="Days" [sortable]="true" [filter]="true" [style]="{'width' : '10%'}"></p-column>
     <p-column field="status" header="Status" [sortable]="true" [filter]="true" filterMatchMode="equals" [style]="{'width' : '20%'}">
         <ng-template pTemplate="filter" let-col>
-            <select class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+            <select id="ddlExtStatus" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
                 <option *ngFor="let status of extensionStatuses" [value]="status.value">{{status.label}}</option>
             </select>
         </ng-template>

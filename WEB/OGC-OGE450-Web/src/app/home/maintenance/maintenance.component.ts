@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { UserService } from '../../user/user.service';
@@ -24,7 +24,6 @@ export class MaintenanceComponent implements OnInit {
 
     verifyMaintMode(): void { 
         this.userService.load().then(response => {
-            console.log(response);
             if (!this.user.inMaintMode)
                 this.router.navigate(['/home']);
         });

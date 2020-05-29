@@ -1,0 +1,53 @@
+.legend-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    border: 1px solid #f1f1f1;
+}
+
+.legend-label {
+    margin: 10px 20px;
+    padding: 15px;
+}
+
+.legend-title {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.legend-new {
+    border: 1px solid #c3e6cb;
+    background-color: #d4edda;
+}
+
+.legend-removed {
+    border: 1px solid #f5c6cb;
+    background-color: #f8d7da;
+}
+
+.legend-updated {
+    border: 1px solid #ffeeba;
+    background-color: #fff3cd;
+}
+
+.compare-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.compare-item {
+    flex: 1;
+    padding: 10px;
+    margin: 5px;
+}
+
+.previous {
+    border: 1px dashed red;
+}
+
+.current {
+    border: 1px dashed green;
+}
+

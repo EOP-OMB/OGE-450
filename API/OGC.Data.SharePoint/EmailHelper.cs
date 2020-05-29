@@ -43,7 +43,14 @@ namespace OGC.Data.SharePoint
 
             notification.Status = "Pending";
             notification.Title = template.Title;
-            notification.Subject = Replace(template.Subject, dictionary);
+
+            var subject = Replace(template.Subject, dictionary);
+
+            if (subject.Length > 255)
+                subject = subject.Substring(0, 251) + "...";
+
+            notification.Subject = subject;
+
             notification.Body = body;
             notification.Application = template.Application;
             notification.IsAnnouncment = template.Frequency != "Real Time";
@@ -247,7 +254,10 @@ namespace OGC.Data.SharePoint
                 message.Body = email.Body;
 
                 if (!string.IsNullOrEmpty(email.Cc))
-                    message.CC.Add(new MailAddress(email.Cc));
+                {
+                    foreach (string cc in email.Cc.Split(',', ';'))
+                        message.CC.Add(new MailAddress(cc));
+                }   
 
                 message.Subject = email.Subject;
                 message.SubjectEncoding = System.Text.Encoding.UTF8;

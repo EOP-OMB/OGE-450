@@ -123,6 +123,15 @@ namespace OMB.SharePoint.Infrastructure
             return caml;
         }
 
+        public static CamlQuery GetAllDocumentsCaml()
+        {
+            var caml = new CamlQuery();
+            //caml.FolderServerRelativeUrl = "Ethics%20Forms/Forms";
+            caml.ViewXml = @"<View Scope='RecursiveAll'><Query><Where><Eq><FieldRef Name='FSObjType' /><Value Type='Integer'>0</Value></Eq></Where></Query></View>";
+
+            return caml;
+        }
+
         internal static CamlQuery GetAllJoinCaml(string joinList, string joinField, string[] projectedFields)
         {
             var caml = new CamlQuery();

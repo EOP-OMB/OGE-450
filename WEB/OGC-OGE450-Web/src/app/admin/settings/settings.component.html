@@ -1,4 +1,4 @@
-﻿<div *ngIf="settings" class="panel panel-default">
+<div *ngIf="settings" class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">Application Settings</h3>
     </div>
@@ -21,12 +21,12 @@
                 <input name="siteUrl" type="text" class="form-control" [(ngModel)]="settings.siteUrl" />
             </div>
         </div>
-        <div class="row form-group">
+        <!--<div class="row form-group">
             <div class="col-md-12">
                 <div class="top-label">Current Filing Year</div>
                 <input name="currentFilingYear" type="number" class="form-control" [(ngModel)]="settings.currentFilingYear" />
             </div>
-        </div>
+        </div>-->
         <div class="row form-group">
             <div class="col-md-12">
                 <div class="top-label">OGC Email</div>
@@ -99,4 +99,3 @@
     </div>
 </div>
 
-    

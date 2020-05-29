@@ -1,0 +1,44 @@
+
+.control-label {
+    font-weight: bold;
+}
+
+.required:before {
+    content: "* ";
+    color: red;
+}
+
+
+
+.value-new {
+    background-color: #d4edda !important;
+    
+}
+
+.value-deleted {
+    background-color: #f8d7da !important;
+    
+}
+
+.value-updated {
+    background-color: #fff3cd !important;
+    
+}
+
+.indicator-new::after {
+    float: right;
+    content: "(+)";
+    font-weight: bold;
+}
+
+.indicator-deleted::after {
+    float: right;
+    content: "(-)";
+    font-weight: bold;
+}
+
+.indicator-updated::after {
+    float: right;
+    content: "(#)";
+    font-weight: bold;
+}

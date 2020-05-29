@@ -1,10 +1,10 @@
-﻿import { Component, Input} from '@angular/core';
+import { Component, Input} from '@angular/core';
 import { Settings } from '../../admin/settings/settings';
 
 @Component({
     selector: 'print-page-header',
     template: `
-        <div id="pageHeader">
+        <div class="pageHeader">
             <div class="row">
                 <div class="col-xs-8">
                     OGE Form 450, 5 CFR Part 2634, Subpart I<br />
@@ -26,7 +26,7 @@ import { Settings } from '../../admin/settings/settings';
                 </div>
                 <div class="col-xs-2 form-box">
                     <div class="control-label">Page Number</div>
-                    <input id="pageNumber" type="text" class="form-control"  />
+                    <input class="pageNumber form-control" type="text" />
                 </div>
             </div>
         </div>

@@ -20,6 +20,7 @@ namespace OGC.Data.SharePoint.Models
         public string AccountName { get; set; } // FK to UPS
         public string EmployeeStatus { get; set; }
         public bool Inactive { get; set; }
+        public DateTime? AccountCreatedDate { get; set; }
         public DateTime? InactiveDate { get; set; }
         public string FilerType { get; set; }
         public string ReportingStatus { get; set; }
@@ -59,12 +60,57 @@ namespace OGC.Data.SharePoint.Models
             ReportingStatus = SharePointHelper.ToStringNullSafe(item["ReportingStatus"]);
             Last450Date = SharePointHelper.ToDateTimeNullIfMin(Convert.ToDateTime(item["Last450Date"]));
             AppointmentDate = SharePointHelper.ToDateTimeNullIfMin(Convert.ToDateTime(item["AppointmentDate"]));
+            AccountCreatedDate = SharePointHelper.ToDateTimeNullIfMin(Convert.ToDateTime(item["AccountCreatedDate"]));
 
             Division = SharePointHelper.ToStringNullSafe(item["Division"]);
             EmployeeStatus = SharePointHelper.ToStringNullSafe(item["EmployeeStatus"]);
 
             if (Division == "")
                 Division = "N/A";
+        }
+
+        public static void FixStatusFromVersionHistory()
+        {
+            var employees = GetAll().Where(x => x.FilerType == "");
+
+            var settings = Settings.GetAll().FirstOrDefault();
+            var forms = OGEForm450.GetAll();
+
+            foreach (Employee emp in employees)
+            {
+                // Determine if has a Form 450
+                var empForms = forms.Where(x => x.Filer.ToLower() == emp.AccountName.ToLower() && x.FormStatus != Constants.FormStatus.CANCELED).ToList();
+
+                // If Exists Set FilerType = 450 Filer
+                if (empForms.Count > 0)
+                {
+                    emp.FilerType = Constants.FilerType._450_FILER;
+
+                    // get most recent non-canceled form
+                    var f = empForms.Where(x => x.FormStatus == Constants.FormStatus.CERTIFIED).OrderByDescending(x => x.DateOfReviewerSignature).FirstOrDefault();
+
+                    if (f != null)
+                    {
+                        // If has a certified form Set ReportingStatus to Annual
+                        // Set Last File Date
+                        emp.ReportingStatus = Constants.ReportingStatus.ANNUAL;
+                        emp.Last450Date = f.DateOfReviewerSignature;
+                    }
+                    else
+                    {
+                        // Else Set to New Entrant
+                        emp.ReportingStatus = Constants.ReportingStatus.NEW_ENTRANT;
+                    }
+                }
+                else
+                {
+                    // Else Set FilerType = Not Available
+                    if (emp.Inactive == false )
+                        emp.FilerType = Constants.FilerType.NOT_ASSIGNED;
+                }
+
+                emp.Save();
+            }
         }
 
         public override void MapToList(ListItem dest)
@@ -79,6 +125,7 @@ namespace OGC.Data.SharePoint.Models
             dest["Last450Date"] = SharePointHelper.ToDateTimeNullIfMin(this.Last450Date);
             dest["InactiveDate"] = SharePointHelper.ToDateTimeNullIfMin(this.InactiveDate);
             dest["AppointmentDate"] = SharePointHelper.ToDateTimeNullIfMin(this.AppointmentDate);
+            dest["AccountCreatedDate"] = SharePointHelper.ToDateTimeNullIfMin(this.AccountCreatedDate);
             dest["Division"] = Division;
 
             dest["EmployeeStatus"] = EmployeeStatus;
@@ -171,15 +218,15 @@ namespace OGC.Data.SharePoint.Models
 
             if (userProfile != null)
             {
-                emp.Title = userProfile.DisplayName;
-                emp.DisplayName = userProfile.DisplayName;
-                emp.EmailAddress = userProfile.Email;
+                emp.Title = userProfile.IsPropertyAvailable("DisplayName") ? userProfile.DisplayName : string.Empty;
+                emp.DisplayName = userProfile.IsPropertyAvailable("DisplayName") ? userProfile.DisplayName : string.Empty;
+                emp.EmailAddress = userProfile.IsPropertyAvailable("Email") ? userProfile.Email : string.Empty;
                 emp.Position = userProfile.IsPropertyAvailable("Title") ? userProfile.Title : string.Empty;
                 emp.WorkPhone = userProfile.IsPropertyAvailable("UserProfileProperties") && userProfile.UserProfileProperties.ContainsKey("WorkPhone") ? userProfile.UserProfileProperties["WorkPhone"] : string.Empty;
                 emp.Agency = userProfile.IsPropertyAvailable("UserProfileProperties") && userProfile.UserProfileProperties.ContainsKey("Department") ? userProfile.UserProfileProperties["Department"] : string.Empty;
                 emp.Branch = userProfile.IsPropertyAvailable("UserProfileProperties") && userProfile.UserProfileProperties.ContainsKey("Office") ? userProfile.UserProfileProperties["Office"] : string.Empty;
-                emp.ProfileUrl = userProfile.UserUrl;
-                emp.PictureUrl = userProfile.PictureUrl;
+                emp.ProfileUrl = userProfile.IsPropertyAvailable("UserUrl") ? userProfile.UserUrl : string.Empty;
+                emp.PictureUrl = userProfile.IsPropertyAvailable("PictureUrl") ? userProfile.PictureUrl : string.Empty;
             }
         }
 
@@ -219,7 +266,7 @@ namespace OGC.Data.SharePoint.Models
                 from ldap in ldapUsers
                 join emp in knownEmployees on prefix + ldap.UPN.ToLower() equals emp.AccountName.ToLower() into emps
                 from emp in emps.DefaultIfEmpty()
-                where emp == null || ldap.Inactive != emp.Inactive
+                where emp == null || ldap.Inactive != emp.Inactive || !emp.AccountCreatedDate.HasValue
                 select new Employee()
                 {
                     Id = emp == null ? 0 : emp.Id,
@@ -227,7 +274,12 @@ namespace OGC.Data.SharePoint.Models
                     Title = ldap.DisplayName,
                     Inactive = ldap.Inactive,
                     EmailAddress = ldap.Email,
-                    EmployeeStatus = ldap.Inactive ? Constants.EmployeeStatus.INACTIVE : Constants.EmployeeStatus.ACTIVE
+                    EmployeeStatus = ldap.Inactive ? Constants.EmployeeStatus.INACTIVE : Constants.EmployeeStatus.ACTIVE,
+                    AccountCreatedDate = Convert.ToDateTime(ldap.WhenCreated),
+                    FilerType = emp == null ? "" : emp.FilerType,
+                    ReportingStatus = emp == null ? "" : emp.ReportingStatus,
+                    Last450Date = emp == null ? null : emp.Last450Date,
+                    Division = emp == null ? "" : emp.Division
                 };
 
             if (result != null)
@@ -336,11 +388,14 @@ namespace OGC.Data.SharePoint.Models
                 {
                     var form = OGEForm450.Get(this.CurrentFormId);
 
-                    form.FormStatus = Constants.FormStatus.CANCELED;
+                    if (form.FormStatus != Constants.FormStatus.CERTIFIED)
+                    {
+                        form.FormStatus = Constants.FormStatus.CANCELED;
 
-                    form.Save();
+                        form.Save();
 
-                    form.RemoveExtensions();
+                        form.RemoveExtensions();
+                    }
                 }
 
                 this.Inactive = true;

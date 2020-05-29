@@ -1,0 +1,4 @@
+<div style="width: 100%">
+    <div class="control-label {{required == true ? 'required' : ''}} {{ indicator }}"><ng-content></ng-content></div>
+    <input [name]="name" [type]="type" class="form-control {{ displayCssClass }}" [(ngModel)]="value" (blur)="onBlur()" [disabled]="disabled" />
+</div>

@@ -1,4 +1,4 @@
-﻿<div id="home" class="container">
+<div id="home" class="container">
     <div class="row">
         <div class="col-md-12">
             <div>
@@ -16,7 +16,7 @@
                 <div *ngIf="employees" id="employeeCard" class="flip-container">
                     <div class="card">
                         <div class="front">
-                            <employees-grid #dtEmployees [employees]="employees" (editEmployee)="editEmployee($event)" (updated)="loadEmployees()"></employees-grid>
+                            <employees-grid #dtEmployees [employees]="employees" gridId="adminEmployees" (editEmployee)="editEmployee($event)" (updated)="loadEmployees()"></employees-grid>
                         </div>
                         <div class="back">
                             <employee [employee]="employeeToEdit" (save)="saveEmployee($event)" (close)="closeEmployee()" (updated)="updated()"></employee>
@@ -25,7 +25,7 @@
                 </div>
             </tab>
             <tab #tabForms tabTitle="Forms">
-                <forms-grid *ngIf="tabForms.active" #dtForms [forms]="forms" [edit]="true" (onEdit)="editForm($event)"></forms-grid>
+                <forms-grid *ngIf="tabForms.active" #dtForms [forms]="forms" [edit]="true" (onEdit)="editForm($event)" gridId="adminForms"></forms-grid>
                 <div *ngIf="tabForms.active" class="modal fade" id="edit-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 25vh;">
                     <div class="modal-dialog">
                         <form-mini [form]="selectedForm" (close)="editFormClose($event)"></form-mini>
@@ -33,7 +33,7 @@
                 </div>
             </tab>
             <tab #tabExtensions tabTitle="Extensions">
-                <extension-grid [extensions]="extensions"></extension-grid>
+                <extension-grid [extensions]="extensions" gridId="adminExtensions"></extension-grid>
             </tab>
             <tab #tabAppSettings tabTitle="Settings">
                 <div class="row">

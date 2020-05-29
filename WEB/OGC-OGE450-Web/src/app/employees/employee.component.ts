@@ -1,4 +1,4 @@
-﻿import { Helper } from '../common/helper'
+import { Helper } from '../common/helper'
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
 import { EmployeesService } from './employees.service';
 import { Employee } from './employee';
@@ -57,7 +57,6 @@ export class EmployeeComponent implements OnInit {
     ngOnInit(): void {
         this.filingTypes = Lookups.FILER_TYPES;
         this.employeeStatuses = Lookups.EMPLOYEE_STATUSES;
-        console.log(this.employeeStatuses);
     }
 
     ngOnChanges(): void {
@@ -69,8 +68,6 @@ export class EmployeeComponent implements OnInit {
         this.createFormSwitch.offText = "No";
         this.createFormSwitch.offColor = "default";
         this.createFormSwitch.size = "normal";
-
-        console.log(this.employee);
         
         if (this.employee) {
             
