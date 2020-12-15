@@ -288,9 +288,6 @@
     <TypeScriptCompile Include="src\app\training\training.service.ts" />
     <TypeScriptCompile Include="src\app\training\video.service.ts" />
     <TypeScriptCompile Include="src\app\welcome\welcome.component.ts" />
-    <TypeScriptCompile Include="src\environments\environment.test.ts" />
-    <TypeScriptCompile Include="src\environments\environment.dev.ts" />
-    <TypeScriptCompile Include="src\environments\environment.prod.ts" />
     <TypeScriptCompile Include="src\environments\environment.ts" />
     <TypeScriptCompile Include="src\main.ts" />
     <TypeScriptCompile Include="src\polyfills.ts" />
