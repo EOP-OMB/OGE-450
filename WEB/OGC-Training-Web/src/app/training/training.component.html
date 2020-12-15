@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card card-underline">
+            <div class="card-head">
+                <header>Training Videos</header>
+            </div>
+            <div class="card-body no-padding" style="display: block;">
+                <ul class="list-group">
+                    <li *ngFor="let vid of files"  class="list-group-item portal-list-item" (click)="showVideo(vid.id)">
+                        <div class="info-box">
+                            <div class="icon-box">
+                                <div class="trainingClass icon">
+                                    <i class="fa fa-video-camera"></i>
+                                </div>
+                            </div>
+                            <div class="info-text">
+                                <strong>{{ vid.title }}</strong><br />
+                                {{ vid.date }}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div *ngIf="!selectedFile">
+            <strong>Please select a video from the list.</strong>
+        </div>
+        <div *ngIf="selectedFile">
+            <div style="border-top: solid 1px #e5e5e5; width: 100%;">
+                <video controls [src]="selectedFile.url" style="width: 100%;">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+</div>

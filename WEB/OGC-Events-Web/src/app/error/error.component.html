@@ -1,0 +1,22 @@
+﻿<div *ngIf="this._errorInfo">
+    <div class="container">
+        <!-- Jumbotron -->
+        <div class="jumbotron">
+            <h1><i class="fa fa-clock-o orange"></i> {{this._errorInfo.type}}</h1>
+            <p class="lead">An error occurred.  See below for more information.</p>
+            <a (click)="retry()" class="btn btn-default btn-lg text-center"><span class="text-success">Try To Reload The App</span></a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>What happened?</h2>
+                <p>{{ this._errorInfo.message }}</p>
+            </div>
+            <div class="col-md-6">
+                <h2>What can I do?</h2>
+                <div [innerHtml]="this._errorInfo.action"></div>
+            </div>
+        </div>
+    </div>
+</div>

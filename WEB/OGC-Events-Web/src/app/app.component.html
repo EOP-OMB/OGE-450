@@ -1,0 +1,28 @@
+<banner></banner>
+<div class="container body-content">
+  <div class="modal fade" id="idleTimeoutDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header modal-header-warning">
+          <div class="modal-title" style="font-size: 1.5em;"><i class="fa fa-exclamation-triangle" style="padding-right: 20px;"></i>Session Timeout</div>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-10">
+              <p>
+                Your session is about to timeout.  If you do not perform an action before the timer reaches 0 you will be logged out and any changes you've
+                made will be lost.  To avoid this in the future, be sure to save your changes before stepping away.
+              </p>
+            </div>
+            <div class="col-md-2">
+              <div class="countdown-timer"><div class="{{ countdownColor }}">{{ idleState }}</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top: 20px;">
+    <router-outlet></router-outlet>
+  </div>
+</div>

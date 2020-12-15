@@ -1,0 +1,40 @@
+.detail-row {
+    border-bottom: 1px solid #aaa;
+    margin: 4px 2.5px 0px 2.5px;
+    padding-bottom: 3px;
+}
+
+.invite-row::before {
+    box-sizing: border-box;
+    content: " ";
+    display: table;
+}
+
+.invite-row::after {
+    clear: both;
+    content: " ";
+    display: table;
+}
+
+.panel-body .row:last-child {
+    border-bottom: 0px;
+}
+
+a {
+    cursor: pointer;
+}
+
+.attendee {
+    border-bottom: 2px solid black;
+}
+
+.panel-body .attendee:last-child {
+    border-bottom: 0px;
+}
+
+/************ Validation *****************/
+
+.ng-touched.ng-invalid:not(form),
+.ng-dirty.ng-invalid:not(form) {
+    border-left: 5px solid #a94442; /* red */
+}

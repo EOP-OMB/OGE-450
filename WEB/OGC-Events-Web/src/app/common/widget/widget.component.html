@@ -1,0 +1,14 @@
+﻿<div class="col-md-4 dashboard-gd">
+    <div *ngIf="data" [hidden]="data.visible == false">
+        <div class="dashboard-block btn btn-{{ data.color }}" (click)="onClick()">
+            <div class="col-md-8 dashboard-left">
+                <h3>{{ data.title }}</h3>
+                <h4>{{ data.text }}</h4>
+                <p>{{ data.actionText}}</p>
+            </div>
+            <div class="col-md-4">
+                <i class="fa {{ icon }} text-{{ data.color }}"></i>
+            </div>
+        </div>
+    </div>
+</div>

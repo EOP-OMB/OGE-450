@@ -1,0 +1,394 @@
+<div id="eventDetails" class="well" style="background-color: #fafafa; margin-bottom: 10px;">
+    <div style="color: rgba(0,0,0,0.65); cursor: pointer; font-size: .9em; padding-bottom: 15px;" (click)="cancel()">
+        <div class="glyphicon glyphicon-arrow-left" style="margin-right: 10px;"></div>Back
+    </div>
+    <div class="row" *ngIf="editEvent">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Attendee(s)</div>
+                <div class="panel-body">
+                    <div *ngFor="let att of editEvent.attendees" class="attendee">
+                        <div class="row detail-row">
+                            <label class="col-sm-5">Name of Attendee</label>
+                            <div class="col-sm-7">
+                                {{att.employee.displayName }}
+                            </div>
+                        </div>
+                        <div class="row detail-row">
+                            <label class="col-sm-5">Supervisor Informed?</label>
+                            <div class="col-sm-7">
+                                {{att.informedSupervisor ? "Yes" : "No" }}
+                            </div>
+                        </div>
+                        <div class="row detail-row">
+                            <label class="col-sm-5">Name of Supervisor</label>
+                            <div class="col-sm-7">
+                                {{att.nameOfSupervisor }}
+                            </div>
+                        </div>
+                        <div class="row detail-row">
+                            <label class="col-sm-5">Political or Career Employee</label>
+                            <div class="col-sm-7">
+                                {{att.employeeType }}
+                            </div>
+                        </div>
+                        <div class="row detail-row">
+                            <label class="col-sm-5">Attending Capacity</label>
+                            <div class="col-sm-7">
+                                {{att.capacity }}
+                            </div>
+                        </div>
+                        <div class="row detail-row">
+                            <label class="col-sm-5">Attendee giving remarks?</label>
+                            <div class="col-sm-7">
+                                {{ att.isGivingRemarks ? "Yes" : "No" }}
+                            </div>
+                        </div>
+                        <div class="row detail-row">
+                            <label class="col-sm-5">Remarks</label>
+                            <div class="col-sm-7">
+                                {{ att.remarks }}
+                            </div>
+                        </div>
+                        <div class="row detail-row">
+                            <label class="col-sm-5">Reason for Attending</label>
+                            <div class="col-sm-7">
+                                {{ att.reasonForAttending }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Attendees -->
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Event Details</div>
+                <div class="panel-body">
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Event Name</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.eventName }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Event Start Date</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.eventStartDate | date: 'MM/dd/yyyy' }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Event End Date</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.eventEndDate | date: 'MM/dd/yyyy' }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Event Location</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.eventLocation }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Approximate # of Attendees</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.approximateAttendees }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Event Crowd</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.crowdDescription }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Fundraiser</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.isFundraiser ? 'Yes' : 'No' }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Open Media Preset</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.isOpenToMedia ? 'Yes' : 'No' }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Requires Travel</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.requiresTravel ? 'Yes' : 'No' }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">International Travel</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.internationalTravel ? 'Yes' : 'No' }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Fair Market Value</label>
+                        <div class="col-sm-7">
+                            ${{ editEvent.fairMarketValue }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Who is Paying?</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.whoIsPaying }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Attached Travel Form(s)</label>
+                        <div class="col-sm-7">
+                            <div *ngFor="let form of travelForms" style="width: 100%; display: block;">
+                                <a (click)="getAttachment(form.id)">{{ form.fileName }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="row detail-row">
+                <div class="col-sm-7">
+                    <div class="control-label2">Please complete the <a target="_blank" href="https://portal.omb.gov/sites/EthicsClearance/Documents/omb-outside-source-travel-request-form.pdf">Outside Source Travel Form</a> and attach it to this request.</div>
+                    <file-upload uploadText="Click or drag file(s) to upload "></file-upload>
+                </div>
+                <div class="col-sm-5">
+                    <small>*** You are prohibited from asking anyone to pay for your travel. If a Non-Federal source has offered to pay for your travel, before accepting their offer you must obtain clearance from Counsel's Office.</small>
+                </div>
+            </div>-->
+                </div>
+            </div>
+            <!--End Event Details-->
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Invitation</div>
+                <div class="panel-body">
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Spouse or Guest Invited</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.guestsInvited ? "Yes" : "No" }}
+                        </div>
+                    </div>
+
+                    <!--<div class="row detail-row">
+                <div class="col-sm-7">
+                    <file-upload uploadText="Click or drag file(s) to upload "></file-upload>
+                </div>
+                <div class="col-sm-5">
+                    <small>Please attach a copy of the event invitation you received. If there are any other documents, emails, talking points, slides and other relevant information associated with this event, please also attach them here.</small>
+                </div>
+            </div>-->
+
+                    <div class="row detail-row">
+                        <div class="invite-row">
+                            <label class="col-sm-5">Individual Extending Invite</label>
+                            <div class="col-sm-7">
+                                {{ editEvent.individualExtendingInvite }}
+                            </div>
+                        </div>
+                        <div class="invite-row">
+                            <div class="col-sm-4 col-sm-offset-1"><i>Registered Lobbyist</i></div>
+                            <div class="col-sm-7">
+                                {{ editEvent.individualLobbyist ? "Yes" : "No" }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <div class="invite-row">
+                            <label class="col-sm-5">Org. Extending Invite</label>
+                            <div class="col-sm-7">
+                                {{ editEvent.orgExtendingInvite }}
+                            </div>
+                        </div>
+                        <div class="invite-row">
+                            <div class="col-sm-4 col-sm-offset-1"><i>Registered Lobbyist</i></div>
+                            <div class="col-sm-7">
+                                {{ editEvent.isOrgLobbyist ? "Yes" : "No" }}
+                            </div>
+                        </div>
+                        <div class="invite-row">
+                            <div class="col-sm-4 col-sm-offset-1"><i>Type of Organization</i></div>
+                            <div class="col-sm-7">
+                                {{ getOrgTypeDesc(editEvent.typeOfOrg, editEvent.orgOther) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <div class="invite-row">
+                            <label class="col-sm-5">Org. Sponsoring Event</label>
+                            <div class="col-sm-7">
+                                {{ editEvent.orgHostingEvent }}
+                            </div>
+                        </div>
+                        <div class="invite-row">
+                            <div class="col-sm-4 col-sm-offset-1"><i>Registered Lobbyist</i></div>
+                            <div class="col-sm-7">
+                                {{ editEvent.isHostLobbyist ? "Yes" : "No" }}
+                            </div>
+                        </div>
+                        <div class="invite-row">
+                            <div class="col-sm-4 col-sm-offset-1"><i>Type of Organization</i></div>
+                            <div class="col-sm-7">
+                                {{ getOrgTypeDesc(editEvent.typeOfHost, editEvent.hostOther) }}
+                            </div>
+                        </div>
+                        <div class="row detail-row">
+                            <label class="col-sm-5">Attached Invitation(s)</label>
+                            <div class="col-sm-7">
+                                <div *ngFor="let form of invitations" style="width: 100%; display: block;">
+                                    <a (click)="getAttachment(form.id)">{{ form.fileName }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Invitation -->
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Contacts and Additional Info</div>
+                <div class="panel-body">
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Event Contact Name</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.eventContactName }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Event Contact Phone</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.eventContactPhone }}
+                        </div>
+                    </div>
+                    <!--<div class="row detail-row">
+        <label class="col-sm-5">Other Attachments(s)</label>
+        <div class="col-sm-7">
+            <div *ngFor="let form of otherAttachments" style="width: 100%; display: block;">
+                <a (click)="getAttachment(form.id)">{{ form.fileName }}</a>
+            </div>
+        </div>
+    </div>-->
+                    <!--</div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Submission Information</div>
+        <div class="panel-body">-->
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Submitter's Name</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.submitter }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">E-mail Address</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.contactEmail }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Contact Number</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.contactNumber }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Component</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.contactComponent }}
+                        </div>
+                    </div>
+                    <div class="row detail-row">
+                        <label class="col-sm-5">Additional Information or Clarifications</label>
+                        <div class="col-sm-7">
+                            {{ editEvent.additionalInformation }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="row" style="padding-bottom: 10px;">
+                <div class="col-sm-3">
+                    <label class="control-label" style="vertical-align: bottom;">Status</label>
+                </div>
+                <div class="col-sm-9">
+                    {{editEvent.status}}
+                </div>
+            </div>
+            <div class="row" style="padding-bottom: 10px;" *ngIf="isClosed()">
+                <div class="col-sm-3">
+                    <label class="control-label" style="vertical-align: bottom;">Closed Reason</label>
+                </div>
+                <div class="col-sm-9">
+                    <span *ngIf="editEvent.closedReason">{{ editEvent.closedReason  }}</span>
+                    <span *ngIf="!editEvent.closedReason">None</span>
+                </div>
+            </div>
+            <div class="row" style="padding-bottom: 10px;">
+                <div class="col-sm-3">
+                    <label class="control-label" style="vertical-align: bottom;">Assigned To</label>
+                </div>
+                <div class="col-sm-9" *ngIf="canAssign()">
+                    <select id="ddlAssignedTo" class="form-control" [(ngModel)]="editEvent.assignedToUpn">
+                        <option *ngFor="let reviewer of reviewers" [value]="reviewer.value">{{reviewer.label}}</option>
+                    </select>
+                </div>
+                <div class="col-sm-9" *ngIf="!canAssign()">
+                    {{editEvent.assignedTo ? editEvent.assignedTo : 'Unassigned'}}
+                </div>
+            </div>
+            <div class="row" style="padding-bottom: 10px;" *ngIf="canAssign()">
+                <div class="col-sm-12" style="text-align: right;">
+                    <a (click)="resendAssignEmail()">resend email</a>
+                </div>
+            </div>
+            <div class="row" style="padding-bottom: 10px;" *ngIf="!canEdit() && isClosed()">
+                <div class="col-sm-12">
+                    <label class="control-label" style="vertical-align: bottom;">Guidance</label>
+                    <div>
+                        {{ editEvent.Guidance ? editEvent.Guidance : 'No Guidance Given' }}
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-bottom: 10px;" *ngIf="canEdit()">
+                <div class="col-sm-12">
+                    <label class="control-label" style="vertical-align: bottom;">Guidance</label>
+                    <!--<tinymce-editor [elementId]="'txtGuidance'" [content]="editEvent.guidanceGiven" (onEditorKeyup)="keyupHandlerFunction($event)" [height]="400"></tinymce-editor>-->
+                    <textarea class="form-control" rows="20" [(ngModel)]="editEvent.guidanceGiven"></textarea>
+                </div>
+            </div>
+            <div class="row" style="padding-bottom: 20px;">
+                <div class="col-sm-6" style="text-align: left;">
+                    <div *ngIf="canClose()" class="btn btn-danger" (click)="showModal()">Close Request</div>
+                </div>
+                <div class="col-sm-6" style="text-align: right;">
+                    <div *ngIf="canEdit()" class="btn btn-primary" (click)="save()">Save</div>
+                    <div class="btn btn-default" (click)="cancel()" style="margin-left: 15px;">Cancel</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirm-close" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-danger">
+                    <div class="modal-title" style="font-size: 1.5em;"><i class="fa fa-exclamation-triangle" style="padding-right: 20px;"></i>Confirm Close Event Request</div>
+                </div>
+                <div class="modal-body">
+
+                    <p>This action will close the Event Request.  If you wish to make changes, please click cancel below.</p>
+                    <label for="status" class="required control-label" style="vertical-align: bottom;">Reason</label>
+                    <select id="status" name="status" required class="form-control" [(ngModel)]="closeStatus">
+                        <option></option>
+                        <option *ngFor="let status of statuses" [value]="status.value">{{status.label}}</option>
+                    </select>
+                    <label for="reason" class="control-label" style="vertical-align: bottom;">Comment</label>
+                    <textarea id="reason" name="reason" class="form-control" rows="6" [(ngModel)]="closedReason"></textarea>
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <div type="button" class="btn btn-success" style="margin-right: 20px;" (click)="closeRequest()">Confirm</div>
+                    <div type="button" class="btn btn-default" (click)="closeModal()">Cancel</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

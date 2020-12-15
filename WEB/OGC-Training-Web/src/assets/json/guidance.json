@@ -1,0 +1,91 @@
+[
+    {
+        "id": 1,
+        "doctype": "pdf",
+        "type": "Guidance",
+        "url": "",
+        "title": "EO 137700",
+        "modified": "1/1/2019 8:00 am",
+        "modifiedBy": "Steve Kuennen",
+        "description": "Executive Order requiring Ethics Pledge",
+        "sortOrder": 6
+
+    },
+    {
+        "id": 3,
+        "doctype": "pdf",
+        "type": "Guidance",
+        "url": "",
+        "title": "Political Activity",
+        "modified": "1/1/2017 8:00 am",
+        "modifiedBy": "Steve Kuennen",
+        "description": "Hatch Act permissible and impermissible conduct",
+        "sortOrder": 3
+    },
+    {
+        "id": 4,
+        "doctype": "pdf",
+        "type": "Guidance",
+        "url": "",
+        "title": "Personal Social Media Use",
+        "modified": "10/03/2017 8:00 am",
+        "modifiedBy": "Steve Kuennen",
+        "description": "White House policy applicable to EOP",
+        "sortOrder":  1
+    },
+    {
+        "id": 6,
+        "doctype": "pdf",
+        "type": "Guidance",
+        "url": "",
+        "title": "Representing Others Before the Government",
+        "modified": "1/1/2019 8:00 am",
+        "modifiedBy": "Steve Kuennen",
+        "description": "Limitations on taking personal action before the Executive Branch",
+        "sortOrder": 2
+    },
+    {
+        "id": 7,
+        "doctype": "pdf",
+        "type": "Form",
+        "url": "",
+        "title": "Request to Engage in Outside Employment or Activity Form",
+        "modified": "1/1/2019 8:00 am",
+        "modifiedBy": "Steve Kuennen",
+        "description": "Required when earning any compensation or having fiduciary responsibility",
+        "sortOrder": 3
+    },
+    {
+        "id": 9,
+        "doctype": "pdf",
+        "type":  "Guidance",
+        "url": "",
+        "title": "Seeking Employment",
+        "modified": "6/1/2019 8:00 am",
+        "modifiedBy": "Steve Kuennen",
+        "description": "Rules and limitations when seeking other employment",
+        "sortOrder": 4
+    },
+    {
+        "id": 10,
+        "doctype": "pdf",
+        "type": "Form",
+        "url": "",
+        "title": "Stock Act Notifications Form",
+        "modified": "1/1/2012 8:00 am",
+        "modifiedBy": "Steve Kuennen",
+        "description": "Required when SES or political appointees are seeking non-governmental employment",
+        "sortOrder": 4
+    },
+    {
+        "id": 11,
+        "doctype": "docx",
+        "type": "Form",
+        "url": "",
+        "title": "Travel Form",
+        "modified": "4/1/2019 8:00 am",
+        "modifiedBy": "Steve Kuennen",
+        "description": "Required when seeking to accept travel expenses from non-governmental entity",
+        "sortOrder": 1
+    }
+]

@@ -1,0 +1,58 @@
+<input #filterText type="text" placeholder="Search text..." hidden>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left title">Self Reported Training</div>
+        <div *ngIf="dt" class="pull-right download-button"><i class="fa fa-file-excel-o" (click)="dt.exportCSV()" title="Download Training Report (csv)"></i></div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <p-dataTable [value]="gridTraining" [paginator]="showPages" [rows]="15" [rowsPerPageOptions]="[15,30,60]" [responsive]="true" [globalFilter]="filterText" exportFilename="Training Report" #dt>
+            <p-column field="employeesName" header="Name" [sortable]="true" [filter]="showFilters" filterMatchMode="contains" [style]="{'width':'22%'}">
+                <ng-template pTemplate="body" let-data="rowData">
+                    <a class="link" (click)="gotoDetail(data)">{{ data.employeesName }}</a>
+                </ng-template>
+            </p-column>
+            <p-column field="year" header="Year" [sortable]="true" [filter]="showFilters" filterMatchMode="equals" [style]="{'width':'10%'}">
+                <ng-template *ngIf="showFilters" pTemplate="filter" let-col>
+                    <select class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                        <option *ngFor="let year of years" [value]="year.value">{{year.label}}</option>
+                    </select>
+                </ng-template>
+            </p-column>
+            <p-column field="trainingType" header="Type" [sortable]="true" [filter]="showFilters" filterMatchMode="equals" [style]="{'width':'10%'}">
+                <ng-template *ngIf="showFilters" pTemplate="filter" let-col>
+                    <select class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                        <option *ngFor="let type of trainingTypes" [value]="type.value">{{type.label}}</option>
+                    </select>
+                </ng-template>
+            </p-column>
+            <!--<p-column field="division" header="Division" [sortable]="true" [filter]="showFilters" filterMatchMode="equals" [style]="{'width':'10%'}">
+            <ng-template *ngIf="showFilters" pTemplate="filter" let-col>
+                <select class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                    <option *ngFor="let div of divisions" [value]="div.value">{{div.label}}</option>
+                </select>
+            </ng-template>
+        </p-column>-->
+            <p-column field="ethicsOfficial" header="Official" [sortable]="true" [filter]="showFilters" filterMatchMode="contains" [style]="{'width':'17%'}"></p-column>
+            <p-column field="location" header="Location" [sortable]="true" [filter]="showFilters" [style]="{'width':'17%'}"></p-column>
+            <p-column field="dateAndTime" header="Date Attended" [sortable]="true" [style]="{'width':'14%'}">
+                <ng-template pTemplate="body" let-data="rowData">
+                    {{data.dateAndTime | date:'MM/dd/yyyy h:mm a'}}
+                </ng-template>
+            </p-column>
+        </p-dataTable>
+    </div>
+</div>  
+
+<div class="row">
+    <div class="col-md-12">
+        <input id="chkHidden" type="checkbox" (change)="filter('')" /><label for="chkHidden" style="padding-left: 5px;">show inactive users</label>
+        <span *ngIf="dt" class="pull-right">Total Records: {{ dt.totalRecords }}</span>
+    </div>
+</div>
+
+

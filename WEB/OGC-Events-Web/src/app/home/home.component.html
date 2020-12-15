@@ -1,0 +1,37 @@
+<div id="home" class="container" *ngIf="this.userService.user">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="" style="display: block;">
+                <widget [data]="newEventWidget" [icon]="'fa-calendar'" (widgetClick)="gotoEvent(0)"></widget>
+                <widget [data]="pendingEventsWidget" [icon]="'fa-list'" (widgetClick)="filter('pending')"></widget>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-top: 20px;">
+        <div class="col-sm-12">
+            <fieldset *ngIf="events">
+                <legend>Pending Events</legend>
+                <div class="alert alert-info" *ngIf="hasDrafts">
+                    You have an event request saved as a <strong>Draft</strong>.  If you are finished entering information, return to the form and click <strong>Submit</strong> at the bottom of the page.
+                </div>
+                <event-grid #dtEvents [eventRequests]="pendingEvents" (onEdit)="gotoEvent($event)" [includeSubmitted]="true"></event-grid>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <fieldset *ngIf="events">
+                <legend>Past Events</legend>
+                <event-grid #dtEvents [eventRequests]="pastEvents" (onEdit)="gotoEvent($event)" [includeSubmitted]="true"></event-grid>
+            </fieldset>
+        </div>
+    </div>
+    <!--<div class="row">
+        <div class="col-sm-12">
+            <fieldset *ngIf="events">
+                <legend>Submitted By Me</legend>
+                <event-grid #dtEvents [eventRequests]="submittedEvents" (onEdit)="gotoEvent($event)" [includeSubmitted]="true"></event-grid>
+            </fieldset>
+        </div>
+    </div>-->
+</div>

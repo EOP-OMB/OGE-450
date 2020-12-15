@@ -1,0 +1,49 @@
+[
+    {
+        "environment": "dev",
+        "id": 1,
+        "url": "/assets/vid/temp.mp4",
+        "title": "Temp Video",
+        "date": "08/13/2019 11:00 am"
+
+    },
+    {
+        "environment": "dev",
+        "id": 2,
+        "url": "/assets/vid/temp2.mp4",
+        "title": "Temp Video 2",
+        "date": "08/13/2019 11:00 am"
+    },
+    {
+        "environment": "test",
+        "id": 1,
+        "url": "assets/vid/20190722 OMB Ethics Training.mp4",
+        "title": "OMB Training Video 1",
+        "date": "08/13/2019 11:00 am"
+
+    },
+    {
+        "environment": "test",
+        "id": 2,
+        "url": "assets/vid/20190723 OMB Ethics Training.mp4",
+        "title": "Temp Video",
+        "date": "07/22/2019 12:00 pm"
+    },
+    {
+        "environment": "prod",
+        "id": 1,
+        "url": "assets/vid/20190722 OMB Ethics Training.mp4",
+        "title": "OMB Training Video 1",
+        "date": "07/22/2019 12:00 pm"
+
+    },
+    {
+        "environment": "prod",
+        "id": 2,
+        "url": "assets/vid/20190723 OMB Ethics Training.mp4",
+        "title": "OMB Training Video 2",
+        "date": "07/23/2019 12:00 pm"
+
+    }
+
+]

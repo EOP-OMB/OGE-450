@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4115A7E4-1665-4628-9469-8AD2086CE0F4}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OGC_Events_Web</RootNamespace>
+    <AssemblyName>Template-Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>2.2</TypeScriptToolsVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Prod|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="karma.conf.js" />
+    <Content Include="obj\Debug\OMBOGC-Web.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\OMBOGC-Web.dll" />
+    <Content Include="obj\Debug\OMBOGC-Web.pdb" />
+    <Content Include="obj\Debug\TypeScriptCompilerOutput.txt" />
+    <Content Include=".editorconfig" />
+    <Content Include=".gitignore" />
+    <Content Include="angular-cli.json" />
+    <Content Include="e2e\tsconfig.json" />
+    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <Content Include="obj\Debug\OMBOGC-Web.csprojResolveAssemblyReference.cache" />
+    <Content Include="package.json" />
+    <Content Include="README.md" />
+    <Content Include="src\app\banner\max\max-banner.component.css" />
+    <Content Include="src\app\banner\max\max-banner.component.html" />
+    <Content Include="src\app\common\radio\radio.component.css" />
+    <Content Include="src\app\common\radio\radio.component.html" />
+    <Content Include="src\app\common\upload\upload.component.html" />
+    <Content Include="src\app\common\widget\widget.component.css" />
+    <Content Include="src\app\banner\banner.component.css" />
+    <Content Include="src\app\banner\banner.component.html" />
+    <Content Include="src\app\event-request\event-grid\event-grid.component.css" />
+    <Content Include="src\app\event-request\event-grid\event-grid.component.html" />
+    <Content Include="src\app\event-request\event-request-detail\event-request-detail.component.css" />
+    <Content Include="src\app\event-request\event-request-detail\event-request-detail.component.html" />
+    <Content Include="src\app\event-request\event-request.component.css" />
+    <Content Include="src\app\event-request\event-request.component.html" />
+    <Content Include="src\app\security\login\login.component.html" />
+    <Content Include="src\app\welcome\welcome.component.css" />
+    <Content Include="src\app\welcome\welcome.component.html" />
+    <Content Include="src\assets\.gitkeep" />
+    <Content Include="src\assets\img\close.svg" />
+    <Content Include="src\assets\skins\lightgray\fonts\tinymce-mobile.woff" />
+    <Content Include="src\assets\skins\lightgray\fonts\tinymce-small.eot" />
+    <Content Include="src\assets\skins\lightgray\fonts\tinymce-small.ttf" />
+    <Content Include="src\assets\skins\lightgray\fonts\tinymce-small.woff" />
+    <Content Include="src\assets\skins\lightgray\fonts\tinymce.eot" />
+    <Content Include="src\assets\skins\lightgray\fonts\tinymce.ttf" />
+    <Content Include="src\assets\skins\lightgray\fonts\tinymce.woff" />
+    <Content Include="src\tsconfig.json" />
+    <Content Include="tslint.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="protractor.conf.js" />
+    <Content Include="src\app\admin\admin.component.css" />
+    <Content Include="src\app\admin\admin.component.html" />
+    <Content Include="src\app\admin\edit-templates\edit-template.component.css" />
+    <Content Include="src\app\admin\edit-templates\edit-template.component.html" />
+    <Content Include="src\app\app.component.css" />
+    <Content Include="src\app\app.component.html" />
+    <Content Include="src\app\common\widget\widget.component.html" />
+    <Content Include="src\app\error\error.component.css" />
+    <Content Include="src\app\error\error.component.html" />
+    <Content Include="src\app\healthcheck\health-check.component.css" />
+    <Content Include="src\app\healthcheck\health-check.component.html" />
+    <Content Include="src\app\home\home.component.css" />
+    <Content Include="src\app\home\home.component.html" />
+    <Content Include="src\app\security\logout\logout.component.html" />
+    <Content Include="src\assets\145px-US-OfficeOfManagementAndBudget-Seal.svg.png" />
+    <Content Include="src\assets\banner-bottom.jpg" />
+    <Content Include="src\assets\eop-people.jpg" />
+    <Content Include="src\assets\OMB_application_masthead_design_1_oge450.png" />
+    <Content Include="src\assets\PersonPlaceholder.png" />
+    <Content Include="src\assets\seal-200px.png" />
+    <Content Include="src\assets\skins\lightgray\content.inline.min.css" />
+    <Content Include="src\assets\skins\lightgray\content.min.css" />
+    <Content Include="src\assets\skins\lightgray\content.mobile.min.css" />
+    <Content Include="src\assets\skins\lightgray\fonts\tinymce-small.svg" />
+    <Content Include="src\assets\skins\lightgray\fonts\tinymce.svg" />
+    <Content Include="src\assets\skins\lightgray\img\anchor.gif" />
+    <Content Include="src\assets\skins\lightgray\img\loader.gif" />
+    <Content Include="src\assets\skins\lightgray\img\object.gif" />
+    <Content Include="src\assets\skins\lightgray\img\trans.gif" />
+    <Content Include="src\assets\skins\lightgray\skin.min.css" />
+    <Content Include="src\assets\skins\lightgray\skin.mobile.min.css" />
+    <Content Include="src\favicon.ico" />
+    <Content Include="src\index.html" />
+    <Content Include="src\styles.css" />
+    <Content Include="version.js" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="e2e\app.e2e-spec.ts" />
+    <TypeScriptCompile Include="e2e\app.po.ts" />
+    <TypeScriptCompile Include="src\app\admin\admin.component.ts" />
+    <TypeScriptCompile Include="src\app\admin\admin.service.ts" />
+    <TypeScriptCompile Include="src\app\admin\edit-templates\edit-template.component.ts" />
+    <TypeScriptCompile Include="src\app\admin\edit-templates\notification-template.service.ts" />
+    <TypeScriptCompile Include="src\app\admin\edit-templates\notification-template.ts" />
+    <TypeScriptCompile Include="src\app\app.component.ts" />
+    <TypeScriptCompile Include="src\app\app.module.ts" />
+    <TypeScriptCompile Include="src\app\app.routing.ts" />
+    <TypeScriptCompile Include="src\app\auth.module.ts" />
+    <TypeScriptCompile Include="src\app\banner\max\max-banner.component.ts" />
+    <TypeScriptCompile Include="src\app\common\constants.ts" />
+    <TypeScriptCompile Include="src\app\common\helper.ts" />
+    <TypeScriptCompile Include="src\app\common\logging.ts" />
+    <TypeScriptCompile Include="src\app\common\radio\radio.component.ts" />
+    <TypeScriptCompile Include="src\app\common\switch.ts" />
+    <TypeScriptCompile Include="src\app\common\tinymce-editor.component.ts" />
+    <TypeScriptCompile Include="src\app\common\upload\upload.component.ts" />
+    <TypeScriptCompile Include="src\app\common\widget\widget.component.ts" />
+    <TypeScriptCompile Include="src\app\common\widget\widget.ts" />
+    <TypeScriptCompile Include="src\app\error\error-info.ts" />
+    <TypeScriptCompile Include="src\app\error\error.component.ts" />
+    <TypeScriptCompile Include="src\app\error\global-error-handler.ts" />
+    <TypeScriptCompile Include="src\app\error\page-not-found.component.ts" />
+    <TypeScriptCompile Include="src\app\event-request\event-request-detail\attachment.service.ts" />
+    <TypeScriptCompile Include="src\app\event-request\event-request-detail\event-request-detail.component.ts" />
+    <TypeScriptCompile Include="src\app\event-request\event-grid\event-grid.component.ts" />
+    <TypeScriptCompile Include="src\app\event-request\event-request.component.ts" />
+    <TypeScriptCompile Include="src\app\event-request\event-request.model.ts" />
+    <TypeScriptCompile Include="src\app\event-request\event-request.resolver.ts" />
+    <TypeScriptCompile Include="src\app\event-request\event-request.service.ts" />
+    <TypeScriptCompile Include="src\app\healthcheck\health-check.component.ts" />
+    <TypeScriptCompile Include="src\app\healthcheck\health-check.service.ts" />
+    <TypeScriptCompile Include="src\app\healthcheck\health-check.ts" />
+    <TypeScriptCompile Include="src\app\banner\banner.component.ts" />
+    <TypeScriptCompile Include="src\app\home\data.model.ts" />
+    <TypeScriptCompile Include="src\app\home\data.service.ts" />
+    <TypeScriptCompile Include="src\app\home\home.component.ts" />
+    <TypeScriptCompile Include="src\app\security\login\login.component.ts" />
+    <TypeScriptCompile Include="src\app\security\logout\logout.component.ts" />
+    <TypeScriptCompile Include="src\app\security\app-user.ts" />
+    <TypeScriptCompile Include="src\app\common\widget.ts" />
+    <TypeScriptCompile Include="src\app\security\logged-in.guard.ts" />
+    <TypeScriptCompile Include="src\app\security\role.guard.ts" />
+    <TypeScriptCompile Include="src\app\security\roles.ts" />
+    <TypeScriptCompile Include="src\app\security\user.guard.ts" />
+    <TypeScriptCompile Include="src\app\common\http.service.ts" />
+    <TypeScriptCompile Include="src\app\security\secret.service.ts" />
+    <TypeScriptCompile Include="src\app\security\user.service.ts" />
+    <TypeScriptCompile Include="src\app\common\tabs\tab.component.ts" />
+    <TypeScriptCompile Include="src\app\common\tabs\tabs.component.ts" />
+    <TypeScriptCompile Include="src\app\welcome\welcome.component.ts" />
+    <TypeScriptCompile Include="src\environments\environment.dev.ts" />
+    <TypeScriptCompile Include="src\environments\environment.prod.ts" />
+    <TypeScriptCompile Include="src\environments\environment.test.ts" />
+    <TypeScriptCompile Include="src\environments\environment.ts" />
+    <TypeScriptCompile Include="src\main.ts" />
+    <TypeScriptCompile Include="src\polyfills.ts" />
+    <TypeScriptCompile Include="src\test.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="obj\Debug\TempPE\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Prod.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Test.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>55214</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:59489/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

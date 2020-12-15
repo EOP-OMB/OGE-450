@@ -1,0 +1,289 @@
+<div id="home" class="container" *ngIf="this.userService.user">
+    <!--<div class="row">
+        <div class="col-sm-12">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <h3>Office of the General Counsel Ethics Portal<span class="pull-right glyphicon glyphicon-chevron-down" style="cursor: pointer;" data-toggle="collapse" data-target="#info"></span></h3>
+                </li>
+                <div id="info" class="collapse">
+                    <li class="list-group-item">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </li>
+                </div>
+            </ul>
+        </div>
+    </div>-->
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="offset-card offset-card-stats {{tempFormBorder}}" style="cursor: pointer;" (click)="goto('OGE450')">
+                <div class="offset-card-header" data-background-color="blue">
+                    <i class="fa fa-file-text"></i>
+                </div>
+                <div class="offset-card-content">
+                    <h3 class="title">OGE Form 450</h3>
+                    <p class="category">
+                        <span class="{{tempFormStatusColor}}">{{tempFormStatus}}</span>
+                    </p>
+                </div>
+                <div class="offset-card-footer">
+                    <div class="stats">
+                        <span [innerHTML]="tempFormText"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4" >
+            <div class="offset-card offset-card-stats {{tempTrainingBorder}}" style="cursor: pointer;" (click)="gotoDetail('Training', this.tempId)">
+                <div class="offset-card-header" data-background-color="orange">
+                    <i class="fa fa-balance-scale"></i>
+                </div>
+                <div class="offset-card-content">
+                    <h3 class="title">
+                        Ethics Training
+                    </h3>
+                    <p class="category">
+                        {{tempTrainingText}} <span class="{{tempTrainingStatusColor}}">{{tempTrainingStatus}}</span>
+                    </p>
+                </div>
+                <div class="offset-card-footer">
+                    <div class="stats">
+                        <i class="fa fa-calendar"></i>
+                        click to certify training
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="offset-card offset-card-stats" style="cursor: pointer;" (click)="goto('Events')">
+                <div class="offset-card-header" data-background-color="green">
+                    <i class="fa fa-calendar-check-o"></i>
+                </div>
+                <div class="offset-card-content">
+                    <h3 class="title">Event Clearance</h3>
+                    <p class="category" *ngIf="tempEventText">
+                        {{tempEventText}} <span class="{{tempEventColor}}">PENDING</span>
+                    </p>
+                </div>
+                <div class="offset-card-footer">
+                    <div class="stats">
+                        click to launch app
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card card-underline" *ngIf="timelineVm">
+                <div class="card-head">
+                    <header>My Timeline <small style="padding-left: 5px;">({{timeline.length}} of {{timelineVm.totalRecords}})</small></header>
+                    <div class="tools">
+                        <div class="btn-group">
+                            <div class="btn btn-icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter"></i></div>
+                            <ul class="dropdown-menu">
+                                <li><a (click)="filterTimeline('allCats')">All Categories</a></li>
+                                <li><a (click)="filterTimeline('OGE450')"><input type="checkbox" [checked]="showOGE450" /><span style="padding-left: 5px;">OGE Form 450</span></a></li>
+                                <li><a (click)="filterTimeline('Training')"><input type="checkbox" [checked]="showTraining" /><span style="padding-left: 5px;">Training</span></a></li>
+                                <li><a (click)="filterTimeline('Events')"><input type="checkbox" [checked]="showEvents" /><span style="padding-left: 5px;">Events</span></a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a (click)="filterTimeline('allYears')">All Years</a></li>
+                                <li><a (click)="filterTimeline('current')"><input type="checkbox" [checked]="showCurrentYear" /><span style="padding-left: 5px;">Current Year</span></a></li>
+                                <li><a (click)="filterTimeline('last')"><input type="checkbox" [checked]="showLastYear" /><span style="padding-left: 5px;">Last Year</span></a></li>
+                                <li><a (click)="filterTimeline('older')"><input type="checkbox" [checked]="showOlder" /><span style="padding-left: 5px;">Older</span></a></li>
+                            </ul>
+                            <div class="btn btn-icon-toggle" (click)="refresh('timeline')"><i class="fa fa-refresh"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body no-padding" style="display: block;">
+                    <ul class="list-group">
+                        <li *ngFor="let tl of timeline" class="list-group-item portal-list-item" (click)="gotoDetail(tl.type, tl.id)">
+                            <div class="info-box">
+                                <div class="icon-box">
+                                    <div class="{{tl.cssClass}} icon">
+                                        <i class="fa {{tl.icon}}"></i>
+                                    </div>
+                                </div>
+                                <div class="info-text">
+                                    <strong>{{tl.title}}</strong><br />
+                                    {{ tl.date | date: 'MMM dd, yyyy' }}
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item" *ngIf="timeline == 0">
+                            <div class="no-records">No records shown</div>
+                        </li>
+                        <li class="list-group-item" *ngIf="timelineVm.records != timelineVm.totalRecords">
+                            <div class="show-more btn btn-default" (click)="showMore('timeline')">show more</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card card-underline" *ngIf="guidanceFiles">
+                <div class="card-head">
+                    <header>Guidance</header>
+                    <div class="tools">
+                        <div class="btn-group">
+                            <div class="btn btn-icon-toggle" (click)="refresh('guidance')"><i class="fa fa-refresh"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body no-padding" style="display: block;">
+                    <ul class="list-group">
+                        <li *ngFor="let g of guidanceFiles" class="list-group-item portal-list-item" (click)="showFile(g.id)">
+                            <div class="info-box">
+                                <div class="icon-box">
+                                    <div class="guidanceClass icon">
+                                        <i class="fa fa-question"></i>
+                                    </div>
+                                </div>
+                                <div class="info-text">
+                                    <strong>{{ g.title }}</strong><br />
+                                    <small>{{ g.description }}</small>
+                                </div>
+
+                            </div>
+                        </li>
+                        <li class="list-group-item" *ngIf="guidanceFiles && guidanceFiles.length == 0">
+                            <div class="no-records">No records shown</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card card-underline" *ngIf="ethicsTeam">
+                <div class="card-head">
+                    <header>Ethics Team</header>
+                    <div class="tools">
+                        <div class="btn-group">
+                            <div class="btn btn-icon-toggle" (click)="refresh('ethicsTeam')"><i class="fa fa-refresh"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body no-padding" style="display: block;">
+                    <ul class="list-group">
+                        <li *ngFor="let t of ethicsTeam" class="list-group-item portal-list-item" (click)="mailTo(t.email)">
+                            <div class="info-box">
+                                <div class="icon-box">
+                                    <div class="ethicsTeamClass icon">
+                                        <i *ngIf="t.isUser" class="fa fa-user"></i>
+                                        <i *ngIf="!t.isUser" class="fa fa-envelope"></i>
+                                    </div>
+                                </div>
+                                <div class="info-text">
+                                    <strong>{{ t.title }}</strong><br />
+                                    <small *ngIf="t.position">{{ t.position }} <br /></small>
+                                    <small *ngIf="t.org">{{ t.org }}<br /></small>
+                                    <small *ngIf="t.branch">{{ t.branch }}<br /></small>
+                                    <small *ngIf="t.email"><a href="mailto:{{t.email}}">{{ t.email }}</a><br /></small>
+                                    <small *ngIf="t.workPhone">{{ t.workPhone }} - Desk<br /></small>
+                                    <small *ngIf="t.cellPhone">{{ t.cellPhone }} - Mobile</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item" *ngIf="ethicsTeam && ethicsTeam.length == 0">
+                            <div class="no-records">No records shown</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-4">
+            <div class="card card-underline" *ngIf="ethicsFormFiles">
+                <div class="card-head">
+                    <header>Forms</header>
+                    <div class="tools">
+                        <div class="btn-group">
+                            <div class="btn btn-icon-toggle" (click)="refresh('forms')"><i class="fa fa-refresh"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body no-padding" style="display: block;">
+                    <ul class="list-group">
+                        <li *ngFor="let f of ethicsFormFiles" class="list-group-item portal-list-item" (click)="showFile(f.id)">
+                            <div class="info-box">
+                                <div class="icon-box">
+                                    <div class="ethicsFormClass icon">
+                                        <i class="fa fa-file-text"></i>
+                                    </div>
+                                </div>
+                                <div class="info-text">
+                                    <strong>{{ f.title }}</strong><br />
+                                    <small>{{ f.description }}</small>
+                                </div>
+
+                            </div>
+                        </li>
+                        <li class="list-group-item" *ngIf="ethicsFormFiles && ethicsFormFiles.length == 0">
+                            <div class="no-records">No records shown</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!--
+<div *ngIf="trainings" class="row">
+    <div class="col-sm-8">
+        <div *ngIf="!initialTraining" class="panel panel-info">
+            <div class="panel-body">
+                <div class="col-sm-1" style="text-align: center;">
+                    <span class="glyphicon glyphicon-info-sign text-info" style="font-size: 2.5em; padding-top: 2px;"></span>
+                </div>
+                <div class="col-sm-8" style="padding-top: 5px;">
+                    OGC requires that you attend an <b>initial</b> ethics training within 90 days of hire.
+                </div>
+                <div class="col-sm-3">
+                    <div class="btn btn-default pull-right" (click)="newTraining('Initial')">Certify Training</div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!annualTraining" class="panel panel-info">
+            <div class="panel-body">
+                <div class="col-sm-1" style="text-align: center;">
+                    <span class="glyphicon glyphicon-info-sign text-info" style="font-size: 2.5em; padding-top: 2px;"></span>
+                </div>
+                <div class="col-sm-8" style="padding-top: 5px;">
+                    <b>Annual</b> ethics training is mandatory for all employees of the Executive Office of the President.  5 C.F.R. 2638.307(a)(2).  Our records indicate that you have not done so this calendar year.
+                </div>
+                <div class="col-sm-3">
+                    <div class="btn btn-default pull-right" (click)="newTraining('Annual')">Certify Training</div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="annualTraining" class="panel panel-success">
+            <div class="panel-body">
+                <div class="col-sm-1" style="text-align: center;">
+                    <span class="glyphicon glyphicon-ok text-success" style="font-size: 2.5em; padding-top: 2px;"></span>
+                </div>
+                <div class="col-sm-8" style="padding-top: 5px;">
+                    Thank you, you have certified your <b>annual</b> ethics training for <b>{{annualTraining.year}}</b>.  You must attend training each year, you will receive a notification next year as a reminder.
+                </div>
+                <div class="col-sm-3">
+                    <div class="btn btn-default pull-right" (click)="gotoDetail(annualTraining)">View Training</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <h3>My Training History</h3>
+        <training-grid [trainings]="trainings" (trainingClick)="gotoDetail($event)"></training-grid>
+    </div>
+</div>-->
+
+<div class="modal fade" id="edit-training" tabindex="-1" role="dialog" aria-hidden="true" style="margin-top: 25vh;">
+    <div class="modal-dialog">
+        <edit-training [training]="selectedTraining" (close)="editTrainingClose($event)"></edit-training>
+    </div>
+</div>
+
+<div class="modal fade" id="view-notification" tabindex="-2" role="dialog" aria-hidden="true" style="margin-top: 25vh;">
+    <div class="modal-dialog">
+        <notification [message]="selectedNotification" (close)="notificationClose()"></notification>
+    </div>
+</div>

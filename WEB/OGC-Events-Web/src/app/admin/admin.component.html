@@ -1,0 +1,47 @@
+<div id="admin" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <div class="" style="display: block;">
+                    <widget *ngIf="eventRequests" [data]="openWidget" [icon]="'fa-calendar-o'" (widgetClick)="onOpenClick()"></widget>
+                    <widget *ngIf="eventRequests" [data]="upcomingWidget" [icon]="'fa-calendar-o'" (widgetClick)="onUpcomingClick()"></widget>
+                    <widget *ngIf="templates" [data]="notificationWidget" [icon]="'fa-envelope-open-o'" (widgetClick)="onEmailsClick()"></widget>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-top: 20px;">
+        <tabs #tabs>
+            <tab #tabEvents tabTitle="Events">
+                <div *ngIf="eventRequests" id="eventCard" class="flip-container">
+                    <div class="card">
+                        <div class="front">
+                            <!--<div class="row" style="padding-bottom: 10px;">
+        <div *ngIf="openOnly" class="btn btn-primary" style="float: right;" (click)="loadClosedEvents()">Load Closed Event Requests</div>
+        <div *ngIf="!openOnly" class="btn btn-primary" style="float: right;" (click)="removeClosedEvents()">Remove Closed Event Requests</div>
+    </div>-->
+                            <event-grid #dtEvents [eventRequests]="eventRequests" (onEdit)="editRequest($event)" [includeSubmitted]="false" [edit]="true"></event-grid>
+                            <div class="row" style="margin-left: 0px;">
+                                <input id="chkCLosed" type="checkbox" (change)="toggleClosed()" /><label for="chkCLosed" style="padding-left: 5px;">show closed events</label>
+                            </div>
+                        </div>
+                        <div class="back">
+                            <event-request-detail [eventId]="eventId" (save)="saveDetail($event)" (close)="detailClose($event)" (updated)="updated()"></event-request-detail>
+                        </div>
+                    </div>
+                </div>
+                <!--<event-grid *ngIf="events" #dtEvents [events]="events" [edit]="true" (onEdit)="editEvent($event)"></event-grid>-->
+                
+            </tab>
+            <tab #tabNotifications tabTitle="Notifications" *ngIf="isAdmin()">
+                <edit-templates *ngIf="isAdmin()" [templates]="templates"></edit-templates>
+            </tab>
+        </tabs>
+    </div>
+</div>
+
+
+
+
+
+

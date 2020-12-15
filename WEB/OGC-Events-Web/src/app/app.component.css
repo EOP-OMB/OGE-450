@@ -1,0 +1,11 @@
+.countdown-timer {
+    font-size: 2em;
+    font-weight: bold;
+    vertical-align: middle;
+    text-align: center;
+}
+
+#idleTimeoutDialog {
+    top: 25%; 
+    z-index:9999; 
+}

@@ -1,0 +1,519 @@
+<div *ngIf="event && canSave()">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div id="navbar" class="navbar-centered" style="padding: 5px;">
+                <ul class="nav navbar-nav">
+                    <li *ngIf="canSave()"><button id="btnSave" class="btn btn-primary nav-icon invert pull-left" data-toggle="tooltip" title="Save Draft" (click)="save()" [disabled]="!isDirty()"><span class="glyphicon glyphicon-floppy-disk"></span></button></li>
+                    <li><button class="btn btn-default nav-icon pull-left" data-toggle="tooltip" title="Print Form" (click)="print()"><span class="glyphicon glyphicon-print"></span></button></li>
+                    <!--<li><a id="lnkTop" href="#eventFormContainer" class="btn btn-default nav-icon" data-toggle="tooltip" title="Scroll to Top"><span class="glyphicon glyphicon-chevron-up"></span></a></li>
+
+                    <li><a id="lnkEventDetails" href="#sectionEvent" class="btn btn-default nav-icon" data-toggle="tooltip" title="Scroll to Event Details"><span class="glyphicon glyphicon-list-alt"></span></a></li>
+                    <li><a id="lnkInvitation" href="#sectionInvitation" class="btn btn-default nav-icon" data-toggle="tooltip" title="Scroll to Invitation"><span class="glyphicon glyphicon-envelope"></span></a></li>
+                    <li><a id="lnkParticipation" href="#sectionParticipation" class="btn btn-default nav-icon" data-toggle="tooltip" title="Scroll to Participation"><span class="glyphicon glyphicon-briefcase"></span></a></li>
+                    <li><a id="lnkAddlInfo" href="#sectionAdditionalInfo" class="btn btn-default nav-icon" data-toggle="tooltip" title="Scroll to Additional Info"><span class="glyphicon glyphicon-info-sign"></span></a></li>
+
+                    <li><a id="lnkBottom" href="#sectionS" class="btn btn-default nav-icon numeral" data-toggle="tooltip" title="Scroll to Bottom"><span class="glyphicon glyphicon-chevron-down"></span></a></li>-->
+                    <li><button class="btn btn-danger nav-icon invert pull-right" data-toggle="tooltip" title="Close Form" (click)="goBack()"><span class="glyphicon glyphicon-remove"></span></button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="eventFormContainer" class="container section form-start">
+        <div class="alert alert-success alert-fixed" id="success-alert" style="display: none; margin-top: 145px;">
+            <div type="button" class="close" data-dismiss="alert">x</div>
+            <strong>Success! </strong>
+            Form saved successfully.
+        </div>
+        <div class="text-center">
+            <h3>OMB  Ethics -- Event Attendance Request Form</h3>
+            <h4>
+                (OMB Staff Use Only)
+                <a id="lnkIntro" class="btn" data-toggle="modal" data-target="#intro-popup">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+            </h4>
+            <!--Introduction Page-->
+            <div class="modal fade" id="intro-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-admin">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="intro">
+                                <div class="col-md-12">
+                                    <h3>OMB  Ethics -- Event Attendance Request Form</h3>
+                                    <h4>
+                                        (OMB Staff Use Only)
+                                    </h4>
+                                    <p>
+                                        Federal ethics rules govern the ability of OMB employees to accept gifts – and a “gift” includes free admission, free meals, and/or travel and related expenses to attend events hosted by non-governmental sponsors. Such events include
+                                        (but are not limited to) banquets, conferences, or cocktail receptions. Accordingly, if you receive an invitation to attend such an event for free, you need pre-approval from the OMB General Counsel’s Office before accepting it. We
+                                        also ask that if you are invited to speak at an event – whether in your personal or official capacity – you seek advance approval using this portal, as many speaking engagements raise ethics issues that may not be immediately apparent.
+                                        All official speaking events will be sent to OMB Communications for coordination and clearance. Similarly, all events involving international travel will be sent to MOD for additional coordination and approval. You will receive separate
+                                        emails from Comms and MOD with appropriate follow-up and/or further coordination prior to approval.
+                                    </p>
+                                    <p>
+                                        For any event involving travel that will be paid for by a non-Federal entity, make sure that you attach the Travel Form to the event request. Please use this online form to request permission from the OMB General Counsel’s Office to accept an event invitation. It asks for all the information needed for us to consider your request. Accordingly, please answer the questions on the form completely and clearly. They key is that OGC and Comms need the information in this online form to respond to your request.
+                                    </p>
+                                    <p>
+                                        Please submit this form to OGC as soon as you receive an invitation, and at least one week before the event. Once the OMB General Counsel’s Office has reviewed your request, you can expect to receive an email with our response.
+                                    </p>
+                                    <p>
+                                        LATE REQUESTS: If you must submit a request for an event less than one week in advance, please first submit this form and then notify Laurie Adams of your urgent request.
+                                    </p>
+                                    <p>
+                                        <strong>The OMB General Counsel’s Office may not be able to provide guidance on short notice.</strong>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer text-center">
+                            <a class="btn btn-success btn-ok" data-dismiss="modal">OK</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="invalidControls" class="alert alert-danger validation-summary">
+            Form fields marked with an * are required.  Please be sure to fill out all required fields prior to submission.<br />
+            <br />
+            The following fields are missing:
+            <ul id="invalid-controls" style="padding-top: 20px;">
+                <li *ngFor="let control of invalidControls"><a (click)="scroll('#' + control[0].id)" style="color: inherit !important; font-weight: bold;">{{control[0].title}}</a></li>
+                <!--<li *ngFor="let control of invalidControls">{{control[0].title}}</li>-->
+            </ul>
+        </div>
+
+        <div id="eventForm">
+            <div class="panel panel-default">
+                <div class="panel-heading">Attendee(s)</div>
+                <div class="panel-body">
+                    <p>Please enter details of the OMB official(s) who will be attending this event. You must 'Add' each official separately and answer the questions for each.</p>
+                </div>
+                <div class="list-group">
+                    <div *ngFor="let att of this.event.attendees">
+                        <div class="list-group-item clearfix">
+                            <div class="row">
+                                <div class="col-sm-3 control-label required">Name of Attendee</div>
+                                <div class="col-sm-6">
+                                    <p-autoComplete appendTo="body" [(ngModel)]="att.employee" [suggestions]="results" (completeMethod)="search($event)" (onSelect)="employeeSelect($event)" [minLength]="3" field="displayName" [style]="{'width':'100%', 'display':'inline-block'}" [inputStyleClass]="'form-control'" [required]="true"></p-autoComplete>
+                                    <input style="height: 0px; border: none; padding: 0; width: 0;" [(ngModel)]="att.employee.displayName" required title="Name of Attendee" />
+                                    <a (click)="assignMe(att)" *ngIf="!amIGoing()">I am going</a>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span style="cursor: pointer; color: red;" class="glyphicon glyphicon-remove pull-right" (click)="delete(att)" title="Remove Attendee"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 control-label required">Has your supervisor been informed of this request?</div>
+                                <div class="col-sm-6">
+                                    <label class="options"><input required id="rbInformed" type="radio" name="rbInformed-{{att.id == 0 ? att.guid : att.id}}" title="Has your supervisor been informed of this request?" [value]="true" [(ngModel)]="att.informedSupervisor" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">Yes</span></label>
+                                    <label class="options"><input required type="radio" name="rbInformed-{{att.id == 0 ? att.guid : att.id}}" title="" [value]="false" [(ngModel)]="att.informedSupervisor" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">No</span></label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <small>&nbsp;</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 control-label required">Name of supervisor?</div>
+                                <div class="col-sm-6">
+                                    <input required id="txtSupervisorName" title="Supervisor Name" type="text" class="form-control" [(ngModel)]="att.nameOfSupervisor" />
+                                </div>
+                                <div class="col-sm-3">
+                                    <small>&nbsp;</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 control-label required">Political or career employee?</div>
+                                <div class="col-sm-6">
+                                    <label class="options"><input required id="rbEmployeeType" type="radio" name="rbEmployeeType-{{att.id == 0 ? att.guid : att.id}}" title="Political or career employee?" value="Political" [(ngModel)]="att.employeeType" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">Political</span></label>
+                                    <label class="options"><input required type="radio" name="rbEmployeeType-{{att.id == 0 ? att.guid : att.id}}" title="" value="Career" [(ngModel)]="att.employeeType" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">Career</span></label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <small>&nbsp;</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 control-label required">Attending Capacity</div>
+                                <div class="col-sm-6">
+                                    <label class="options"><input required id="rbCapacity" type="radio" name="rbCapacity-{{att.id == 0 ? att.guid : att.id}}" title="Attending Capacity" value="Official" [(ngModel)]="att.capacity" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">Official</span></label>
+                                    <label class="options"><input required type="radio" name="rbCapacity-{{att.id == 0 ? att.guid : att.id}}" title="" value="Personal" [(ngModel)]="att.capacity" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">Personal</span></label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <small>&nbsp;</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="control-label required">Will you be giving remarks?</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="options"><input required id="rbRemarks" type="radio" name="rbRemarks-{{att.id == 0 ? att.guid : att.id}}" title="Will you be giving remarks?" [value]="true" [(ngModel)]="att.isGivingRemarks" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">Yes</span></label>
+                                    <label class="options"><input required type="radio" name="rbRemarks-{{att.id == 0 ? att.guid : att.id}}" title="" [value]="false" [(ngModel)]="att.isGivingRemarks" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">No</span></label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <small></small>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="att.isGivingRemarks">
+                                <div class="col-sm-6 col-sm-offset-3">
+                                    <textarea required required id="txtTopics" title="Topics" type="text" rows="4" class="form-control" title="Planned remarks" [(ngModel)]="att.remarks"></textarea>
+                                </div>
+                                <div class="col-sm-3">
+                                    <small>Please briefly describe the topic of the planned remarks.</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 control-label required">
+                                    Reason for Attending
+                                </div>
+                                <div class="col-sm-6">
+                                    <textarea required id="txtReason" title="Reason for Attending" type="text" rows="4" class="form-control" [(ngModel)]="att.reasonForAttending"></textarea>
+                                </div>
+                                <div class="col-sm-3">
+                                    <small>Please explain how the event relates to your duties at OMB and how your attendance will further agency programs and operations?</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item clearfix" *ngIf="event.attendees.length > 0">
+                        <div class="btn" (click)="newAttendee()"><span class="glyphicon glyphicon-plus" style="color: green; padding-right: 10px;"></span>Click here to add another attendee</div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Attendees -->
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Event Details</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="control-label required col-sm-3">Event Name</div>
+                        <div class="col-sm-6">
+                            <input required id="txtEventName" title="Event Name" type="text" class="form-control" [(ngModel)]="event.eventName" />
+                        </div>
+                        <div class="col-sm-3"><small>The name of the event</small></div>
+                    </div>
+                    <div class="row">
+                        <div class="control-label required col-sm-3">Event Dates</div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <div class="input-group-addon" id="start-addon">Start</div>
+                                <input required id="dtStartDate" title="Event Start Date" type="date" class="form-control" [ngModel]="tempStartDate | date:'yyyy-MM-dd'" (ngModelChange)="event.eventStartDate = $event" (change)="startDateChange($event)" aria-describedby="start-addon" />
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="start-addon" data-provide="datepicker">End</span>
+                                <input required id="dtEndDate" title="Event End Date" type="date" class="form-control" [ngModel]="tempEndDate | date:'yyyy-MM-dd'" (ngModelChange)="event.eventEndDate = $event" aria-describedby="end-addon" />
+                            </div>
+                        </div>
+                        <div class="col-sm-3">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="control-label required col-sm-3">Location</div>
+                        <div class="col-sm-6">
+                            <input required id="txtLocation" title="Location" type="text" class="form-control" [(ngModel)]="event.eventLocation" #Location="ngModel" />
+                        </div>
+                        <div class="col-sm-3">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="control-label required col-sm-3">Approximate # of Attendees</div>
+                        <div class="col-sm-2">
+                            <input required id="txtAttendees" title="Approximate # of Attendees" type="text" class="form-control" [(ngModel)]="event.approximateAttendees" />
+                        </div>
+                        <div class="col-sm-3 col-sm-offset-4"></div>
+                    </div>
+                    <div class="row">
+                        <div class="control-label required col-sm-3">Event Crowd and Description</div>
+                        <div class="col-sm-6">
+                            <textarea required id="txtCrowd" rows="4" title="Event Crowd and Description" type="text" class="form-control" [(ngModel)]="event.crowdDescription"></textarea>
+                        </div>
+                        <div class="col-sm-3"><small>Please provide a brief description of the number and backgrounds of persons attending the event.  Please note attendance by Members of Congress or Hill staff.</small></div>
+                    </div>
+                    <div class="row">
+                        <div class="control-label required col-sm-3">Is this a fund-raising event?</div>
+                        <div class="col-sm-6">
+                            <label class="options"><input required id="rbFundraiser" type="radio" name="rbFundraiser" title="Is this a fund-raising event?" [value]="true" [(ngModel)]="event.isFundraiser" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">Yes</span></label>
+                            <label class="options"><input required type="radio" name="rbFundraiser" title="" [value]="false" [(ngModel)]="event.isFundraiser" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">No</span></label>
+                        </div>
+                        <div class="col-sm-3"><small>Will you travel outside the D.C. metro area for this event?</small></div>
+                    </div>
+                    <div class="row">
+                        <div class="control-label required col-sm-3">Will the event be open to the press?</div>
+                        <div class="col-sm-6">
+                            <label class="options"><input required id="rbOpenToMedia" type="radio" name="rbOpenToMedia" title="Will the event be open to the press?" [value]="true" [(ngModel)]="event.isOpenToMedia" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">Yes</span></label>
+                            <label class="options"><input required type="radio" name="rbOpenToMedia" title="" [value]="false" [(ngModel)]="event.isOpenToMedia" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">No</span></label>
+                        </div>
+                        <div class="col-sm-3"><small></small></div>
+                    </div>
+                    <div class="row">
+                        <div class="control-label required col-sm-3">Will you travel outside the D.C. metro area for this event?</div>
+                        <div class="col-sm-6">
+                            <label class="options"><input required id="rbRequiresTravel" type="radio" name="rbRequiresTravel" title="Will you travel outside the D.C. metro area for this event?" [value]="true" [(ngModel)]="event.requiresTravel" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">Yes</span></label>
+                            <label class="options"><input required type="radio" name="rbRequiresTravel" title="" [value]="false" [(ngModel)]="event.requiresTravel" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">No</span></label>
+                        </div>
+                        <div class="col-sm-3"><small></small></div>
+                    </div>
+                    <div class="row">
+                        <div class="control-label required col-sm-3">International Travel</div>
+                        <div class="col-sm-6">
+                            <label class="options"><input required id="rbInternationalTravel" type="radio" name="rbInternationalTravel" title="International Travel" [value]="true" [(ngModel)]="event.internationalTravel" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">Yes</span></label>
+                            <label class="options"><input required type="radio" name="rbInternationalTravel" title="" [value]="false" [(ngModel)]="event.internationalTravel" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">No</span></label>
+                        </div>
+                        <div class="col-sm-3"><small></small></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="control-label required">Fair Market Value</div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input required id="txtFMV" title="Fair Market Value" type="number" placeholder="$" class="form-control" [(ngModel)]="event.fairMarketValue" />
+                        </div>
+                        <div class="col-sm-3 col-sm-offset-4">
+                            <small>Please provide either (1) the ticket price for the event if available, or (2) the organizer's best estimate for a per-person share of the event cost. Please ask the organizer to include refreshments, "goody bags," and any other special event costs in this estimate.</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="control-label required">Who is Paying?</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <input required id="txtPaying" title="Who is Paying?" type="text" class="form-control" [(ngModel)]="event.whoIsPaying" />
+                        </div>
+                        <div class="col-sm-3">
+                            <small></small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="control-label2">Please complete the <a target="_blank" href="https://portal.omb.gov/sites/EthicsClearance/Documents/omb-outside-source-travel-request-form.pdf">Outside Source Travel Form</a> and attach it to this request.</div>
+                            <file-upload #uplTravelForm [id]="event.id" [guid]="event.attachmentGuid" [fileQueue]="travelForms" (attachmentRemoved)="removeAttachment($event)" type="Travel Form" uploadText="Click or drag file(s) to upload "></file-upload>
+                        </div>
+                        <div class="col-sm-3">
+                            <small>*** You are prohibited from asking anyone to pay for your travel. If a Non-Federal source has offered to pay for your travel, before accepting their offer you must obtain clearance from Counsel's Office.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Event Details-->
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Invitation</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="control-label required col-sm-3">Spouse or Guest Invited</div>
+                        <div class="col-sm-6">
+                            <label class="options"><input required id="rbSpouse" type="radio" name="rbSpouse" title="Spouse or Guest Invited" [value]="true" [(ngModel)]="event.guestsInvited" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">Yes</span></label>
+                            <label class="options"><input required type="radio" name="rbSpouse" title="" [value]="false" [(ngModel)]="event.guestsInvited" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">No</span></label>
+                        </div>
+                        <div class="col-sm-3"><small>Does the invitation include your spouse or guest?</small></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <file-upload #uplInvitation [id]="event.id" [guid]="event.attachmentGuid" [fileQueue]="invitations" (attachmentRemoved)="removeAttachment($event)" type="Invitation" uploadText="Click or drag file(s) to upload "></file-upload>
+                        </div>
+                        <div class="col-sm-3">
+                            <small>Please attach a copy of the event invitation you received. If there are any other documents, emails, talking points, slides and other relevant information associated with this event, please also attach them here.</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9">Below, we are looking for <strong>three pieces of information</strong>. We need to know who invited you, who they're affiliated with, and who is hosting the event. It's OK if the answer to two or more is the same.</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 col-sm-offset-9 control-label required">Registered Lobbyist?</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 control-label required">Individual Extending Invite</div>
+                        <div class="col-sm-6">
+                            <input required id="txtIndExtendingInvite" title="Individual Extending Invite" type="text" class="form-control" [(ngModel)]="event.individualExtendingInvite" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="options"><input required id="rbIndLobbyist" type="radio" name="rbIndLobbyist" title="Is Individual a Registered Lobbyist?" [value]="true" [(ngModel)]="event.isIndividualLobbyist" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">Yes</span></label>
+                            <label class="options"><input required type="radio" name="rbIndLobbyist" title="" [value]="false" [(ngModel)]="event.isIndividualLobbyist" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">No</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 control-label required">Organization Extending Invite</div>
+                        <div class="col-sm-6">
+                            <input required id="txtOrgExtendingInvite" title="Organization Extending Invite" type="text" class="form-control" [(ngModel)]="event.orgExtendingInvite" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="options"><input required id="rbOrgLobbyist" type="radio" name="rbOrgLobbyist" title="Is Organization a Registered Lobbyist?" [value]="true" [(ngModel)]="event.isOrgLobbyist" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">Yes</span></label>
+                            <label class="options"><input required type="radio" name="rbOrgLobbyist" title="" [value]="false" [(ngModel)]="event.isOrgLobbyist" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">No</span></label>
+                        </div>
+                    </div>
+                    <div class="row checkboxRow">
+                        <div class="col-sm-3 control-label required">Type of organization</div>
+                        <div class="col-sm-6">
+                            <div class="btn-group" *ngIf="hostOrgType">
+                                <label class="btn btn-default check {{ orgOrgType.nonProfit ? 'active' : '' }}">
+                                    <input type="checkbox" [(ngModel)]="orgOrgType.nonProfit" class="no-show-check" />Non-Profit/501(c)(3)
+                                </label>
+                                <label class="btn btn-default check {{ orgOrgType.mediaOrg ? 'active' : '' }}">
+                                    <input type="checkbox" [(ngModel)]="orgOrgType.mediaOrg" class="no-show-check" /> Media Org.
+                                </label>
+                                <label class="btn btn-default check {{ orgOrgType.lobbyingOrg ? 'active' : '' }}">
+                                    <input type="checkbox" autocomplete="off" [(ngModel)]="orgOrgType.lobbyingOrg" class="no-show-check" /> Lobbying Org.
+                                </label>
+                                <label class="btn btn-default check {{ orgOrgType.usgEntity ? 'active' : '' }}">
+                                    <input type="checkbox" autocomplete="off" [(ngModel)]="orgOrgType.usgEntity" class="no-show-check" /> USG Entity
+                                </label>
+                                <label class="btn btn-default check {{ orgOrgType.foreignGov ? 'active' : '' }}">
+                                    <input type="checkbox" autocomplete="off" [(ngModel)]="orgOrgType.foreignGov" class="no-show-check" /> Foreign Gov.
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="org-other-addon">Other</span>
+                                <input title="OrgOther" type="text" class="form-control" [(ngModel)]="event.orgOther" aria-describedby="org-other-addon" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 control-label required">Organization Sponsoring Event</div>
+                        <div class="col-sm-6">
+                            <input required id="txtOrgSponsoringEvent" title="Organization Sponsoring Event" type="text" class="form-control" [(ngModel)]="event.orgHostingEvent" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="options"><input required id="rbHostLobbyist" type="radio" name="rbHostLobbyist" title="Is Sponsor a Registered Lobbyist?" [value]="true" [(ngModel)]="event.isHostLobbyist" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">Yes</span></label>
+                            <label class="options"><input required type="radio" name="rbHostLobbyist" title="" [value]="false" [(ngModel)]="event.isHostLobbyist" /><span class="checkmark"></span><span class="checkmark-inner"></span><span class="checkboxLabel">No</span></label>
+                        </div>
+                    </div>
+                    <div class="row checkboxRow">
+                        <div class="col-sm-3 control-label required">Type of organization</div>
+                        <div class="col-sm-6">
+                            <div class="btn-group" *ngIf="hostOrgType">
+                                <label class="btn btn-default check {{ hostOrgType.nonProfit ? 'active' : '' }}">
+                                    <input id="chkNonprofitOrg" type="checkbox" [(ngModel)]="hostOrgType.nonProfit" class="no-show-check" />Non-Profit/501(c)(3)
+                                </label>
+                                <label class="btn btn-default check {{ hostOrgType.mediaOrg ? 'active' : '' }}">
+                                    <input title="chkMediaOrg" type="checkbox" [(ngModel)]="hostOrgType.mediaOrg" class="no-show-check" /> Media Org.
+                                </label>
+                                <label class="btn btn-default check {{ hostOrgType.lobbyingOrg ? 'active' : '' }}">
+                                    <input type="checkbox" autocomplete="off" [(ngModel)]="hostOrgType.lobbyingOrg" class="no-show-check" /> Lobbying Org.
+                                </label>
+                                <label class="btn btn-default check {{ hostOrgType.usgEntity ? 'active' : '' }}">
+                                    <input type="checkbox" autocomplete="off" [(ngModel)]="hostOrgType.usgEntity" class="no-show-check" /> USG Entity
+                                </label>
+                                <label class="btn btn-default check {{ hostOrgType.foreignGov ? 'active' : '' }}">
+                                    <input type="checkbox" autocomplete="off" [(ngModel)]="hostOrgType.foreignGov" class="no-show-check" /> Foreign Gov.
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="host-other-addon">Other</span>
+                                <input title="HostOther" type="text" class="form-control" [(ngModel)]="event.hostOther" aria-describedby="host-other-addon" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Invitation -->
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Contacts and Additional Info</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="control-label required">Event Contact Name</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <input required id="txtEventContactName" title="Event Contact Name" type="text" class="form-control" [(ngModel)]="event.eventContactName" />
+                        </div>
+                        <div class="col-sm-3">
+                            <small>Please provide a contact name at the event organizer with whom Counsel can follow-up for details.</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="control-label required">Event Contact Phone</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <input required id="txtEventContactPhone" title="Event Contact Phone" type="tel" class="form-control" [(ngModel)]="event.eventContactPhone" />
+                        </div>
+                        <div class="col-sm-3">
+                            <small>Please provide a contact phone number at the event organizer with whom Counsel can follow-up for details.</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 control-label required">E-mail Address</div>
+                        <div class="col-sm-6">
+                            <input required id="txtEmail" title="E-mail Address" type="text" class="form-control" [(ngModel)]="event.contactEmail" />
+                        </div>
+                        <div class="col-sm-3"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 control-label required">Contact Number</div>
+                        <div class="col-sm-6">
+                            <input required id="txtContactNumber" title="Contact Number" type="tel" class="form-control" [(ngModel)]="event.contactNumber" />
+                        </div>
+                        <div class="col-sm-3"><small>Your phone number or the phone number of the appropriate member of your staff.</small></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 control-label required">Component</div>
+                        <div class="col-sm-6">
+                            <input id="contactComponent" required title="Component" type="text" class="form-control" [(ngModel)]="event.contactComponent" />
+                        </div>
+                        <div class="col-sm-3"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 control-label">Additional Information or Clarifications</div>
+                        <div class="col-sm-6">
+                            <textarea title="Topics" type="text" rows="4" class="form-control" [(ngModel)]="event.additionalInformation"></textarea>
+                        </div>
+                        <div class="col-sm-3">
+                            <small></small>
+                        </div>
+                    </div>
+                    <!--<div class="row">
+                    <div class="col-sm-9">
+                        <file-upload #uplOther [id]="event.id" [guid]="event.attachmentGuid" [fileQueue]="otherAttachments" (attachmentRemoved)="removeAttachment($event)" type="Other" uploadText="Click or drag file(s) to upload "></file-upload>
+                    </div>
+                    <div class="col-sm-3">
+                        <small>If you have any additional documents you wish to attach to this request, you may add them here.</small>
+                    </div>
+                </div>-->
+                    <!--<div class="row">
+                                        <div class="col-sm-3 control-label required">Submitter's Name</div>
+                                        <div class="col-sm-6">
+                                            <input required title="EmployeeName" type="text" class="form-control" [(ngModel)]="event.submittedBy" />
+                                        </div>
+                                        <div class="col-sm-3"></div>
+                                    </div>
+                -->
+                    <div class="row">
+                        <div class="col-sm-12 text-center" style="padding-top: 15px;">
+                            <div *ngIf="canSubmit()" class="btn btn-success" style="margin-right: 20px;" (click)="submitRequest()">Submit</div>
+                            <div class="btn btn-primary" style="margin-right: 20px;" (click)="save()">Save</div>
+                            <div class="btn btn-default" (click)="goBack()">Cancel</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Other -->
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirm-close" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-danger">
+                    <div class="modal-title" style="font-size: 1.5em;"><i class="fa fa-exclamation-triangle" style="padding-right: 20px;"></i>Unsaved Changes Detected</div>
+                </div>
+                <div class="modal-body">
+                    <p>There are unsaved changes on this form, if you leave this page the changes will be lost.</p>
+                </div>
+                <div class="modal-footer">
+                    <div type="button" class="btn btn-primary" style="float: left;" (click)="saveAndClose()">Save and Close</div>
+                    <div type="button" class="btn btn-default" data-dismiss="modal">Stay on Page</div>
+                    <div class="btn btn-danger btn-ok" (click)="confirmClose()">Leave Page</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="event && !canSave()">
+    <event-request-detail [eventId]="event.id" (close)="confirmClose($event)"></event-request-detail>
+</div>

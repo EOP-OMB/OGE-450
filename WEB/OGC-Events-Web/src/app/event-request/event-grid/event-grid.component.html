@@ -1,0 +1,85 @@
+<div class="row">
+    <div class="col-md-12">
+        <div *ngIf="dt" class="pull-right download-button"><i class="fa fa-file-excel-o" (click)="dt.exportCSV()" title="Download Event Report (csv)"></i></div>
+    </div>
+</div>
+<p-dataTable [value]="eventRequests" [paginator]="true" [rows]="15" [rowsPerPageOptions]="[15,30,60]" [responsive]="true" #dt>
+    <!--<p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>-->
+    <p-column field="attendeesString" header="Attendee(s)" [sortable]="true" [filter]="true" [style]="{'width' : includeSubmitted ? '20%' : '25%'}" filterMatchMode="contains">
+        <ng-template pTemplate="body" let-data="rowData">
+            <a class="link" (click)="gotoDetail(data.id)">{{ data.attendeesString }}</a>
+        </ng-template>
+    </p-column>
+    <p-column field="eventName" header="Event Name" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : includeSubmitted ? '20%' : '25%'}">
+        <ng-template pTemplate="body" let-data="rowData">
+            <a class="link" (click)="gotoDetail(data.id)">{{ data.eventName }}</a>
+        </ng-template>
+    </p-column>
+    <p-column field="eventDates" header="Event Date(s)" [sortable]="true" [filter]="true" [style]="{'width' : '15%'}">
+        <ng-template pTemplate="filter" let-col>
+            <select id="ddlDates" class="form-control" (change)="filterData($event, 'dateFilter', 'contains')">
+                <option *ngFor="let df of dateFilters" [value]="df.value">{{df.label}}</option>
+            </select>
+        </ng-template>
+        <ng-template pTemplate="body" let-data="rowData">
+            <a class="link" (click)="gotoDetail(data.id)">{{ data.eventDates }}</a>
+        </ng-template>
+    </p-column>
+    <!--<p-column field="submittedBy" header="Submitted By" [sortable]="true" [filter]="true" [style]="{'width' : '20%'}">
+    </p-column>-->
+    <p-column field="status" header="Status" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'width' : '15%'}">
+        <ng-template pTemplate="filter" let-col>
+            <select id="ddlStatus" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                <option *ngFor="let status of statuses" [value]="status.value">{{status.label}}</option>
+            </select>
+        </ng-template>
+        <ng-template pTemplate="body" let-data="rowData">
+            <a class="link" (click)="gotoDetail(data.id)">{{ data.status }}</a>
+        </ng-template>
+    </p-column>
+    <p-column *ngIf="includeSubmitted" field="submitter" header="SubmittedBy" [sortable]="true" [filter]="true" [style]="{'width' : '15%'}">
+        <ng-template pTemplate="filter" let-col>
+            <select id="ddlAssignedTo" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                <option *ngFor="let asignee of reviewers" [value]="asignee.value">{{asignee.label}}</option>
+            </select>
+        </ng-template>
+        <ng-template pTemplate="body" let-data="rowData">
+            <a class="link" (click)="gotoDetail(data.id)">{{ data.submitter }}</a>
+        </ng-template>
+    </p-column>
+    <p-column field="assignedTo" header="Assigned To" [sortable]="true" [filter]="true" [style]="{'width' : includeSubmitted ? '15%' : '20%'}">
+        <ng-template pTemplate="filter" let-col>
+            <select id="ddlAssignedTo" class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                <option *ngFor="let asignee of reviewers" [value]="asignee.value">{{asignee.label}}</option>
+            </select>
+        </ng-template>
+        <ng-template pTemplate="body" let-data="rowData">
+            <a class="link" (click)="gotoDetail(data.id)">{{ data.assignedTo }}</a>
+        </ng-template>
+    </p-column>
+    <p-column field="dateFilter" header="Filter" hidden="true"></p-column>
+</p-dataTable>
+<div style="width: 100%;">
+    <span *ngIf="dt" class="pull-right">Total Records: {{ dt.totalRecords }}</span>
+</div>
+<!--<div *ngIf="selectedEvents && selectedEvents.length > 0" style="padding-top: 40px;">
+    <div class="row">
+        <div class="col-md-6">
+            Assign the following events:
+            <div *ngFor="let event of selectedEvents" style="text-align: left; padding-top: 5px; padding-left: 20px;">
+                {{ event.eventName }}
+            </div>
+        </div>
+        <div class="col-md-3">
+            Assign To:
+            <select class="form-control" (change)="filterData($event, col.field, col.filterMatchMode);">
+                <option *ngFor="let asignee of assignees" [value]="asignee.value">{{asignee.label}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+            <div class="btn btn-primary">Assign</div>
+        </div>
+    </div>
+</div>-->

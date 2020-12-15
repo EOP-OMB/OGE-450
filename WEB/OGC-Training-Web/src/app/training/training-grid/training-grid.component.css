@@ -1,0 +1,18 @@
+﻿.link {
+    cursor: pointer !important;
+    color: #337ab7 !important;
+}
+
+.download-button {
+    color: green;
+    padding: 0px 5px 5px 0px;
+    font-size: 1.5em;
+}
+
+.download-button > i {
+    cursor: pointer;
+}
+
+.title {
+    font-size: 20px;
+}

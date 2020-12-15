@@ -1,0 +1,28 @@
+﻿<header class="eop-header site-header" role="banner">
+    <div class="eop-banner">
+        <strong>&nbsp;</strong>
+        <welcome class="pull-right"></welcome>
+    </div>
+
+    <div class="navbar navbar-fixed-top navbar-default" style="top: 18px;">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" [routerLink]="['/home']">
+                    <img class="banner-seal" src="assets/145px-US-OfficeOfManagementAndBudget-Seal.svg.png" />
+                    <div class="text">
+                        <div class="agency-text">
+                            <span class="md">Office of Management and Budget</span>
+                            <span class="sm">OMB - <span style="color: #ffa726;">Ethics Portal</span></span>
+                        </div>
+                        <div class="app-text md"><span style="color: #ffa726;">Ethics Portal</span></div>
+                    </div>
+                </a>
+            </div>
+            <ul class="nav navbar-nav navbar-right button-list">
+                <li *ngIf="router.isActive('/home') && user.isAdmin"><button class="btn btn-warning" [routerLink]="['/admin']"><i class="fa fa-pie-chart"></i></button></li>
+                <li *ngIf="router.isActive('/admin')"><button class="btn btn-primary" [routerLink]="['/home']"><i class="fa fa-user"></i></button></li>
+                <li *ngIf="false"><button class="btn btn-default"><i class="fa fa-cog"></i></button></li>
+            </ul>
+        </div>
+    </div>
+</header>

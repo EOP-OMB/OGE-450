@@ -1,0 +1,55 @@
+<style>
+    .my-drop-zone {
+        border: dotted 3px lightgray;
+    }
+
+    .nv-file-over {
+        border: dotted 3px green;
+    }
+</style>
+
+<div *ngIf="uploader">
+    <div ng2FileDrop
+         [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+         (fileOver)="fileOverBase($event)"
+         [uploader]="uploader"
+         class="well my-drop-zone"
+         (click)="triggerUpload()">
+        {{ uploadText }}
+    </div>
+    <input id="hdnFileUpload" type="file" ng2FileSelect [uploader]="uploader" multiple style="display: none;" />
+
+    <table class="table">
+        <tbody>
+            <tr *ngFor="let item of uploader.queue">
+                <td><strong>{{ item?.file?.name }}</strong></td>
+                <td class="text-center">
+                    <span *ngIf="!item.isSuccess && uploader.isUploading"><i class="glyphicon glyphicon-hourglass"></i></span>
+                    <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                    <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                    <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                </td>
+                <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024 | number:'.2-2' }} KB</td>
+                <td nowrap>
+                    <button type="button" class="btn btn-danger btn-xs" (click)="item.remove()">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </td>
+            </tr>
+            <tr *ngFor="let att of fileQueue">
+                <td><strong>{{ att.fileName }}</strong></td>
+                <td class="text-center">
+                    <span><i class="glyphicon glyphicon-ok"></i></span>
+                </td>
+                <td nowrap>{{ att.size/1024 | number:'.2-2' }} KB</td>
+                <td nowrap>
+                    <button type="button" class="btn btn-danger btn-xs" (click)="removeAttachment(att)">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="divErrorMessage" style="color: red; display: none;">{{errorMessage}}</div>
+</div>

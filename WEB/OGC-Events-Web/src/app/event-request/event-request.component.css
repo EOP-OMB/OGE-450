@@ -1,0 +1,252 @@
+legend {
+    margin-left: -20px;
+    width: 103%;
+}
+
+.form-start {
+    margin-top: 74px !important;
+}
+
+.navbar-fixed-top {
+    margin-top: 150px; 
+    z-index: 1029;
+}
+
+@media(max-width: 767px) {
+    .form-start {
+        margin-top: 74px;
+    }
+
+    .navbar-fixed-top {
+        margin-top: 75px; 
+        z-index: 1029;
+    }
+}
+
+input[type="text"], textarea[type="text"], input[type="tel"], input[type="date"], input[type="number"] {
+    background-color: #fafcff;
+}
+
+    .navbar-centered .navbar-nav {
+        float: none;
+        text-align: center;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .navbar-centered .navbar-nav > li {
+        float: none;
+    }
+    .navbar-centered .nav > li {
+        display: inline;
+    }
+    .navbar-centered .nav > li > a {
+        display: inline-block;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+.control-label {
+    font-weight: bold;
+}
+
+.checkboxLabel {
+    padding-right: 10px;
+    padding-left: 5px;
+}
+
+.checkboxRow {
+    min-height: 64px;
+}
+
+#eventForm {
+    max-width: 1280px;
+}
+
+
+.row {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    overflow: hidden; 
+}
+ 
+label {
+    font-weight: normal;
+}
+
+.collapse {
+    padding-bottom: 10px;
+}
+
+.required.print:before { 
+    content:""; 
+    color: red;
+}
+
+.break {
+    page-break-before: always;
+    padding-top: 10px;
+}
+
+.section {
+    margin-top: 15px;
+    /*position: relative;
+    vertical-align: top;
+    z-index: -1;*/
+}
+
+/*.section:before { 
+	display: block; 
+ 	content: " "; 
+  	height: 50px;
+        margin-top: -50px;
+        visibility: hidden; 
+}*/
+a {
+    cursor: pointer;
+}
+.nav-icon {
+    font-size: 1.0em;
+    width: 40px;
+    margin-left: 10px;
+    height: 42px;
+    padding-top: 10px;
+}
+
+.nav-icon > .invert {
+    color: white !important;
+}
+
+.intro > .row {
+    padding-top: 10px;
+}
+
+.btn-text > span {
+     padding-right: 10px;
+}
+
+.btn-default {
+    color: #777 !important;
+}
+
+.modal-admin {
+    max-width: 70%;
+    margin-left: 15%;
+    margin-top: 5%;
+}
+
+.row {
+    padding-bottom: 10px;
+}
+
+.form-box {
+    border: 1px solid black;
+    padding: 5px;
+    font-size: .85em;
+}
+
+.outer-form-box {
+    display: table; 
+    border: 1px solid black;
+    width: 100%;
+}
+
+.no-show-check {
+    clip: rect(0, 0, 0, 0);
+    position: absolute;
+}
+
+.check {
+    font-size: .9em;
+}
+
+
+
+/************ Validation *****************/
+.validation-summary {
+    color: #a94442;
+}
+
+/*.ng-touched.ng-valid[required], .ng-touched.ng-valid.required,
+.ng-dirty.ng-valid[required], .ng-dirty.ng-valid.required  {
+  border-left: 5px solid #42A948; 
+}*/
+
+.ng-touched.ng-invalid:not(form),
+.ng-dirty.ng-invalid:not(form)  {
+  border-left: 5px solid #a94442; /* red */
+}
+
+/*.ng-touched.ng-valid[required] + span,
+.ng-touched.ng-valid.required + span,
+.ng-dirty.ng-valid[required] + span,
+.ng-dirty.ng-valid.required + span {
+    border-bottom: 5px solid #42A948; 
+}*/
+
+.ng-touched.ng-invalid:not(form) + span,
+.ng-dirty.ng-invalid:not(form) + span {
+    border: 2px solid #a94442; /* red */
+}
+
+/* Customize the label (the container) */
+.options {
+    position: relative;
+    padding-left: 20px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+    /* Hide the browser's default radio button */
+    .options input {
+        position: absolute;
+        opacity: 0;
+    }
+
+/* Create a custom radio button */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    background-color: white;
+    border-radius: 50%;
+    border: 2px solid rgba(0,0,0,.54);
+    box-sizing: border-box;
+    transition: border-color ease 280ms;
+}
+
+
+/* When the radio button is checked, add a blue background */
+.options input:checked ~ .checkmark {
+    border-color: #112e51;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.options input:checked ~ .checkmark-inner {
+    transform: scale(.5);
+}
+
+/* Style the indicator (dot/circle) */
+.options .checkmark-inner {
+    border-radius: 50%;
+    box-sizing: border-box;
+    height: 15px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transition: transform ease 280ms,background-color ease 280ms;
+    width: 15px;
+    background: #112e51;
+    transform: scale(.001);
+}

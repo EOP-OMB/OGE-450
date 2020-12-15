@@ -1,0 +1,49 @@
+<div *ngIf="training" class="modal-content">
+    <div class="modal-header" style="background-color: #ffa726; color: white;">
+        <div class="modal-title" style="font-size: 1.5em;"><i class="fa fa-balance-scale" style="padding-right: 20px;"></i>{{ training.title }}</div>
+    </div>
+    <div class="modal-body">
+        <div class="well">
+            <p *ngIf="training.id > 0">You have successfully recorded your training for calendar year {{training.year}}.  If you need to make changes to this information, please do so below.</p>
+            <p>Please enter the date, time, location, and name of the OMB ethics official who conducted your training.  We entrust you to truthfully report your compliance with this requirement.</p>
+            <p>A false official statement may result in a violation of 18 U.S.C. 1001.</p>
+        </div>
+        <div class="alert alert-danger" id="invalid" style="display: none;">
+            <strong>Invalid!</strong> Fields marked with an <span style="color: red;">*</span> are required.  Please fill them out and try again.
+        </div>
+        <div class="alert alert-danger" id="badRequest" style="display: none;">
+            <strong>Invalid!</strong> {{ errorMessage }}
+        </div>
+        <div class="row form-group" style="padding-top: 15px;">
+            <div class="col-md-5">
+                <div class="top-label required">
+                    Date and Time of Training
+                </div>
+                <p-calendar id="ddlDateOfTraining" [(ngModel)]="tempTrainingDateAndTime" [showTime]="true" [showIcon]="true" hourFormat="12" [stepMinute]="30" [minDate]="minDate" [maxDate]="maxDate"></p-calendar>
+            </div>
+            <div class="col-md-7">
+                <div class="top-label required">Location</div>
+                <input name="location" type="text" class="form-control" [(ngModel)]="training.location" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <!--<div class="col-md-5">
+                <div class="top-label">Who provided the training?</div>
+                <select class="form-control" [(ngModel)]="training.division">
+                    <option *ngFor="let div of divisions" [value]="div.value">{{div.label}}</option>
+                </select>
+            </div>-->
+            <div class="col-md-12">
+                <div class="top-label required">Name of Ethics Official (Who Provided Training)</div>
+                <input name="year" type="text" class="form-control" [(ngModel)]="training.ethicsOfficial" />
+            </div>
+        </div>
+        <p *ngIf="training.trainingType=='Initial'"><b>Note:</b> If you took your initial training with OGC it will also satisfy your annual training requirement for this calendar year.  If you took training through other means, you are also required to take <b>annual</b> ethics training with OGC.</p>
+    </div>
+    <div class="modal-footer">
+        <div class="col-md-12" style="text-align: center;">
+            <div (click)="saveClicked()" class="btn btn-success">Certify</div>
+            <div (click)="cancel()" class="btn btn-default" style="margin-left: 15px;"><span>Cancel</span></div>
+        </div>
+    </div>
+</div>

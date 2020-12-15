@@ -1,0 +1,11 @@
+﻿<div class="welcome-user">
+    <div *ngIf="userService.user">
+        Welcome, <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ userService.user.displayName }} <span class="caret"></span></a>
+        <ul class="dropdown-menu pull-right">
+            <li><a href="{{userService.user.userProfileUrl}}" target="_blank">User Profile</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a [routerLink]="['/logout']">logout</a></li>
+        </ul>
+    </div>
+    <div *ngIf="!userService.user"><a [routerLink]="['/login']">Login</a></div>
+</div>

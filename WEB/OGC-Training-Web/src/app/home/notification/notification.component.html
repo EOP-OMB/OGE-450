@@ -1,0 +1,27 @@
+<div *ngIf="message" class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title" style="font-size: 1.5em;"><i class="fa fa-envelope-o" style="padding-right: 20px;"></i>{{ message.title }}</div>
+    </div>
+    <div class="modal-body">
+        <p>
+            <strong>Subject:</strong>
+            {{message.subject}}
+        </p>
+        <p>
+            <strong>Sent:</strong>
+            {{message.sentDateTime | date: 'MM/dd/yyyy hh:mm:ss a'}}
+        </p>
+        
+        <div style="border-top: solid 1px #e5e5e5; padding-top: 5px;">
+            <video controls *ngIf="isVideo" [src]="vidSrc">
+                Your browser does not support the video tag.
+            </video>
+            <div *ngIf="!isVideo" [innerHTML]="message.body"></div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-md-12" style="text-align: center;">
+            <div (click)="cancel()" class="btn btn-default" style="margin-left: 15px;">Close</div>
+        </div>
+    </div>
+</div>

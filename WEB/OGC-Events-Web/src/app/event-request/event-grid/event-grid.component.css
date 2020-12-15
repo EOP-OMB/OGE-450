@@ -1,0 +1,61 @@
+.download-button {
+    color: green;
+    padding: 0px 5px 5px 0px;
+    font-size: 1.5em;
+}
+
+    .download-button > i {
+        cursor: pointer;
+    }
+
+button {
+  font-family: Arial;
+  background-color: #eee;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #cfd8dc;
+}
+
+button.delete {
+  float:right;
+  margin-top: 2px;
+  margin-right: .8em;
+  background-color: gray !important;
+  color:white;
+}
+
+.link {
+    cursor: pointer !important;
+    color: #337ab7 !important;
+}
+
+
+.header {
+    display: table;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+.header-text {
+    display: table-cell;
+    width: 100%;
+}
+
+.header-sort-icon {
+    display: table-cell;
+    vertical-align: middle;
+    width: 15px;
+}
+
+.header-row > th {
+    border-bottom: 0px;
+}
+
+.filter-row > th {
+    border-top: 0px;
+}

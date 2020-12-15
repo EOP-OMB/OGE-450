@@ -1,0 +1,232 @@
+<!--<div id="home" class="container">
+    <div style="padding-top: 20px;">
+        <tabs #tabs>
+            <tab #tabAppSettings tabTitle="Training">
+                <div class="col-md-12">
+                    <training-grid [trainings]="trainings" (trainingClick)="gotoDetail($event)" [showFilters]="true" [showPages]="true"></training-grid>
+                </div>
+            </tab>
+            <tab #tabNotifications tabTitle="Notifications">
+                <edit-templates [templates]="templates"></edit-templates>
+            </tab>
+            <tab #tabOther tabTitle="Other">
+                <div class="col-md-1">
+                    <i class="fa fa-wrench" style="margin-top: 20px; font-size: 4em;" aria-hidden="true"></i>
+                </div>
+                <div class="col-md-11">
+                    <h3>Feature not implemented</h3>
+                </div>
+            </tab>
+        </tabs>
+    </div>
+</div>-->
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-underline">
+            <div class="card-head">
+                <header>OGE 450</header>
+                <div class="tools">
+                    <div class="btn-group">
+                        <a class="btn btn-icon-toggle" (click)="goto('OGE450')"><i class="fa fa-link"></i></a>
+                        <a class="btn btn-icon-toggle" (click)="refresh('oge450')"><i class="fa fa-refresh"></i></a>
+                        <!--<a class="btn btn-icon-toggle"><i class="fa fa-cog"></i></a>-->
+                    </div>
+                </div>
+            </div>
+            <div class="card-body" style="display: block;">
+                <p-chart type="doughnut" [data]="oge450Data" [options]="oge450Options" height="80vh"></p-chart>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card card-underline">
+            <div class="card-head">
+                <header>Training ({{selectedYear}})</header>
+                <div class="tools">
+                    <div class="btn-group">
+                        <a class="btn btn-icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Menu"><i class="fa fa-bars"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a (click)="runReport()">Missing Training Report</a></li>
+                            <li><a class="separator">Select a Year:</a></li>
+                            <li *ngFor="let year of years"><a (click)="switchToYear(year.value)">{{year.value}}</a></li>
+                        </ul>
+                        <a class="btn btn-icon-toggle" (click)="refresh('training')"><i class="fa fa-refresh"></i></a>
+                        <!--<a class="btn btn-icon-toggle"><i class="fa fa-cog"></i></a>-->
+                    </div>
+                </div>
+            </div>
+            <div class="card-body" style="display: block;">
+                <p-chart type="horizontalBar" [data]="trainingdata" [options]="trainingoptions" height="80vh"></p-chart>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card card-underline">
+            <div class="card-head">
+                <header>Event Clearance</header>
+                <div class="tools">
+                    <div class="btn-group">
+                        <a class="btn btn-icon-toggle" (click)="goto('Events')"><i class="fa fa-link"></i></a>
+                        <a class="btn btn-icon-toggle" (click)="refresh('events')"><i class="fa fa-refresh"></i></a>
+                        <!--<a class="btn btn-icon-toggle"><i class="fa fa-cog"></i></a>-->
+                    </div>
+                </div>
+            </div>
+            <div class="card-body" style="display: block;">
+                <p-chart type="bar" [data]="eventdata" [options]="eventoptions" height="50vh"></p-chart>
+            </div>
+        </div>
+    </div>
+</div>
+
+<training-grid [trainings]="trainings" (trainingClick)="gotoDetail($event)" [showFilters]="true" [showPages]="true"></training-grid>
+
+<div class="modal fade" id="edit-training" tabindex="-1" role="dialog" aria-hidden="true" style="margin-top: 25vh;">
+    <div class="modal-dialog">
+        <edit-training [training]="selectedTraining" (close)="editTrainingClose($event)"></edit-training>
+    </div>
+</div>
+
+<!--<div class="row">
+    <div class="col-md-4">
+        <div class="card card-underline">
+            <div class="card-head">
+                <header>Employees</header>
+                <div class="tools">
+                    <div class="btn-group">
+                        <a class="btn btn-icon-toggle"><i class="fa fa-refresh"></i></a>
+                        <a class="btn btn-icon-toggle"><i class="fa fa-filter"></i></a>
+                        <a class="btn btn-icon-toggle"><i class="fa fa-cog"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body" style="display: block;">
+                <p-chart type="pie" [data]="empdata" [options]="empoptions"></p-chart>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card card-underline">
+            <div class="card-head">
+                <header>Employee List</header>
+                <div class="tools">
+                    <div class="btn-group">
+                        <a class="btn btn-icon-toggle"><i class="fa fa-refresh"></i></a>
+                        <a class="btn btn-icon-toggle"><i class="fa fa-expand"></i></a>
+                        <a class="btn btn-icon-toggle"><i class="fa fa-cog"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body one-padding" style="display: block;">
+                <table class="table" style="font-size: .85em;">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Filer Type</th>
+                            <th>Last 450 Date</th>
+                            <th>Last Training Date</th>
+                            <th>Events</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let emp of employees">
+                            <td><a class="link">{{emp.employeesName}}</a></td>
+                            <td>{{emp.status}}</td>
+                            <td>{{emp.filerType}}</td>
+                            <td>{{emp.last450Date}}</td>
+                            <td>{{emp.lastTrainingDate}}</td>
+                            <td>{{emp.events}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6" style="text-align: center;"><i class="fa fa-angle-left"></i>&nbsp;&nbsp;4 of 570&nbsp;&nbsp;<i class="fa fa-angle-right"></i></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <p-dataTable [value]="employees">
+                    <p-column field="employeesName" header="Name" [style]="{'width':'225px'}"></p-column>
+                    <p-column field="status" header="Status"></p-column>
+                    <p-column field="filerType" header="Filer Type"></p-column>
+                    <p-column field="last450Date" header="Last 450"></p-column>
+                    <p-column field="lastTrainingDate" header="Last Training"></p-column>
+                    <p-column field="events" header="Events"></p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card card-underline">
+            <div class="card-head">
+                <header>Todo <small style="padding-left: 10px;">(showing 3 of 57)</small></header>
+                <div class="tools">
+                    <div class="btn-group">
+                        <a class="btn btn-icon-toggle"><i class="fa fa-refresh"></i></a>
+                        <a class="btn btn-icon-toggle"><i class="fa fa-filter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body no-padding" style="display: block;">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="pull-left" style="height: 36px; width: 36px; border-radius: 50%; background-color: #00acc1; color: white; text-align: center; margin-right: 10px"><i class="fa fa-file-text-o" style="margin-top: 9px; font-size: 1.4em;"></i></div>
+                        <strong>OGE Form 450 Submitted - John Doe</strong><br />
+                        Nov 27, 2017
+                    </li>
+                    <li class="list-group-item">
+                        <div class="pull-left" style="height: 36px; width: 36px; border-radius: 50%; background-color: #00acc1; color: white; text-align: center; margin-right: 10px"><i class="fa fa-file-text-o" style="margin-top: 9px; font-size: 1.4em;"></i></div>
+                        <strong>OGE Form 450 Submitted - Jane Doe</strong><br />
+                        Nov 22, 2017
+                    </li>
+                    <li class="list-group-item">
+                        <div class="pull-left" style="height: 36px; width: 36px; border-radius: 50%; background-color: #00acc1; color: white; text-align: center; margin-right: 10px"><i class="fa fa-file-text-o" style="margin-top: 9px; font-size: 1.4em;"></i></div>
+                        <strong>OGE Form 450 Extension Request - George Washington</strong><br />
+                        Nov 12, 2017
+                    </li>
+                    <li class="list-group-item">
+                        <div style="margin-top: 10px; margin-left: 35%; width: 30%;" class="btn btn-default">show more</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-6">
+        <div class="card card-underline">
+            <div class="card-head">
+                <header>Announcements <small style="padding-left: 10px;">(showing 2 of 5)</small></header>
+                <div class="tools">
+                    <div class="btn-group">
+                        <a class="btn btn-icon-toggle"><i class="fa fa-plus"></i></a>
+                        <a class="btn btn-icon-toggle"><i class="fa fa-filter"></i></a>
+                        <a class="btn btn-icon-toggle"><i class="fa fa-cog"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body no-padding" style="display: block;">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="pull-left" style="height: 36px; width: 36px; border-radius: 50%; background-color: #999; color: white; text-align: center; margin-right: 10px"><i class="fa fa-envelope-o" style="margin-top: 9px; font-size: 1.4em;"></i></div>
+                        <strong>New OGC Portal Released!</strong><br />
+                        Jan 15, 2018
+                    </li>
+                    <li class="list-group-item">
+                        <div class="pull-left" style="height: 36px; width: 36px; border-radius: 50%; background-color: #ffa726; color: white; text-align: center; margin-right: 10px"><i class="fa fa-envelope-o" style="margin-top: 9px; font-size: 1.4em;"></i></div>
+                        <strong>New Training Dates Announced</strong><br />
+                        Oct 15, 2017
+                    </li>
+                    <li class="list-group-item">
+                        <div style="margin-top: 10px; margin-left: 35%; width: 30%;" class="btn btn-default">show more</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>-->
