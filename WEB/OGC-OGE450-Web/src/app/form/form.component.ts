@@ -52,6 +52,8 @@ export class FormComponent implements OnInit, OnChanges, AfterViewInit {
     isReviewer: boolean;
     isAdmin: boolean;
 
+    showWatermark: boolean = false;
+
     assetsAndIncome: ReportableInformation[];
     liabilities: ReportableInformation[];
     outsidePositions: ReportableInformation[];
@@ -127,14 +129,13 @@ export class FormComponent implements OnInit, OnChanges, AfterViewInit {
         this.tempAppointmentDate = Helper.getDate(this.form.dateOfAppointment);
 
         this.disableForm();
+
+        if (this.form.submittedPaperCopy && (this.form.formStatus == FormStatus.SUBMITTED || this.form.formStatus == FormStatus.RE_SUBMITTED || this.form.formStatus == FormStatus.CERTIFIED)) {
+            this.showWatermark = true;
+        }
     }
 
     ngAfterViewInit() {
-        if (this.form.submittedPaperCopy && (this.form.formStatus == FormStatus.SUBMITTED || this.form.formStatus == FormStatus.RE_SUBMITTED || this.form.formStatus == FormStatus.CERTIFIED)) {
-            $('#watermark').show();
-            $('#steps').hide();
-        }
-
         var headerHtml = $('#pageHeader').html();
         $('.header').html(headerHtml);
     }
@@ -285,7 +286,7 @@ export class FormComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     validateForm(): boolean {
-        var divs = $('.required');
+        var divs = $('#oge-form').find('.required');
 
         var valid = true;
 

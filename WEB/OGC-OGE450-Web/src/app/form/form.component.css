@@ -209,3 +209,7 @@ label {
     width: 25%;
     flex: 0 0 auto;
 }
+
+.hide-me {
+    display: none;
+}

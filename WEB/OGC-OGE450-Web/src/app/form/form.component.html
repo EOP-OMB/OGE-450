@@ -30,8 +30,8 @@
     <span *ngIf="!canSubmit()">The section you are trying to navigate to was not filled out.  Try navigating to sections marked 'Yes'.</span>
 </div>
 
-<div id="watermark" style="display: none;">Submitted Paper Copy</div>
-<div id="oge-form">
+<div id="watermark" [ngClass]="{'hide-me' : !showWatermark}">Submitted Paper Copy</div>
+<div id="{{ form.year == settings.currentFilingYear ? 'oge-form' : 'oge-form-450' }}">
     <div id="pageHeader">
         <div class="row">
             <div class="col-xs-8">
@@ -154,7 +154,7 @@
                 </div>
             </div>
         </div>
-        <div id="steps" style="margin-top: 15px;">
+        <div id="steps" style="margin-top: 15px;" [ngClass]="{'hide-me' : showWatermark}">
             <div class="row">
                 Step 1:  Read the instructions for Parts I through V using the <span class="glyphicon glyphicon-question-sign"></span> next to each section below.
             </div>
