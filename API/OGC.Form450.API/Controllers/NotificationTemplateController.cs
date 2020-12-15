@@ -10,9 +10,9 @@ using OGC.Data.SharePoint;
 
 namespace OGC.Form450.API.Controllers
 {
+    [Form450Authorize("requireAuthorization")]
     public class NotificationTemplateController : BaseController
     {
-        [Form450Authorize("requireAuthorization")]
         [HttpGet]
         public IHttpActionResult Get()
         {
@@ -39,7 +39,6 @@ namespace OGC.Form450.API.Controllers
             }
         }
 
-        [Form450Authorize("requireAuthorization")]
         [HttpGet]
         public IHttpActionResult Get(int id)
         {
@@ -66,7 +65,6 @@ namespace OGC.Form450.API.Controllers
             }
         }
 
-        [Form450Authorize("requireAuthorization")]
         [HttpPut]
         public IHttpActionResult Update(NotificationTemplates item)
         {
